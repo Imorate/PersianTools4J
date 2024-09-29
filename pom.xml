@@ -24,7 +24,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <projectlombok.version>1.18.34</projectlombok.version>
         <asserj.version>3.26.3</asserj.version>
         <mockito.version>4.11.0</mockito.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
@@ -33,13 +32,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${projectlombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
