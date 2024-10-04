@@ -1,15 +1,24 @@
 package com.persiantools4j.nationalid.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.exception.ValidationException;
+import com.persiantools4j.nationalid.model.Location;
+import com.persiantools4j.nationalid.model.LocationData;
 import com.persiantools4j.nationalid.service.NationalIdService;
 import com.persiantools4j.utils.NumberUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
 public class NationalIdServiceImpl implements NationalIdService {
 
-    public static volatile NationalIdServiceImpl instance;
+    private static volatile NationalIdServiceImpl instance;
+    private Map<String, Location> locationMap;
 
     private NationalIdServiceImpl() {
 
@@ -30,7 +39,7 @@ public class NationalIdServiceImpl implements NationalIdService {
     public boolean isValid(String nationalId) {
         try {
             validate(nationalId);
-        } catch (ValidationException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
         return true;
@@ -55,11 +64,42 @@ public class NationalIdServiceImpl implements NationalIdService {
         }
     }
 
+    @Override
+    public Optional<Location> findLocation(String nationalId) {
+        validate(nationalId);
+        String firstThreeDigits = nationalId.substring(0, 3);
+        return getLocationMap().entrySet().stream()
+                .filter(entry -> entry.getKey().equals(firstThreeDigits))
+                .map(Map.Entry::getValue)
+                .findFirst();
+    }
+
+    @Override
+    public Map<String, Location> getLocationMap() {
+        if (locationMap == null) {
+            locationMap = new HashMap<>();
+            ObjectMapper objectMapper = new ObjectMapper();
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("nationalid/location-data.json");
+            LocationData locationData = new LocationData();
+            try {
+                locationData = objectMapper.readValue(inputStream, LocationData.class);
+            } catch (IOException ignored) {
+            }
+            locationData.getLocationMap()
+                    .forEach((code, locationDetail) -> {
+                        Location location = Location.of(locationDetail.get(0), locationDetail.get(1));
+                        locationMap.put(code, location);
+                    });
+        }
+        return locationMap;
+    }
+
     private void validateNationalIdFormat(String nationalId) {
         if (nationalId == null) {
             throw new ValidationException("National ID is null");
         }
-        if (!nationalId.matches("^\\d{10}$") || nationalId.matches("^(\\d)\\1{9}$")) {
+        nationalId = nationalId.trim();
+        if (!nationalId.matches("\\d{10}") || nationalId.matches("(\\d)\\1{9}")) {
             throw new ValidationException("Invalid National ID format: " + nationalId);
         }
     }
