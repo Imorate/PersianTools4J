@@ -9,6 +9,13 @@ package com.persiantools4j.utils;
 public class NumberUtils {
 
     /**
+     * Private constructor to prevent direct instantiation.
+     */
+    private NumberUtils() {
+
+    }
+
+    /**
      * Returns the numeric value of a character at a specified index in the input string.
      *
      * @param input The string representing a number
