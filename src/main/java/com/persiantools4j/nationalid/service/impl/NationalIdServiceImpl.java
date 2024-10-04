@@ -15,15 +15,29 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
+/**
+ * The NationalIdServiceImpl class implements the {@link NationalIdService} interface
+ * and provides functionality for validating national IDs and finding associated {@link Hometown}.
+ * <p>
+ * This class uses the Singleton design pattern to ensure a single instance is used throughout the application.
+ */
 public class NationalIdServiceImpl implements NationalIdService {
 
     private static volatile NationalIdServiceImpl instance;
     private Map<String, Hometown> hometownMap;
 
+    /**
+     * Private constructor to prevent direct instantiation.
+     */
     private NationalIdServiceImpl() {
 
     }
 
+    /**
+     * Returns the singleton instance of {@link NationalIdServiceImpl}.
+     *
+     * @return The single instance of {@link NationalIdServiceImpl}
+     */
     public static NationalIdServiceImpl getInstance() {
         if (instance == null) {
             synchronized (NationalIdServiceImpl.class) {
@@ -94,6 +108,12 @@ public class NationalIdServiceImpl implements NationalIdService {
         return hometownMap;
     }
 
+    /**
+     * Validates the format of the provided national ID.
+     *
+     * @param nationalId The national ID to validate
+     * @throws ValidationException If the national ID is null or in an invalid format
+     */
     private void validateNationalIdFormat(String nationalId) {
         if (nationalId == null) {
             throw new ValidationException("National ID is null");
