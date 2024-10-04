@@ -2,18 +2,18 @@ package com.persiantools4j.nationalid.model;
 
 import java.util.Objects;
 
-public class Location {
+public class Hometown {
 
     private final String province;
     private final String city;
 
-    private Location(String province, String city) {
+    private Hometown(String province, String city) {
         this.province = province;
         this.city = city;
     }
 
-    public static Location of(String province, String city) {
-        return new Location(province, city);
+    public static Hometown of(String province, String city) {
+        return new Hometown(province, city);
     }
 
     public String getProvince() {
@@ -27,9 +27,9 @@ public class Location {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Location)) return false;
-        Location location = (Location) o;
-        return Objects.equals(province, location.province) && Objects.equals(city, location.city);
+        if (!(o instanceof Hometown)) return false;
+        Hometown hometown = (Hometown) o;
+        return Objects.equals(province, hometown.province) && Objects.equals(city, hometown.city);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Location{" +
+        return "Hometown{" +
                 "province='" + province + '\'' +
                 ", city='" + city + '\'' +
                 '}';

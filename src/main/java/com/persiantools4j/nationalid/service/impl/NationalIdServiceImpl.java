@@ -2,8 +2,8 @@ package com.persiantools4j.nationalid.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.nationalid.model.Location;
-import com.persiantools4j.nationalid.model.LocationData;
+import com.persiantools4j.nationalid.model.Hometown;
+import com.persiantools4j.nationalid.model.HometownData;
 import com.persiantools4j.nationalid.service.NationalIdService;
 import com.persiantools4j.utils.NumberUtils;
 
@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 public class NationalIdServiceImpl implements NationalIdService {
 
     private static volatile NationalIdServiceImpl instance;
-    private Map<String, Location> locationMap;
+    private Map<String, Hometown> hometownMap;
 
     private NationalIdServiceImpl() {
 
@@ -65,33 +65,33 @@ public class NationalIdServiceImpl implements NationalIdService {
     }
 
     @Override
-    public Optional<Location> findLocation(String nationalId) {
+    public Optional<Hometown> findHometown(String nationalId) {
         validate(nationalId);
         String firstThreeDigits = nationalId.substring(0, 3);
-        return getLocationMap().entrySet().stream()
+        return getHometownMap().entrySet().stream()
                 .filter(entry -> entry.getKey().equals(firstThreeDigits))
                 .map(Map.Entry::getValue)
                 .findFirst();
     }
 
     @Override
-    public Map<String, Location> getLocationMap() {
-        if (locationMap == null) {
-            locationMap = new HashMap<>();
+    public Map<String, Hometown> getHometownMap() {
+        if (hometownMap == null) {
+            hometownMap = new HashMap<>();
             ObjectMapper objectMapper = new ObjectMapper();
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("nationalid/location-data.json");
-            LocationData locationData = new LocationData();
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("nationalid/hometown-data.json");
+            HometownData hometownData = new HometownData();
             try {
-                locationData = objectMapper.readValue(inputStream, LocationData.class);
+                hometownData = objectMapper.readValue(inputStream, HometownData.class);
             } catch (IOException ignored) {
             }
-            locationData.getLocationMap()
-                    .forEach((code, locationDetail) -> {
-                        Location location = Location.of(locationDetail.get(0), locationDetail.get(1));
-                        locationMap.put(code, location);
+            hometownData.getHometownData()
+                    .forEach((code, hometownDetail) -> {
+                        Hometown hometown = Hometown.of(hometownDetail.get(0), hometownDetail.get(1));
+                        hometownMap.put(code, hometown);
                     });
         }
-        return locationMap;
+        return hometownMap;
     }
 
     private void validateNationalIdFormat(String nationalId) {

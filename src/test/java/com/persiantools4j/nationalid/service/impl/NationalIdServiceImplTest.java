@@ -1,7 +1,7 @@
 package com.persiantools4j.nationalid.service.impl;
 
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.nationalid.model.Location;
+import com.persiantools4j.nationalid.model.Hometown;
 import com.persiantools4j.nationalid.service.NationalIdService;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
@@ -152,79 +152,79 @@ class NationalIdServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Find location")
-    class FindLocationTests {
+    @DisplayName("Find hometown")
+    class FindHometownTests {
 
-        private Location mockedLocation;
+        private Hometown mockedHometown;
 
         @BeforeEach
         void setUp() {
-            mockedLocation = Location.of("Test province", "Test city");
+            mockedHometown = Hometown.of("Test province", "Test city");
         }
 
         @Test
-        @DisplayName("Get location populated map test")
-        void testLocationPopulatedMap() {
-            // Location map null check is true
-            nationalIdService.getLocationMap();
-            // Location map null check is false now and it's initialized
-            Map<String, Location> locationMap = nationalIdService.getLocationMap();
-            assertThat(locationMap)
+        @DisplayName("Get hometown populated map test")
+        void testHometownPopulatedMap() {
+            // Hometown map null check is true
+            nationalIdService.getHometownMap();
+            // Hometown map null check is false now and it's initialized
+            Map<String, Hometown> hometownMap = nationalIdService.getHometownMap();
+            assertThat(hometownMap)
                     .isNotNull()
-                    .asInstanceOf(InstanceOfAssertFactories.map(String.class, Location.class))
-                    .allSatisfy((code, location) -> {
+                    .asInstanceOf(InstanceOfAssertFactories.map(String.class, Hometown.class))
+                    .allSatisfy((code, hometown) -> {
                         assertThat(code).containsPattern("\\d{3}");
-                        assertThat(location)
+                        assertThat(hometown)
                                 .isNotNull()
                                 .matches(l -> !l.getProvince().isEmpty() && !l.getCity().isEmpty());
                     })
-                    .containsEntry("001", Location.of("تهران", "تهران مرکزی"));
+                    .containsEntry("001", Hometown.of("تهران", "تهران مرکزی"));
         }
 
         @ParameterizedTest
         @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#validNationalIdCases")
-        @DisplayName("Valid National ID find location test")
-        void testValidNationalIdFindLocation(String nationalId) {
-            Optional<Location> locationOptional = nationalIdService.findLocation(nationalId);
-            assertThat(locationOptional.isPresent()).isTrue();
-            locationOptional.ifPresent(location -> {
-                assertThat(location.getProvince()).isNotBlank();
-                assertThat(location.getCity()).isNotBlank();
+        @DisplayName("Valid National ID find hometown test")
+        void testValidNationalIdFindHometown(String nationalId) {
+            Optional<Hometown> hometownOptional = nationalIdService.findHometown(nationalId);
+            assertThat(hometownOptional.isPresent()).isTrue();
+            hometownOptional.ifPresent(hometown -> {
+                assertThat(hometown.getProvince()).isNotBlank();
+                assertThat(hometown.getCity()).isNotBlank();
             });
         }
 
         @Test
-        @DisplayName("Single valid National ID find location test")
-        void testSingleValidNationalIdFindLocation() {
-            Location expectedLocation = Location.of("آذربایجان غربی", "خوی");
-            Optional<Location> locationOptional = nationalIdService.findLocation("2791567895");
-            assertThat(locationOptional.isPresent()).isTrue();
-            locationOptional.ifPresent(location -> assertThat(locationOptional.get()).isEqualTo(expectedLocation));
+        @DisplayName("Single valid National ID find hometown test")
+        void testSingleValidNationalIdFindHometown() {
+            Hometown expectedHometown = Hometown.of("آذربایجان غربی", "خوی");
+            Optional<Hometown> hometownOptional = nationalIdService.findHometown("2791567895");
+            assertThat(hometownOptional.isPresent()).isTrue();
+            hometownOptional.ifPresent(hometown -> assertThat(hometownOptional.get()).isEqualTo(expectedHometown));
         }
 
         @ParameterizedTest
         @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdCases")
-        @DisplayName("Invalid National ID find location test")
-        void testInvalidNationalIdFindLocation(String nationalId) {
-            assertThatThrownBy(() -> nationalIdService.findLocation(nationalId)).isInstanceOf(ValidationException.class);
+        @DisplayName("Invalid National ID find hometown test")
+        void testInvalidNationalIdFindHometown(String nationalId) {
+            assertThatThrownBy(() -> nationalIdService.findHometown(nationalId)).isInstanceOf(ValidationException.class);
         }
 
         @ParameterizedTest
         @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdFormatCases")
-        @DisplayName("Invalid National ID format find location test")
-        void testInvalidNationalIdFormatFindLocation(String nationalId) {
-            assertThatThrownBy(() -> nationalIdService.findLocation(nationalId)).isInstanceOf(IllegalArgumentException.class);
+        @DisplayName("Invalid National ID format find hometown test")
+        void testInvalidNationalIdFormatFindHometown(String nationalId) {
+            assertThatThrownBy(() -> nationalIdService.findHometown(nationalId)).isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test
-        @DisplayName("Location methods test")
+        @DisplayName("Hometown methods test")
         @SuppressWarnings({"EqualsBetweenInconvertibleTypes", "EqualsWithItself"})
-        void testLocationMethods() {
-            assertThat(mockedLocation.hashCode()).isNotZero();
-            assertThat(mockedLocation.toString()).contains(mockedLocation.getProvince(), mockedLocation.getCity());
-            assertThat(mockedLocation.equals(mockedLocation)).isTrue();
-            assertThat(mockedLocation.equals("")).isFalse();
-            assertThat(mockedLocation.equals(Location.of("123", "231"))).isFalse();
+        void testHometownMethods() {
+            assertThat(mockedHometown.hashCode()).isNotZero();
+            assertThat(mockedHometown.toString()).contains(mockedHometown.getProvince(), mockedHometown.getCity());
+            assertThat(mockedHometown.equals(mockedHometown)).isTrue();
+            assertThat(mockedHometown.equals("")).isFalse();
+            assertThat(mockedHometown.equals(Hometown.of("123", "231"))).isFalse();
         }
 
     }
