@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
 /**
@@ -63,13 +62,12 @@ public class NationalIdServiceImpl implements NationalIdService {
     public void validate(String nationalId) {
         validateNationalIdFormat(nationalId);
         int controlDigit = NumberUtils.getNumericValue(nationalId, nationalId.length() - 1);
-        BiFunction<Integer, Integer, Integer> digitCalculator = (partialResult, index) -> {
-            int digit = NumberUtils.getNumericValue(nationalId, index);
-            return partialResult + digit * (10 - index);
-        };
         int sum = IntStream.range(0, 9)
                 .boxed()
-                .reduce(0, digitCalculator, Integer::sum);
+                .reduce(0, (partialResult, index) -> {
+                    int digit = NumberUtils.getNumericValue(nationalId, index);
+                    return partialResult + digit * (10 - index);
+                }, Integer::sum);
         int remainder = sum % 11;
         boolean remainderLessThanTwo = (remainder < 2) && (controlDigit == remainder);
         boolean remainderEqualAndMoreThanTwo = (remainder >= 2) && (remainder + controlDigit == 11);
