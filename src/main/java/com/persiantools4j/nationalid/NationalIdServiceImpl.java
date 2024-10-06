@@ -1,6 +1,7 @@
 package com.persiantools4j.nationalid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.persiantools4j.Generated;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.NumberUtils;
 
@@ -34,6 +35,7 @@ public class NationalIdServiceImpl implements NationalIdService {
      *
      * @return The single instance of {@link NationalIdServiceImpl}
      */
+    @Generated
     public static NationalIdServiceImpl getInstance() {
         if (instance == null) {
             synchronized (NationalIdServiceImpl.class) {

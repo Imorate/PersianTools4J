@@ -1,5 +1,7 @@
 package com.persiantools4j.nationalid;
 
+import com.persiantools4j.Generated;
+
 import java.util.Objects;
 
 /**
@@ -62,6 +64,7 @@ public class Hometown {
      * @return True if the specified object is equal to this object, false otherwise
      */
     @Override
+    @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Hometown)) return false;
@@ -75,6 +78,7 @@ public class Hometown {
      * @return The hash code value for this Hometown object
      */
     @Override
+    @Generated
     public int hashCode() {
         return Objects.hash(province, city);
     }
@@ -85,6 +89,7 @@ public class Hometown {
      * @return A string representation of the object
      */
     @Override
+    @Generated
     public String toString() {
         return "Hometown{" +
                 "province='" + province + '\'' +

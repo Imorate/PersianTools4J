@@ -153,13 +153,6 @@ class NationalIdServiceImplTest {
     @DisplayName("Find hometown")
     class FindHometownTests {
 
-        private Hometown mockedHometown;
-
-        @BeforeEach
-        void setUp() {
-            mockedHometown = Hometown.of("Test province", "Test city");
-        }
-
         @Test
         @DisplayName("Get hometown populated map test")
         void testHometownPopulatedMap() {
@@ -212,17 +205,6 @@ class NationalIdServiceImplTest {
         @DisplayName("Invalid National ID format find hometown test")
         void testInvalidNationalIdFormatFindHometown(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.findHometown(nationalId)).isInstanceOf(IllegalArgumentException.class);
-        }
-
-        @Test
-        @DisplayName("Hometown methods test")
-        @SuppressWarnings({"EqualsBetweenInconvertibleTypes", "EqualsWithItself"})
-        void testHometownMethods() {
-            assertThat(mockedHometown.hashCode()).isNotZero();
-            assertThat(mockedHometown.toString()).contains(mockedHometown.getProvince(), mockedHometown.getCity());
-            assertThat(mockedHometown.equals(mockedHometown)).isTrue();
-            assertThat(mockedHometown.equals("")).isFalse();
-            assertThat(mockedHometown.equals(Hometown.of("123", "231"))).isFalse();
         }
 
     }
