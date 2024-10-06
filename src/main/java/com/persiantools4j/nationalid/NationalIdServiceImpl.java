@@ -69,7 +69,7 @@ public class NationalIdServiceImpl implements NationalIdService {
         boolean remainderLessThanTwo = (remainder < 2) && (controlDigit == remainder);
         boolean remainderEqualAndMoreThanTwo = (remainder >= 2) && (remainder + controlDigit == 11);
         if (!remainderLessThanTwo && !remainderEqualAndMoreThanTwo) {
-            throw new ValidationException("Invalid NationalId: " + nationalId);
+            throw new ValidationException("Invalid national ID: " + nationalId);
         }
     }
 
@@ -114,7 +114,7 @@ public class NationalIdServiceImpl implements NationalIdService {
             throw new ValidationException("National ID is null");
         }
         if (!nationalId.matches("\\d{10}") || nationalId.matches("(\\d)\\1{9}")) {
-            throw new ValidationException("Invalid National ID format: " + nationalId);
+            throw new ValidationException("Invalid national ID format: " + nationalId);
         }
     }
 
