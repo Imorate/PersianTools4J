@@ -1,4 +1,4 @@
-package com.persiantools4j.nationalid.model;
+package com.persiantools4j.nationalid;
 
 import java.util.Objects;
 

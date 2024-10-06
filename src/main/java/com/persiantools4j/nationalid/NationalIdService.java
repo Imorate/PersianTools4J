@@ -1,7 +1,6 @@
-package com.persiantools4j.nationalid.service;
+package com.persiantools4j.nationalid;
 
 import com.persiantools4j.Validator;
-import com.persiantools4j.nationalid.model.Hometown;
 
 import java.util.Map;
 import java.util.Optional;

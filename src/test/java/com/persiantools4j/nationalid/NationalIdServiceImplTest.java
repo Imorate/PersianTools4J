@@ -1,8 +1,6 @@
-package com.persiantools4j.nationalid.service.impl;
+package com.persiantools4j.nationalid;
 
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.nationalid.model.Hometown;
-import com.persiantools4j.nationalid.service.NationalIdService;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -106,7 +104,7 @@ class NationalIdServiceImplTest {
     class IsValidTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("Valid National ID test")
         void testValidNationalId(String nationalId) {
             assertThat(nationalIdService.isValid(nationalId)).isTrue();
@@ -114,7 +112,7 @@ class NationalIdServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdCases",
+                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases",
                 "com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdFormatCases"
         })
         @DisplayName("Invalid National ID test")
@@ -129,21 +127,21 @@ class NationalIdServiceImplTest {
     class ValidationTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("National ID validation test")
         void testValidateNationalId(String nationalId) {
             assertThatCode(() -> nationalIdService.validate(nationalId)).doesNotThrowAnyException();
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdFormatCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases")
         @DisplayName("Exceptional format validation National ID test")
         void testExceptionFormatValidateNationalId(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.validate(nationalId)).isInstanceOf(IllegalArgumentException.class);
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases")
         @DisplayName("Exceptional validation National ID test")
         void testExceptionValidateNationalId(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.validate(nationalId)).isInstanceOf(ValidationException.class);
@@ -182,7 +180,7 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("Valid National ID find hometown test")
         void testValidNationalIdFindHometown(String nationalId) {
             Optional<Hometown> hometownOptional = nationalIdService.findHometown(nationalId);
@@ -203,14 +201,14 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases")
         @DisplayName("Invalid National ID find hometown test")
         void testInvalidNationalIdFindHometown(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.findHometown(nationalId)).isInstanceOf(ValidationException.class);
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdFormatCases")
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases")
         @DisplayName("Invalid National ID format find hometown test")
         void testInvalidNationalIdFormatFindHometown(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.findHometown(nationalId)).isInstanceOf(IllegalArgumentException.class);

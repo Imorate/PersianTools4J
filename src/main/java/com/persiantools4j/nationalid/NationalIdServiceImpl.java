@@ -1,10 +1,7 @@
-package com.persiantools4j.nationalid.service.impl;
+package com.persiantools4j.nationalid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.nationalid.model.Hometown;
-import com.persiantools4j.nationalid.model.HometownData;
-import com.persiantools4j.nationalid.service.NationalIdService;
 import com.persiantools4j.utils.NumberUtils;
 
 import java.io.IOException;
