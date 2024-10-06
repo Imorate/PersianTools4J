@@ -113,7 +113,7 @@ class NationalIdServiceImplTest {
         @ParameterizedTest
         @MethodSource({
                 "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases",
-                "com.persiantools4j.nationalid.service.impl.NationalIdServiceImplTest#invalidNationalIdFormatCases"
+                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases"
         })
         @DisplayName("Invalid National ID test")
         void testInvalidNationalId(String nationalId) {
