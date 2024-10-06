@@ -113,7 +113,6 @@ public class NationalIdServiceImpl implements NationalIdService {
         if (nationalId == null) {
             throw new ValidationException("National ID is null");
         }
-        nationalId = nationalId.trim();
         if (!nationalId.matches("\\d{10}") || nationalId.matches("(\\d)\\1{9}")) {
             throw new ValidationException("Invalid National ID format: " + nationalId);
         }
