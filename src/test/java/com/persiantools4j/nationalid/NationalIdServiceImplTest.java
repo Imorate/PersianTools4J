@@ -39,7 +39,9 @@ class NationalIdServiceImplTest {
                 Arguments.of((Object) null),
                 Arguments.of(" 6104038932 "),
                 Arguments.of("3111001003 "),
-                Arguments.of(" 3413857604")
+                Arguments.of(" 3413857604"),
+                Arguments.of("123abc"),
+                Arguments.of("123")
         );
     }
 
@@ -85,7 +87,7 @@ class NationalIdServiceImplTest {
         @Test
         @DisplayName("Thread-safe test")
         void testGetInstanceThreadSafe() throws InterruptedException {
-            final NationalIdService[] nationalIdServices = new NationalIdService[2];
+            NationalIdService[] nationalIdServices = new NationalIdService[2];
             Thread firstThread = new Thread(() -> nationalIdServices[0] = NationalIdServiceImpl.getInstance());
             Thread secondThread = new Thread(() -> nationalIdServices[1] = NationalIdServiceImpl.getInstance());
             firstThread.start();
