@@ -54,7 +54,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
      * @return The single instance of {@code NationalIdServiceImpl}
      */
     public static NationalIdServiceImpl getInstance() {
-        return NationalIdServiceImplHelper.INSTANCE;
+        return InstanceHolder.INSTANCE;
     }
 
     /**
@@ -130,7 +130,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
     /**
      * Private static helper class to implement the Singleton design pattern.
      */
-    private static class NationalIdServiceImplHelper {
+    private static class InstanceHolder {
         private static final NationalIdServiceImpl INSTANCE = new NationalIdServiceImpl();
     }
 
