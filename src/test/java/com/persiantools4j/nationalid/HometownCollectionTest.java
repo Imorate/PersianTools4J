@@ -39,21 +39,22 @@ class HometownCollectionTest {
     }
 
     @Test
-    @DisplayName("Get hometown populated list test")
+    @DisplayName("Get populated hometown list test")
     void testHometownPopulatedList() {
         // Hometown list null check is true
         hometownCollection.getCollection();
         // Hometown list null check is false now and it's initialized
         List<Hometown> hometownList = hometownCollection.getCollection();
-        Pattern hometownPattern = Pattern.compile("\\d{3}");
+        Pattern hometownCodePattern = Pattern.compile("\\d{3}");
         AssertionsForInterfaceTypes.assertThat(hometownList)
                 .isNotNull()
                 .contains(Hometown.of(
                         Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"),
                         "تهران", "تهران مرکزی")
                 ).allSatisfy(hometown -> {
-                    AssertionsForInterfaceTypes.assertThat(hometown.getCode()).isNotEmpty()
-                            .allMatch(code -> hometownPattern.matcher(code).matches());
+                    AssertionsForInterfaceTypes.assertThat(hometown.getCode())
+                            .isNotEmpty()
+                            .allMatch(code -> hometownCodePattern.matcher(code).matches());
                     assertThat(hometown.getCity()).isNotBlank();
                     assertThat(hometown.getProvince()).isNotBlank();
                 });
