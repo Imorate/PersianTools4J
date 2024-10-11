@@ -35,7 +35,7 @@ public final class Hometown {
     private final String city;
 
     /**
-     * Private constructor for creating an immutable Hometown instance.
+     * Private constructor for creating an immutable Hometown instance and also Jackson creator.
      * <p>
      * To instantiate this class, use the static factory method {@link #of(List, String, String)}.
      *
