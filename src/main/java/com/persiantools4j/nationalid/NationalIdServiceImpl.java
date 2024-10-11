@@ -17,7 +17,7 @@
 package com.persiantools4j.nationalid;
 
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.utils.NumberUtils;
+import com.persiantools4j.utils.StringUtils;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -84,11 +84,11 @@ public final class NationalIdServiceImpl implements NationalIdService {
         int sum = IntStream.range(0, length - 1)
                 .boxed()
                 .reduce(0, (Integer partialResult, Integer index) -> {
-                    int digit = NumberUtils.getNumericValue(nationalId, index);
+                    int digit = StringUtils.getNumericValue(nationalId, index);
                     return partialResult + digit * (length - index);
                 }, Integer::sum);
         int remainder = sum % (length + 1);
-        int controlDigit = NumberUtils.getNumericValue(nationalId, length - 1);
+        int controlDigit = StringUtils.getNumericValue(nationalId, length - 1);
         boolean remainderLessThanTwo = (remainder < 2) && (controlDigit == remainder);
         boolean remainderEqualAndMoreThanTwo = (remainder >= 2) && (remainder + controlDigit == (length + 1));
         if (!remainderLessThanTwo && !remainderEqualAndMoreThanTwo) {

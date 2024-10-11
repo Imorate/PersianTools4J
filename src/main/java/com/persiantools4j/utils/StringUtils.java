@@ -20,9 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The {@code NumberUtils} class provides utility methods for working with numeric values.
+ * The {@code StringUtils} class provides utility methods for working with String values.
  */
-public final class NumberUtils {
+public final class StringUtils {
 
     private static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
     private static final Pattern PERSIAN_NUMERIC_PATTERN = Pattern.compile("[۰-۹]");
@@ -30,7 +30,7 @@ public final class NumberUtils {
     /**
      * Private constructor to prevent direct instantiation.
      */
-    private NumberUtils() {
+    private StringUtils() {
 
     }
 

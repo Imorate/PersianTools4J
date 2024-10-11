@@ -1,3 +1,19 @@
+/*
+ * Copyright 2024 Imorate <dev.imorate@gmail.com> and contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.persiantools4j.utils;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +29,8 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@DisplayName("Number utils")
-class NumberUtilsTest {
+@DisplayName("String utils")
+class StringUtilsTest {
 
     private static Stream<Arguments> validPersianToEnglishDigits() {
         return Stream.of(
@@ -32,15 +48,15 @@ class NumberUtilsTest {
         @ParameterizedTest(name = "[{index}] {0} {1}nth numeric character value is {2}")
         @DisplayName("Valid Inputs")
         @CsvSource({"1,0,1", "6104038932,9,2", "523,2,3"})
-        void getNumericValueTest(String str, int index, int expected) {
-            assertThat(NumberUtils.getNumericValue(str, index)).isEqualTo(expected);
+        void testGetNumericValue(String str, int index, int expected) {
+            assertThat(StringUtils.getNumericValue(str, index)).isEqualTo(expected);
         }
 
         @ParameterizedTest
         @DisplayName("Exceptional Inputs")
         @CsvSource({"1,3", "6104038932,10", "523,6", "test,1"})
-        void getNumericValueExceptionalTest(String str, int index) {
-            assertThatThrownBy(() -> NumberUtils.getNumericValue(str, index)).isInstanceOf(IllegalArgumentException.class);
+        void testGetNumericValueExceptional(String str, int index) {
+            assertThatThrownBy(() -> StringUtils.getNumericValue(str, index)).isInstanceOf(IllegalArgumentException.class);
         }
 
     }
@@ -51,16 +67,16 @@ class NumberUtilsTest {
 
         @ParameterizedTest(name = "[{index}] {0} convert result is {1}")
         @DisplayName("Valid Inputs")
-        @MethodSource("com.persiantools4j.utils.NumberUtilsTest#validPersianToEnglishDigits")
-        void getNumericValueTest(String str, String expected) {
-            assertThat(NumberUtils.convertPersianToEnglishDigits(str)).isEqualTo(expected);
+        @MethodSource("com.persiantools4j.utils.StringUtilsTest#validPersianToEnglishDigits")
+        void testGetNumericValue(String str, String expected) {
+            assertThat(StringUtils.convertPersianToEnglishDigits(str)).isEqualTo(expected);
         }
 
         @ParameterizedTest
         @DisplayName("Exceptional Inputs")
         @NullAndEmptySource
-        void convertPersianToEnglishDigitsEmptyAndNullTest(String str) {
-            assertThatThrownBy(() -> NumberUtils.convertPersianToEnglishDigits(str)).isInstanceOf(IllegalArgumentException.class);
+        void testConvertPersianToEnglishDigitsEmptyAndNull(String str) {
+            assertThatThrownBy(() -> StringUtils.convertPersianToEnglishDigits(str)).isInstanceOf(IllegalArgumentException.class);
         }
     }
 
