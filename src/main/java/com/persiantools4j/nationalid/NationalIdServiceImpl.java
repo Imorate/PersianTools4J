@@ -32,7 +32,7 @@ import java.util.stream.IntStream;
 public final class NationalIdServiceImpl implements NationalIdService {
 
     private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{10}");
-    private static final Pattern REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{9}");
+    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{9}");
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -61,7 +61,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
             throw new ValidationException("National ID is null");
         }
         if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
-                REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
+                NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
         ) {
             throw new ValidationException("Invalid national ID format: " + nationalId);
         }
