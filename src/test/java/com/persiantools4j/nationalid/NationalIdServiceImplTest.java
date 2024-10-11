@@ -1,7 +1,22 @@
+/*
+ * Copyright 2024 Imorate <dev.imorate@gmail.com> and contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.persiantools4j.nationalid;
 
 import com.persiantools4j.exception.ValidationException;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -10,8 +25,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -152,22 +169,24 @@ class NationalIdServiceImplTest {
     class FindHometownTests {
 
         @Test
-        @DisplayName("Get hometown populated map test")
-        void testHometownPopulatedMap() {
-            // Hometown map null check is true
-            nationalIdService.getHometownMap();
-            // Hometown map null check is false now and it's initialized
-            Map<String, Hometown> hometownMap = nationalIdService.getHometownMap();
-            assertThat(hometownMap)
+        @DisplayName("Get hometown populated list test")
+        void testHometownPopulatedList() {
+            // Hometown list null check is true
+            nationalIdService.getHometownList();
+            // Hometown list null check is false now and it's initialized
+            List<Hometown> hometownList = nationalIdService.getHometownList();
+            Pattern hometownPattern = Pattern.compile("\\d{3}");
+            assertThat(hometownList)
                     .isNotNull()
-                    .asInstanceOf(InstanceOfAssertFactories.map(String.class, Hometown.class))
-                    .allSatisfy((code, hometown) -> {
-                        assertThat(code).containsPattern("\\d{3}");
-                        assertThat(hometown)
-                                .isNotNull()
-                                .matches(l -> !l.getProvince().isEmpty() && !l.getCity().isEmpty());
-                    })
-                    .containsEntry("001", Hometown.of("تهران", "تهران مرکزی"));
+                    .contains(Hometown.of(
+                            Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"),
+                            "تهران", "تهران مرکزی")
+                    ).allSatisfy(hometown -> {
+                        assertThat(hometown.getCode()).isNotEmpty()
+                                .allMatch(code -> hometownPattern.matcher(code).matches());
+                        assertThat(hometown.getCity()).isNotBlank();
+                        assertThat(hometown.getProvince()).isNotBlank();
+                    });
         }
 
         @ParameterizedTest
@@ -175,7 +194,7 @@ class NationalIdServiceImplTest {
         @DisplayName("Valid National ID find hometown test")
         void testValidNationalIdFindHometown(String nationalId) {
             Optional<Hometown> hometownOptional = nationalIdService.findHometown(nationalId);
-            assertThat(hometownOptional.isPresent()).isTrue();
+            assertThat(hometownOptional).isPresent();
             hometownOptional.ifPresent(hometown -> {
                 assertThat(hometown.getProvince()).isNotBlank();
                 assertThat(hometown.getCity()).isNotBlank();
@@ -185,10 +204,10 @@ class NationalIdServiceImplTest {
         @Test
         @DisplayName("Single valid National ID find hometown test")
         void testSingleValidNationalIdFindHometown() {
-            Hometown expectedHometown = Hometown.of("آذربایجان غربی", "خوی");
+            Hometown expectedHometown = Hometown.of(Arrays.asList("279", "280"), "آذربایجان غربی", "خوی");
             Optional<Hometown> hometownOptional = nationalIdService.findHometown("2791567895");
-            assertThat(hometownOptional.isPresent()).isTrue();
-            hometownOptional.ifPresent(hometown -> assertThat(hometownOptional.get()).isEqualTo(expectedHometown));
+            assertThat(hometownOptional).isPresent();
+            hometownOptional.ifPresent(hometown -> assertThat(hometown).isEqualTo(expectedHometown));
         }
 
         @ParameterizedTest
