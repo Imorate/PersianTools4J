@@ -16,15 +16,21 @@
 
 package com.persiantools4j;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.util.List;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+/**
+ * The {@code Collectable} interface defines a contract for objects that can provide
+ * a collection of items of a specified type {@code T}.
+ *
+ * @param <T> the type of elements held in the collection
+ */
+public interface Collectable<T> {
 
-@Documented
-@Retention(RUNTIME)
-@Target({TYPE, METHOD, CONSTRUCTOR})
-public @interface Generated {
+    /**
+     * Retrieves the collection of elements.
+     *
+     * @return a {@link List} containing elements of type {@code T}
+     */
+    List<T> getCollection();
+
 }

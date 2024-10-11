@@ -18,7 +18,6 @@ package com.persiantools4j.nationalid;
 
 import com.persiantools4j.Validator;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,9 +25,6 @@ import java.util.Optional;
  * related to national IDs and their associated {@link Hometown}.
  * <p>
  * This interface extends the {@link Validator} interface, providing validation functionality for national ID strings.
- * It also includes methods for finding the {@link Hometown} associated with a national ID and for retrieving a list
- * of all hometowns.
- *
  */
 public interface NationalIdService extends Validator<String> {
 
@@ -39,12 +35,5 @@ public interface NationalIdService extends Validator<String> {
      * @return an {@link Optional} containing the {@link Hometown} if found; otherwise, an empty {@link Optional}
      */
     Optional<Hometown> findHometown(String nationalId);
-
-    /**
-     * Retrieves a {@link List} of all available {@link Hometown}s.
-     *
-     * @return a {@link List} containing {@link Hometown} objects
-     */
-    List<Hometown> getHometownList();
 
 }

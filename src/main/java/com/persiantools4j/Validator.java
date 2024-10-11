@@ -20,7 +20,6 @@ import com.persiantools4j.exception.ValidationException;
 
 /**
  * The {@code Validator} interface defines a contract for validating objects of type {@code T}.
- * <p>
  *
  * @param <T> the type of object that this {@code Validator} can validate
  */

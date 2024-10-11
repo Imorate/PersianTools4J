@@ -16,15 +16,9 @@
 
 package com.persiantools4j.nationalid;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.NumberUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -39,7 +33,6 @@ public final class NationalIdServiceImpl implements NationalIdService {
 
     private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{10}");
     private static final Pattern REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{9}");
-    private List<Hometown> hometownList;
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -51,7 +44,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
     /**
      * Returns the singleton instance of {@code NationalIdServiceImpl}.
      *
-     * @return The single instance of {@code NationalIdServiceImpl}
+     * @return the single instance of {@code NationalIdServiceImpl}
      */
     public static NationalIdServiceImpl getInstance() {
         return InstanceHolder.INSTANCE;
@@ -107,24 +100,10 @@ public final class NationalIdServiceImpl implements NationalIdService {
     public Optional<Hometown> findHometown(String nationalId) {
         validate(nationalId);
         String firstThreeDigits = nationalId.substring(0, 3);
-        return getHometownList().stream()
+        return HometownCollection.getInstance()
+                .getCollection().stream()
                 .filter(hometown -> hometown.getCode().contains(firstThreeDigits))
                 .findFirst();
-    }
-
-    @Override
-    public List<Hometown> getHometownList() {
-        if (hometownList == null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-            try (InputStream inputStream = contextClassLoader.getResourceAsStream("nationalid/hometown-data.json")) {
-                hometownList = objectMapper.readValue(inputStream, new TypeReference<List<Hometown>>() {
-                });
-            } catch (IOException e) {
-                hometownList = Collections.emptyList();
-            }
-        }
-        return hometownList;
     }
 
     /**

@@ -26,9 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -167,27 +165,6 @@ class NationalIdServiceImplTest {
     @Nested
     @DisplayName("Find hometown")
     class FindHometownTests {
-
-        @Test
-        @DisplayName("Get hometown populated list test")
-        void testHometownPopulatedList() {
-            // Hometown list null check is true
-            nationalIdService.getHometownList();
-            // Hometown list null check is false now and it's initialized
-            List<Hometown> hometownList = nationalIdService.getHometownList();
-            Pattern hometownPattern = Pattern.compile("\\d{3}");
-            assertThat(hometownList)
-                    .isNotNull()
-                    .contains(Hometown.of(
-                            Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"),
-                            "تهران", "تهران مرکزی")
-                    ).allSatisfy(hometown -> {
-                        assertThat(hometown.getCode()).isNotEmpty()
-                                .allMatch(code -> hometownPattern.matcher(code).matches());
-                        assertThat(hometown.getCity()).isNotBlank();
-                        assertThat(hometown.getProvince()).isNotBlank();
-                    });
-        }
 
         @ParameterizedTest
         @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
