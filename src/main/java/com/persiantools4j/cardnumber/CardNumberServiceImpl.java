@@ -16,29 +16,54 @@
 
 package com.persiantools4j.cardnumber;
 
-import com.persiantools4j.Generated;
+import com.persiantools4j.bank.Bank;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.StringUtils;
 
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-public class CardNumberServiceImpl implements CardNumberService {
+/**
+ * The {@code CardNumberServiceImpl} class implements the {@link CardNumberService} interface
+ * and provides functionality for validating card numbers and finding associated {@link Bank}.
+ * <p>
+ * This class follows the Singleton design pattern to ensure that a single instance is used throughout the application.
+ */
+public final class CardNumberServiceImpl implements CardNumberService {
 
-    private static volatile CardNumberServiceImpl instance;
+    private static final Pattern CARD_NUMBER_PATTERN = Pattern.compile("\\d{16}");
+    private static final Pattern CARD_NUMBER_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{15}");
 
+    /**
+     * Private constructor to prevent direct instantiation.
+     */
     private CardNumberServiceImpl() {
+
     }
 
-    @Generated
+    /**
+     * Returns the singleton instance of {@code CardNumberServiceImpl}.
+     *
+     * @return the single instance of {@code CardNumberServiceImpl}
+     */
     public static CardNumberServiceImpl getInstance() {
-        if (instance == null) {
-            synchronized (CardNumberServiceImpl.class) {
-                if (instance == null) {
-                    instance = new CardNumberServiceImpl();
-                }
-            }
+        return InstanceHolder.INSTANCE;
+    }
+
+    /**
+     * Validates the format of the provided card number.
+     *
+     * @param cardNumber the card number to validate
+     * @throws ValidationException if the card number is null or in an invalid format
+     */
+    private static void validateCardNumberFormat(String cardNumber) throws ValidationException {
+        if (cardNumber == null) {
+            throw new ValidationException("Card number is null");
         }
-        return instance;
+        if (!CARD_NUMBER_PATTERN.matcher(cardNumber).matches() ||
+                CARD_NUMBER_REPEATED_DIGITS_PATTERN.matcher(cardNumber).matches()) {
+            throw new ValidationException("Invalid card number format: " + cardNumber);
+        }
     }
 
     @Override
@@ -56,7 +81,7 @@ public class CardNumberServiceImpl implements CardNumberService {
         validateCardNumberFormat(cardNumber);
         int sum = IntStream.range(0, 16)
                 .boxed()
-                .reduce(0, (partialResult, index) -> {
+                .reduce(0, (Integer partialResult, Integer index) -> {
                     int digit = StringUtils.getNumericValue(cardNumber, index);
                     if ((index + 1) % 2 != 0) {
                         int doubledDigit = digit * 2;
@@ -74,13 +99,11 @@ public class CardNumberServiceImpl implements CardNumberService {
         }
     }
 
-    private void validateCardNumberFormat(String cardNumber) throws ValidationException {
-        if (cardNumber == null) {
-            throw new ValidationException("Card number is null");
-        }
-        if (!cardNumber.matches("\\d{16}") || cardNumber.matches("(\\d)\\1{15}")) {
-            throw new ValidationException("Invalid card number format: " + cardNumber);
-        }
+    /**
+     * Private static helper class to implement the Singleton design pattern.
+     */
+    private static class InstanceHolder {
+        private static final CardNumberServiceImpl INSTANCE = new CardNumberServiceImpl();
     }
 
 }
