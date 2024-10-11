@@ -23,6 +23,16 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * The {@code Generated} annotation is used to indicate that the annotated class, method, or constructor
+ * should be excluded from JaCoCo code coverage reports.
+ * <p>
+ * This annotation is typically applied to auto-generated code or boilerplate code that should not
+ * affect code coverage metrics, such as configuration, utility, or framework-specific classes.
+ * <p>
+ * When applied, this annotation prevents JaCoCo from including the annotated element in coverage
+ * calculations, helping focus on manually written, testable code.
+ */
 @Documented
 @Retention(RUNTIME)
 @Target({TYPE, METHOD, CONSTRUCTOR})
