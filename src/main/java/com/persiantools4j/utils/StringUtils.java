@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public final class StringUtils {
 
     private static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
-    private static final Pattern PERSIAN_NUMERIC_PATTERN = Pattern.compile("[۰-۹]");
+    private static final Pattern PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN = Pattern.compile("[۰-۹]");
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -66,8 +66,8 @@ public final class StringUtils {
             throw new IllegalArgumentException("Input string is empty");
         }
         persianStr = persianStr.trim();
-        Matcher matcher = PERSIAN_NUMERIC_PATTERN.matcher(persianStr);
         StringBuffer result = new StringBuffer();
+        Matcher matcher = PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN.matcher(persianStr);
         while (matcher.find()) {
             char persianDigit = matcher.group().charAt(0);
             char englishDigit = (char) (persianDigit - '۰' + '0');
