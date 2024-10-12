@@ -19,6 +19,8 @@ package com.persiantools4j.cardnumber;
 import com.persiantools4j.Validator;
 import com.persiantools4j.bank.Bank;
 
+import java.util.Optional;
+
 /**
  * The {@code CardNumberService} interface defines a contract for services that handle operations
  * related to card numbers and their associated {@link Bank}.
@@ -26,5 +28,13 @@ import com.persiantools4j.bank.Bank;
  * This interface extends the {@link Validator} interface, providing validation functionality for card number strings.
  */
 public interface CardNumberService extends Validator<String> {
+
+    /**
+     * Finds the {@link Bank} associated with the given card number.
+     *
+     * @param cardNumber the card number for which to find the {@link Bank}
+     * @return an {@link Optional} containing the {@link Bank} if found; otherwise, an empty {@link Optional}
+     */
+    Optional<Bank> findBank(String cardNumber);
 
 }

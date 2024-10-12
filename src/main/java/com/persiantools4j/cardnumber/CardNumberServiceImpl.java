@@ -17,9 +17,11 @@
 package com.persiantools4j.cardnumber;
 
 import com.persiantools4j.bank.Bank;
+import com.persiantools4j.bank.BankCollection;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.StringUtils;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
@@ -97,6 +99,16 @@ public final class CardNumberServiceImpl implements CardNumberService {
         if (sum % 10 != 0) {
             throw new ValidationException("Invalid card number: " + cardNumber);
         }
+    }
+
+    @Override
+    public Optional<Bank> findBank(String cardNumber) {
+        validate(cardNumber);
+        int firstSixDigits = Integer.parseInt(cardNumber.substring(0, 6));
+        return BankCollection.getInstance()
+                .getCollection().stream()
+                .filter(bank -> bank.getBins().contains(firstSixDigits))
+                .findFirst();
     }
 
     /**
