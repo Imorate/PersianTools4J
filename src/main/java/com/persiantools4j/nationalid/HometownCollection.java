@@ -19,6 +19,7 @@ package com.persiantools4j.nationalid;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.Collectable;
+import com.persiantools4j.Generated;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +53,7 @@ public final class HometownCollection implements Collectable<Hometown> {
         return InstanceHolder.INSTANCE;
     }
 
+    @Generated
     @Override
     public List<Hometown> getCollection() {
         if (collection == null) {
