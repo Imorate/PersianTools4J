@@ -44,7 +44,19 @@ class NationalIdServiceImplTest {
                 Arguments.of("3111001008"),
                 Arguments.of("3413857606"),
                 Arguments.of("2791567895"),
-                Arguments.of("3520082780")
+                Arguments.of("1583250689"),
+                Arguments.of("0499370899"),
+                Arguments.of("0790419904"),
+                Arguments.of("0084575948"),
+                Arguments.of("0963695398"),
+                Arguments.of("0684159414"),
+                Arguments.of("0067749828"),
+                Arguments.of("0650451252"),
+                Arguments.of("4032152314"),
+                Arguments.of("3520082780"),
+                Arguments.of("0076229645"),
+                Arguments.of("4271467685"),
+                Arguments.of("0200203241")
         );
     }
 
@@ -52,11 +64,26 @@ class NationalIdServiceImplTest {
         return Stream.of(
                 Arguments.of(""),
                 Arguments.of((Object) null),
+                Arguments.of("0"),
+                Arguments.of("000000"),
+                Arguments.of("0000000000"),
+                Arguments.of("4444444444"),
+                Arguments.of("9999999999"),
+                Arguments.of("12300000"),
+                Arguments.of("123000000"),
+                Arguments.of("1230000000"),
+                Arguments.of("0684159415"),
+                Arguments.of("1111111111"),
                 Arguments.of(" 6104038932 "),
                 Arguments.of("3111001003 "),
                 Arguments.of(" 3413857604"),
+                Arguments.of("68415941"),
+                Arguments.of("787833770"),
                 Arguments.of("123abc"),
-                Arguments.of("123")
+                Arguments.of("11537027"),
+                Arguments.of("068415941"),
+                Arguments.of("123"),
+                Arguments.of("12345")
         );
     }
 
