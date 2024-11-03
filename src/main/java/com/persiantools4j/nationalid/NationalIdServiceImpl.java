@@ -19,8 +19,9 @@ package com.persiantools4j.nationalid;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.StringUtils;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -97,13 +98,13 @@ public final class NationalIdServiceImpl implements NationalIdService {
     }
 
     @Override
-    public Optional<Hometown> findHometown(String nationalId) {
+    public List<Hometown> findHometown(String nationalId) {
         validate(nationalId);
         String firstThreeDigits = nationalId.substring(0, 3);
         return HometownCollection.getInstance()
                 .getCollection().stream()
                 .filter(hometown -> hometown.getCode().contains(firstThreeDigits))
-                .findFirst();
+                .collect(Collectors.toList());
     }
 
     /**

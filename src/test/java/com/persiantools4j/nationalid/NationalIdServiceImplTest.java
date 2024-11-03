@@ -26,7 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -57,6 +57,23 @@ class NationalIdServiceImplTest {
                 Arguments.of("0076229645"),
                 Arguments.of("4271467685"),
                 Arguments.of("0200203241")
+        );
+    }
+
+    private static Stream<Arguments> validNationalIdWithMultipleHometownCases() {
+        return Stream.of(
+                Arguments.of("2530251339"),
+                Arguments.of("2884532013"),
+                Arguments.of("3138159281"),
+                Arguments.of("3371980421"),
+                Arguments.of("3824176602"),
+                Arguments.of("3857663741"),
+                Arguments.of("3868929630"),
+                Arguments.of("3955082385"),
+                Arguments.of("4830608560"),
+                Arguments.of("5934546074"),
+                Arguments.of("6232055667"),
+                Arguments.of("6359963809")
         );
     }
 
@@ -197,21 +214,31 @@ class NationalIdServiceImplTest {
         @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("Valid National ID find hometown test")
         void testValidNationalIdFindHometown(String nationalId) {
-            Optional<Hometown> hometownOptional = nationalIdService.findHometown(nationalId);
-            assertThat(hometownOptional).isPresent();
-            hometownOptional.ifPresent(hometown -> {
-                assertThat(hometown.getProvince()).isNotBlank();
-                assertThat(hometown.getCity()).isNotBlank();
-            });
+            List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
+            assertThat(hometownList)
+                    .isNotEmpty()
+                    .allMatch(hometown -> !hometown.getProvince().isEmpty() && !hometown.getCity().isEmpty() && !hometown.getCode().isEmpty());
         }
 
         @Test
-        @DisplayName("Single valid National ID find hometown test")
+        @DisplayName("Single valid National ID find single hometown test")
         void testSingleValidNationalIdFindHometown() {
             Hometown expectedHometown = Hometown.of(Arrays.asList("279", "280"), "آذربایجان غربی", "خوی");
-            Optional<Hometown> hometownOptional = nationalIdService.findHometown("2791567895");
-            assertThat(hometownOptional).isPresent();
-            hometownOptional.ifPresent(hometown -> assertThat(hometown).isEqualTo(expectedHometown));
+            List<Hometown> hometownList = nationalIdService.findHometown("2791567895");
+            assertThat(hometownList)
+                    .hasSize(1)
+                    .containsOnly(expectedHometown);
+        }
+
+        @ParameterizedTest
+        @MethodSource({
+                "com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases"
+        })
+        @DisplayName("Valid National ID with multiple hometowns")
+        void testValidNationalIdWithMultipleHometowns(String nationalId) {
+            List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
+            assertThat(hometownList)
+                    .hasSizeGreaterThanOrEqualTo(2);
         }
 
         @ParameterizedTest
