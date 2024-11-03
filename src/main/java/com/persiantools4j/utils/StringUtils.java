@@ -16,7 +16,7 @@
 
 package com.persiantools4j.utils;
 
-import com.persiantools4j.exception.ParseException;
+import com.persiantools4j.exception.ValidationException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,12 +42,12 @@ public final class StringUtils {
      * @param input the string representing a number. Must only contain digit.
      * @param index the index of the character to retrieve
      * @return the numeric value of the character at the specified index
-     * @throws ParseException if the input is not a valid number
-     *                                  or if the index is out of bounds
+     * @throws ValidationException if the input is not a valid number
+     *                             or if the index is out of bounds
      */
     public static int getNumericValue(String input, int index) {
         if (!NUMERIC_PATTERN.matcher(input).matches() || index >= input.length()) {
-            throw new ParseException("Invalid number");
+            throw new ValidationException("Invalid number");
         }
         return Character.getNumericValue(input.charAt(index));
     }
@@ -61,11 +61,11 @@ public final class StringUtils {
      * @param persianStr the input string potentially containing Persian digits.
      * @return a new string where all Persian digits are replaced with English digits,
      * while other characters are unchanged.
-     * @throws ParseException if the input string is null or empty.
+     * @throws ValidationException if the input string is null or empty.
      */
     public static String convertPersianToEnglishDigits(String persianStr) {
         if (persianStr == null || persianStr.isEmpty()) {
-            throw new ParseException("Input string is empty");
+            throw new ValidationException("Input string is empty");
         }
         persianStr = persianStr.trim();
         StringBuffer result = new StringBuffer();

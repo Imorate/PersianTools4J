@@ -58,7 +58,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
      * @param cardNumber the card number to validate
      * @throws ValidationException if the card number is null or in an invalid format
      */
-    private static void validateCardNumberFormat(String cardNumber) throws ValidationException {
+    private static void validateFormat(String cardNumber) throws ValidationException {
         if (cardNumber == null) {
             throw new ValidationException("Card number is null");
         }
@@ -80,7 +80,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
 
     @Override
     public void validate(String cardNumber) throws ValidationException {
-        validateCardNumberFormat(cardNumber);
+        validateFormat(cardNumber);
         int sum = IntStream.range(0, 16)
                 .boxed()
                 .reduce(0, (Integer partialResult, Integer index) -> {

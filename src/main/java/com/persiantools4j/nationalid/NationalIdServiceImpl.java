@@ -56,7 +56,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
      * @param nationalId the national ID to validate
      * @throws ValidationException if the national ID is null or in an invalid format
      */
-    private static void validateNationalIdFormat(String nationalId) {
+    private static void validateFormat(String nationalId) {
         if (nationalId == null) {
             throw new ValidationException("National ID is null");
         }
@@ -79,7 +79,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
 
     @Override
     public void validate(String nationalId) {
-        validateNationalIdFormat(nationalId);
+        validateFormat(nationalId);
         int length = nationalId.length();
         int sum = IntStream.range(0, length - 1)
                 .boxed()

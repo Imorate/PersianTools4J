@@ -16,7 +16,7 @@
 
 package com.persiantools4j.utils;
 
-import com.persiantools4j.exception.ParseException;
+import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,7 +57,7 @@ class StringUtilsTest {
         @DisplayName("Exceptional Inputs")
         @CsvSource({"1,3", "6104038932,10", "523,6", "test,1"})
         void testGetNumericValueExceptional(String str, int index) {
-            assertThatThrownBy(() -> StringUtils.getNumericValue(str, index)).isInstanceOf(ParseException.class);
+            assertThatThrownBy(() -> StringUtils.getNumericValue(str, index)).isInstanceOf(ValidationException.class);
         }
 
     }
@@ -77,7 +77,7 @@ class StringUtilsTest {
         @DisplayName("Exceptional Inputs")
         @NullAndEmptySource
         void testConvertPersianToEnglishDigitsEmptyAndNull(String str) {
-            assertThatThrownBy(() -> StringUtils.convertPersianToEnglishDigits(str)).isInstanceOf(ParseException.class);
+            assertThatThrownBy(() -> StringUtils.convertPersianToEnglishDigits(str)).isInstanceOf(ValidationException.class);
         }
     }
 
