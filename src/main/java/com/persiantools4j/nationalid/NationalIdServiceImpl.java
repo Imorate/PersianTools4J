@@ -19,6 +19,8 @@ package com.persiantools4j.nationalid;
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -35,6 +37,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
 
     private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{10}");
     private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{9}");
+    private static final Logger LOGGER = LoggerFactory.getLogger(NationalIdServiceImpl.class);
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -73,7 +76,8 @@ public final class NationalIdServiceImpl implements NationalIdService {
     public boolean isValid(String nationalId) {
         try {
             validate(nationalId);
-        } catch (IllegalArgumentException e) {
+        } catch (ValidationException e) {
+            LOGGER.warn(e.getMessage(), e);
             return false;
         }
         return true;

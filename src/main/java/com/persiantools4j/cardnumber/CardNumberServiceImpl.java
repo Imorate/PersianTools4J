@@ -20,6 +20,8 @@ import com.persiantools4j.bank.Bank;
 import com.persiantools4j.bank.BankCollection;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -35,6 +37,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
 
     private static final Pattern CARD_NUMBER_PATTERN = Pattern.compile("\\d{16}");
     private static final Pattern CARD_NUMBER_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{15}");
+    private static final Logger LOGGER = LoggerFactory.getLogger(CardNumberServiceImpl.class);
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -73,6 +76,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
         try {
             validate(cardNumber);
         } catch (ValidationException e) {
+            LOGGER.warn(e.getMessage(), e);
             return false;
         }
         return true;

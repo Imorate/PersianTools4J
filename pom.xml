@@ -43,6 +43,7 @@
         <asserj.version>3.26.3</asserj.version>
         <mockito.version>4.11.0</mockito.version>
         <jackson-databind.version>2.18.0</jackson-databind.version>
+        <sl4j.version>2.0.16</sl4j.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.5.0</maven-failsafe-plugin.version>
@@ -81,6 +82,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-databind.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${sl4j.version}</version>
         </dependency>
     </dependencies>
 
