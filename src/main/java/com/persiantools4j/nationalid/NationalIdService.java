@@ -16,6 +16,7 @@
 
 package com.persiantools4j.nationalid;
 
+import com.persiantools4j.Parsable;
 import com.persiantools4j.Validator;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
  * <p>
  * This interface extends the {@link Validator} interface, providing validation functionality for national ID strings.
  */
-public interface NationalIdService extends Validator<String> {
+public interface NationalIdService extends Validator<String>, Parsable<String, NationalId> {
 
     /**
      * Finds the {@link List} of {@link Hometown} associated with the given national ID.

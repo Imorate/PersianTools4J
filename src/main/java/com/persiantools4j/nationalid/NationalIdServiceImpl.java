@@ -107,6 +107,18 @@ public final class NationalIdServiceImpl implements NationalIdService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public NationalId parse(String nationalId) {
+        List<Hometown> hometownList = findHometown(nationalId);
+        NationalId nationalIdObj = new NationalId(nationalId);
+        nationalIdObj.setHometownCode(nationalId.substring(0, 3));
+        nationalIdObj.setPersonalCode(nationalId.substring(3, nationalIdObj.getId().length() - 1));
+        String controlDigit = nationalIdObj.getId().substring(9);
+        nationalIdObj.setControlDigit(Integer.parseInt(controlDigit));
+        nationalIdObj.setHometownList(hometownList);
+        return nationalIdObj;
+    }
+
     /**
      * Private static helper class to implement the Singleton design pattern.
      */

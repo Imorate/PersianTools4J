@@ -35,7 +35,7 @@ public interface Parsable<T, R> {
      * <p>
      * This method takes an input of type {@code T} and processes it to extract
      * meaningful parts, returning them as an instance of type {@code R}. Implementing
-     * classes define the parsing logic and the specific parts to be extracted.</p>
+     * classes define the parsing logic and the specific parts to be extracted.
      *
      * @param input the input data to be parsed
      * @return an instance of type {@code R} containing the parsed and structured parts
