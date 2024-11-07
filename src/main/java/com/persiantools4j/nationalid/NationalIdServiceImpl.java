@@ -16,6 +16,7 @@
 
 package com.persiantools4j.nationalid;
 
+import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
 import com.persiantools4j.utils.StringUtils;
 
@@ -110,6 +111,9 @@ public final class NationalIdServiceImpl implements NationalIdService {
     @Override
     public NationalId parse(String nationalId) {
         List<Hometown> hometownList = findHometown(nationalId);
+        if (hometownList.isEmpty()) {
+            throw new ParseException("Unable to find hometown associated to the national ID: " + nationalId);
+        }
         NationalId nationalIdObj = new NationalId(nationalId);
         nationalIdObj.setHometownCode(nationalId.substring(0, 3));
         nationalIdObj.setPersonalCode(nationalId.substring(3, nationalIdObj.getId().length() - 1));

@@ -16,6 +16,7 @@
 
 package com.persiantools4j.nationalid;
 
+import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
@@ -124,6 +125,10 @@ class NationalIdServiceImplTest {
                 Arguments.of("8888888888"),
                 Arguments.of("9999999999")
         );
+    }
+
+    private static Stream<Arguments> notFoundHometownCases() {
+        return Stream.of(Arguments.of("8908563210"));
     }
 
     @BeforeAll
@@ -238,9 +243,7 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
-        @MethodSource({
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases"
-        })
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases")
         @DisplayName("Valid national ID with multiple hometowns")
         void testValidNationalIdWithMultipleHometowns(String nationalId) {
             List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
@@ -300,6 +303,13 @@ class NationalIdServiceImplTest {
         @DisplayName("Invalid national ID parse test")
         void testInvalidNationalIdParse(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.parse(nationalId)).isInstanceOf(ValidationException.class);
+        }
+
+        @ParameterizedTest
+        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#notFoundHometownCases")
+        @DisplayName("Not found national ID parse test")
+        void testNotFoundNationalIdParse(String nationalId) {
+            assertThatThrownBy(() -> nationalIdService.parse(nationalId)).isInstanceOf(ParseException.class);
         }
 
     }
