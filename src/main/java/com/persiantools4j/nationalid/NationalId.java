@@ -119,9 +119,9 @@ public class NationalId {
     }
 
     /**
-     * Sets the list of hometowns for this national ID.
+     * Sets the list of {@link Hometown}s for this national ID.
      *
-     * @param hometownList the new {@link List} of hometowns
+     * @param hometownList the new {@link List} of {@link Hometown}
      */
     public void setHometownList(List<Hometown> hometownList) {
         this.hometownList = hometownList;

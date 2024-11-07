@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a hometown, encapsulating its code(s), province, and city.
+ * Represents a {@code Hometown}, encapsulating its code(s), province, and city.
  * <p>
  * This class is immutable and should be instantiated using the static factory method.
  */
@@ -35,11 +35,11 @@ public final class Hometown {
     private final String city;
 
     /**
-     * Private constructor for creating an immutable Hometown instance and also Jackson creator.
+     * Private constructor for creating an immutable {@code Hometown} instance and also Jackson creator.
      * <p>
      * To instantiate this class, use the static factory method {@link #of(List, String, String)}.
      *
-     * @param code     a list of code(s) associated with the hometown
+     * @param code     a list of code(s) associated with the {@code Hometown}
      * @param province the name of the province where the city is located
      * @param city     the name of the city
      */
@@ -67,7 +67,7 @@ public final class Hometown {
     }
 
     /**
-     * Returns the list of code(s) associated with this hometown.
+     * Returns the list of code(s) associated with this {@code Hometown}.
      *
      * @return the list of code(s)
      */
@@ -76,7 +76,7 @@ public final class Hometown {
     }
 
     /**
-     * Returns the name of the province for this hometown.
+     * Returns the name of the province for this {@code Hometown}.
      *
      * @return the province name
      */
@@ -85,7 +85,7 @@ public final class Hometown {
     }
 
     /**
-     * Returns the name of the city for this hometown.
+     * Returns the name of the city for this {@code Hometown}.
      *
      * @return the city name
      */
