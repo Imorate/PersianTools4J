@@ -25,7 +25,7 @@ import java.util.Optional;
  * The {@code CardNumberService} interface defines a contract for services that handle operations
  * related to card numbers and their associated {@link Bank}.
  * <p>
- * The validation process is based on Luhn algorithm
+ * The validation process is based on the Luhn algorithm
  * <p>
  * This interface extends the {@link Validator} interface, providing validation functionality for card number strings.
  */
