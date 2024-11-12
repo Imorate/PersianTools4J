@@ -24,10 +24,14 @@ import java.util.regex.Pattern;
 /**
  * The {@code StringUtils} class provides utility methods for working with String values.
  */
+@SuppressWarnings("UnnecessaryUnicodeEscape")
 public final class StringUtils {
 
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
-    private static final Pattern PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN = Pattern.compile("[۰-۹]");
+    public static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
+    public static final Pattern PERSIAN_ARABIC_NUMERIC_CHARACTER_CLASS_PATTERN =
+            Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_ARABIC_NUMERIC.getClassStr()));
+    public static final Pattern PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN =
+            Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr()));
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -39,11 +43,10 @@ public final class StringUtils {
     /**
      * Returns the numeric value of a character at a specified index in the input string.
      *
-     * @param input the string representing a number. Must only contain digit.
+     * @param input the string representing a number. Must only contain digit
      * @param index the index of the character to retrieve
      * @return the numeric value of the character at the specified index
-     * @throws ValidationException if the input is not a valid number
-     *                             or if the index is out of bounds
+     * @throws ValidationException if the input is not a valid number or if the index is out of bounds
      */
     public static int getNumericValue(String input, int index) {
         if (!NUMERIC_PATTERN.matcher(input).matches() || index >= input.length()) {
@@ -53,26 +56,32 @@ public final class StringUtils {
     }
 
     /**
-     * Converts all Persian (Farsi) digits in a given string to their equivalent English (Western) digits.
+     * Converts all Persian (Farsi) and Arabic digits in a given string to their equivalent English (Western) digits.
      * <p>
-     * Persian digits range from '۰' (U+06F0) to '۹' (U+06F9), and are replaced with their corresponding
-     * English digits ('0' to '9'). Any non-digit characters are left unchanged.
+     * Persian digits range from '۰' (U+06F0) to '۹' (U+06F9) and Arabic digits range from '۰' (U+0660) to '٩' (U+0669)
+     * are replaced with their corresponding English digits ('0' to '9'). Any non-digit characters are left unchanged.
      *
-     * @param persianStr the input string potentially containing Persian digits.
-     * @return a new string where all Persian digits are replaced with English digits,
-     * while other characters are unchanged.
-     * @throws ValidationException if the input string is null or empty.
+     * @param input the input string potentially containing Persian and Arabic digits
+     * @return a new string where all Persian and Arabic digits are replaced with English digits,
+     * while other characters are unchanged
+     * @throws ValidationException if the input string is null or empty
      */
-    public static String convertPersianToEnglishDigits(String persianStr) {
-        if (persianStr == null || persianStr.isEmpty()) {
+    public static String toEnglishDigits(String input) {
+        if (input == null || input.trim().isEmpty()) {
             throw new ValidationException("Input string is empty");
         }
-        persianStr = persianStr.trim();
+        input = input.trim();
         StringBuffer result = new StringBuffer();
-        Matcher matcher = PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN.matcher(persianStr);
+        Matcher matcher = PERSIAN_ARABIC_NUMERIC_CHARACTER_CLASS_PATTERN.matcher(input);
         while (matcher.find()) {
-            char persianDigit = matcher.group().charAt(0);
-            char englishDigit = (char) (persianDigit - '۰' + '0');
+            String digitStr = matcher.group();
+            char digit = digitStr.charAt(0);
+            char englishDigit;
+            if (PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN.matcher(digitStr).matches()) {
+                englishDigit = (char) (digit - '۰' + '0');
+            } else {
+                englishDigit = (char) (digit - '٠' + '0');
+            }
             matcher.appendReplacement(result, Character.toString(englishDigit));
         }
         matcher.appendTail(result);
