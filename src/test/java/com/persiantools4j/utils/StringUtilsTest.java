@@ -19,6 +19,7 @@ package com.persiantools4j.utils;
 import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -70,17 +71,19 @@ class StringUtilsTest {
     class GetNumericValueTests {
 
         @ParameterizedTest
-        @DisplayName("Valid Inputs")
+        @DisplayName("Valid inputs")
         @MethodSource("com.persiantools4j.utils.StringUtilsTest#validNumericValueCases")
         void testGetNumericValue(String str, int index, int expected) {
             assertThat(StringUtils.getNumericValue(str, index)).isEqualTo(expected);
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional Inputs")
+        @DisplayName("Exceptional inputs")
         @MethodSource("com.persiantools4j.utils.StringUtilsTest#invalidNumericValueCases")
         void testGetNumericValueExceptional(String str, int index) {
-            assertThatThrownBy(() -> StringUtils.getNumericValue(str, index)).isInstanceOf(ValidationException.class);
+            assertThatThrownBy(() -> StringUtils.getNumericValue(str, index))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessage("Invalid number");
         }
 
     }
@@ -90,17 +93,67 @@ class StringUtilsTest {
     class ConvertPersianArabicToEnglishDigitsTests {
 
         @ParameterizedTest
-        @DisplayName("Valid Inputs")
+        @DisplayName("Valid inputs")
         @MethodSource("com.persiantools4j.utils.StringUtilsTest#validToEnglishDigitsCases")
         void testToEnglishDigits(String str, String expected) {
             assertThat(StringUtils.toEnglishDigits(str)).isEqualTo(expected);
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional Inputs")
+        @DisplayName("Exceptional inputs")
         @NullAndEmptySource
         void testToEnglishDigitsWithEmptyAndNull(String str) {
-            assertThatThrownBy(() -> StringUtils.toEnglishDigits(str)).isInstanceOf(ValidationException.class);
+            assertThatThrownBy(() -> StringUtils.toEnglishDigits(str))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessage("Input string is null or empty");
+        }
+
+    }
+
+    @Nested
+    @DisplayName("isPersian tests")
+    class IsPersianMethodTests {
+
+        @Test
+        @DisplayName("Valid inputs")
+        void testIsPersian() {
+            String str = "سلام! این یک متن \"تست\"، جهت بررسی متون فارسی می‌باشد.";
+            str += "۰۱۲۳۴۵۶۷۸۹";
+            str += "0123456789";
+            str += "صرفاً یک تست";
+            assertThat(StringUtils.isPersian(str)).isTrue();
+        }
+
+        @ParameterizedTest
+        @DisplayName("Exceptional inputs")
+        @NullAndEmptySource
+        void testIsPersianWithEmptyAndNull(String str) {
+            assertThatThrownBy(() -> StringUtils.isPersian(str))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessage("Input string is null or empty");
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Normalize persian tests")
+    class NormalizePersianTests {
+
+        @Test
+        @DisplayName("Valid inputs")
+        void testNormalizePersian() {
+            String actual = "اين يك تست كاربردي مي باشد";
+            String expected = "این یک تست کاربردی می باشد";
+            assertThat(StringUtils.normalizePersian(actual)).isEqualTo(expected);
+        }
+
+        @ParameterizedTest
+        @DisplayName("Exceptional inputs")
+        @NullAndEmptySource
+        void testNormalizePersianWithEmptyAndNull(String str) {
+            assertThatThrownBy(() -> StringUtils.normalizePersian(str))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessage("Input string is null or empty");
         }
 
     }

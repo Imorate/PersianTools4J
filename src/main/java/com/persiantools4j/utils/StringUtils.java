@@ -32,6 +32,7 @@ public final class StringUtils {
             Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_ARABIC_NUMERIC.getClassStr()));
     public static final Pattern PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN =
             Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr()));
+    public static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -68,7 +69,7 @@ public final class StringUtils {
      */
     public static String toEnglishDigits(String input) {
         if (input == null || input.trim().isEmpty()) {
-            throw new ValidationException("Input string is empty");
+            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
         }
         input = input.trim();
         StringBuffer result = new StringBuffer();
@@ -86,6 +87,46 @@ public final class StringUtils {
         }
         matcher.appendTail(result);
         return result.toString();
+    }
+
+    /**
+     * Determines if the input string consists only of Persian characters, numerics, and symbols.
+     * <p>
+     * The method trims the input string and validates it against a regex pattern that matches Persian
+     * numerics, alphabet, short vowels, Tanvin, and symbols, including whitespace.
+     *
+     * @param input the string to check
+     * @return {@code true} if the input string consists only of Persian characters
+     * and valid symbols; {@code false} otherwise
+     * @throws ValidationException if the input is {@code null} or empty
+     */
+    public static boolean isPersian(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+        }
+        input = input.trim();
+        String regex = RegexCharacterClass.PERSIAN.getClassStr();
+        return input.matches(String.format("[%s\\s]+", regex));
+    }
+
+    /**
+     * Normalizes the input string by replacing Arabic characters with their Persian equivalents.
+     * <p>
+     * Specifically, it replaces Arabic 'ي' with Persian 'ی' and Arabic 'ك' with Persian 'ک'.
+     * The input string is trimmed before processing.
+     *
+     * @param input the string to normalize
+     * @return a normalized string with Persian characters
+     * @throws ValidationException if the input is {@code null} or empty
+     */
+    public static String normalizePersian(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+        }
+        input = input.trim();
+        return input
+                .replace('ي', 'ی')
+                .replace('ك', 'ک');
     }
 
 }
