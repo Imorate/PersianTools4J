@@ -33,14 +33,9 @@ public enum RegexCharacterClass {
     ARABIC_NUMERIC("\\u0660-\\u0669"),
 
     /**
-     * Combination of Persian and Arabic numeric characters.
+     * Numeric characters including Latin digits (0-9) and Persian digits.
      */
-    PERSIAN_ARABIC_NUMERIC(ARABIC_NUMERIC.classStr + PERSIAN_NUMERIC.classStr),
-
-    /**
-     * Numeric characters including Latin digits (0-9), Persian and Arabic numerics.
-     */
-    NUMERIC("\\d" + PERSIAN_ARABIC_NUMERIC.classStr),
+    NUMERIC("\\d" + PERSIAN_NUMERIC.classStr),
 
     /**
      * Persian alphabet characters.
@@ -61,15 +56,15 @@ public enum RegexCharacterClass {
     /**
      * Various Persian and Arabic symbols, including punctuation and special characters.
      */
-    PERSIAN_ARABIC_SYMBOL("\\u200C\\u0640\\u060C\\u00AB\\00BB\\u061B\\u061F\\u066C\\u002C\\u060D\\u066B\\u066A"),
+    PERSIAN_ARABIC_SYMBOL("\\u200C\\u0640\\u060C\\u00AB\\u00BB\\u061B\\u061F\\u066C\\u002C\\u060D\\u066B\\u066A"),
 
     /**
      * Common symbols used in regex patterns.
      */
-    SYMBOL("!@#$%^&*()_\\-=+\\\\/{}\\[\\]\"':;?<>|\\."),
+    SYMBOL("!@#$%^&*()_\\-=+\\\\/{}\\[\\]\"':;?<>|.~`×÷"),
 
     /**
-     * A comprehensive character class including Persian and Arabic numerics, alphabets, vowels, symbols,
+     * A comprehensive character class including Persian and English numerics, alphabets, vowels, symbols,
      * common symbols and whitespace.
      */
     PERSIAN(NUMERIC.classStr + PERSIAN_ALPHABET.classStr + PERSIAN_ARABIC_SHORT_VOWEL.classStr +

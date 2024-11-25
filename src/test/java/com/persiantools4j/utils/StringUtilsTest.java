@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DisplayName("String utils")
 class StringUtilsTest {
 
-    private static Stream<Arguments> validNumericValueCases() {
+    private static Stream<Arguments> getNumericValueCases() {
         return Stream.of(
                 Arguments.of("1", "0", "1"),
                 Arguments.of("6104038932", "9", "2"),
@@ -41,7 +41,7 @@ class StringUtilsTest {
         );
     }
 
-    private static Stream<Arguments> invalidNumericValueCases() {
+    private static Stream<Arguments> exceptionalGetNumericValueCases() {
         return Stream.of(
                 Arguments.of("1", "3"),
                 Arguments.of("6104038932", "10"),
@@ -50,11 +50,10 @@ class StringUtilsTest {
         );
     }
 
-    private static Stream<Arguments> validToEnglishDigitsCases() {
+    private static Stream<Arguments> toEnglishDigitsCases() {
         return Stream.of(
                 Arguments.of("123", "123"),
                 //Persian cases
-                Arguments.of("۱۲۳", "123"),
                 Arguments.of(" ۱۲۳ ", "123"),
                 Arguments.of("۰۱۲۳۴۵۶۷۸۹", "0123456789"),
                 Arguments.of("۱" + "test" + "۲۳", "1test23"),
@@ -66,21 +65,34 @@ class StringUtilsTest {
         );
     }
 
+    private static Stream<Arguments> persianStringCases() {
+        return Stream.of(
+                Arguments.of("۰۱۲۳۴۵۶۷۸۹"),
+                Arguments.of("0123456789"),
+                Arguments.of("سلام! این یک متن \"تست\"، جهت بررسی متون فارسی می‌باشد."),
+                Arguments.of("صرفاً یک تست"),
+                Arguments.of("تِسُتَ"),
+                Arguments.of("تٍسٌتً"),
+                Arguments.of("\u200Cـ،«»؛؟٬,؍٫٪"),
+                Arguments.of("!@#$%^&*()_\\-=+\\/{}\\[\\]\"':;?<>|.~`,×÷")
+        );
+    }
+
     @Nested
-    @DisplayName("Get Numeric Value Tests")
-    class GetNumericValueTests {
+    @DisplayName("Get numeric value")
+    class GetNumericValueTest {
 
         @ParameterizedTest
         @DisplayName("Valid inputs")
-        @MethodSource("com.persiantools4j.utils.StringUtilsTest#validNumericValueCases")
+        @MethodSource("com.persiantools4j.utils.StringUtilsTest#getNumericValueCases")
         void testGetNumericValue(String str, int index, int expected) {
             assertThat(StringUtils.getNumericValue(str, index)).isEqualTo(expected);
         }
 
         @ParameterizedTest
         @DisplayName("Exceptional inputs")
-        @MethodSource("com.persiantools4j.utils.StringUtilsTest#invalidNumericValueCases")
-        void testGetNumericValueExceptional(String str, int index) {
+        @MethodSource("com.persiantools4j.utils.StringUtilsTest#exceptionalGetNumericValueCases")
+        void testExceptionalGetNumericValue(String str, int index) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(str, index))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Invalid number");
@@ -90,11 +102,11 @@ class StringUtilsTest {
 
     @Nested
     @DisplayName("Convert Persian/Arabic to english digits")
-    class ConvertPersianArabicToEnglishDigitsTests {
+    class ConvertPersianArabicToEnglishDigitsTest {
 
         @ParameterizedTest
         @DisplayName("Valid inputs")
-        @MethodSource("com.persiantools4j.utils.StringUtilsTest#validToEnglishDigitsCases")
+        @MethodSource("com.persiantools4j.utils.StringUtilsTest#toEnglishDigitsCases")
         void testToEnglishDigits(String str, String expected) {
             assertThat(StringUtils.toEnglishDigits(str)).isEqualTo(expected);
         }
@@ -102,7 +114,7 @@ class StringUtilsTest {
         @ParameterizedTest
         @DisplayName("Exceptional inputs")
         @NullAndEmptySource
-        void testToEnglishDigitsWithEmptyAndNull(String str) {
+        void testEmptyAndNullToEnglishDigits(String str) {
             assertThatThrownBy(() -> StringUtils.toEnglishDigits(str))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Input string is null or empty");
@@ -111,23 +123,20 @@ class StringUtilsTest {
     }
 
     @Nested
-    @DisplayName("isPersian tests")
-    class IsPersianMethodTests {
+    @DisplayName("isPersian verification")
+    class IsPersianVerificationTest {
 
-        @Test
+        @ParameterizedTest
         @DisplayName("Valid inputs")
-        void testIsPersian() {
-            String str = "سلام! این یک متن \"تست\"، جهت بررسی متون فارسی می‌باشد.";
-            str += "۰۱۲۳۴۵۶۷۸۹";
-            str += "0123456789";
-            str += "صرفاً یک تست";
+        @MethodSource("com.persiantools4j.utils.StringUtilsTest#persianStringCases")
+        void testIsPersian(String str) {
             assertThat(StringUtils.isPersian(str)).isTrue();
         }
 
         @ParameterizedTest
         @DisplayName("Exceptional inputs")
         @NullAndEmptySource
-        void testIsPersianWithEmptyAndNull(String str) {
+        void testEmptyAndNullIsPersian(String str) {
             assertThatThrownBy(() -> StringUtils.isPersian(str))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Input string is null or empty");
@@ -136,15 +145,20 @@ class StringUtilsTest {
     }
 
     @Nested
-    @DisplayName("Normalize persian tests")
-    class NormalizePersianTests {
+    @DisplayName("Normalize persian")
+    class NormalizePersianTest {
 
         @Test
         @DisplayName("Valid inputs")
         void testNormalizePersian() {
             String actual = "اين يك تست كاربردي مي باشد";
             String expected = "این یک تست کاربردی می باشد";
+            assertThat(StringUtils.isPersian(actual)).isFalse();
             assertThat(StringUtils.normalizePersian(actual)).isEqualTo(expected);
+            String actualDigits = "٠١٢٣٤٥٦٧٨٩";
+            String expectedDigits = "۰۱۲۳۴۵۶۷۸۹";
+            assertThat(StringUtils.isPersian(actualDigits)).isFalse();
+            assertThat(StringUtils.normalizePersian(actualDigits)).isEqualTo(expectedDigits);
         }
 
         @ParameterizedTest

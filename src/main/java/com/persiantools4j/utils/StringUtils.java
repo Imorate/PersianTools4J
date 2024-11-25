@@ -27,12 +27,19 @@ import java.util.regex.Pattern;
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 public final class StringUtils {
 
-    public static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
-    public static final Pattern PERSIAN_ARABIC_NUMERIC_CHARACTER_CLASS_PATTERN =
-            Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_ARABIC_NUMERIC.getClassStr()));
-    public static final Pattern PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN =
+    private static final Pattern ENGLISH_NUMERIC_PATTERN = Pattern.compile("\\d+");
+
+    private static final Pattern PERSIAN_ARABIC_NUMERIC_PATTERN =
+            Pattern.compile(String.format("[%s%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr(),
+                    RegexCharacterClass.ARABIC_NUMERIC.getClassStr()));
+
+    private static final Pattern PERSIAN_NUMERIC_PATTERN =
             Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr()));
-    public static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
+
+    private static final Pattern ARABIC_NUMERIC_PATTERN =
+            Pattern.compile(String.format("[%s]", RegexCharacterClass.ARABIC_NUMERIC.getClassStr()));
+
+    private static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -50,7 +57,7 @@ public final class StringUtils {
      * @throws ValidationException if the input is not a valid number or if the index is out of bounds
      */
     public static int getNumericValue(String input, int index) {
-        if (!NUMERIC_PATTERN.matcher(input).matches() || index >= input.length()) {
+        if (!ENGLISH_NUMERIC_PATTERN.matcher(input).matches() || index >= input.length()) {
             throw new ValidationException("Invalid number");
         }
         return Character.getNumericValue(input.charAt(index));
@@ -73,17 +80,17 @@ public final class StringUtils {
         }
         input = input.trim();
         StringBuffer result = new StringBuffer();
-        Matcher matcher = PERSIAN_ARABIC_NUMERIC_CHARACTER_CLASS_PATTERN.matcher(input);
+        Matcher matcher = PERSIAN_ARABIC_NUMERIC_PATTERN.matcher(input);
         while (matcher.find()) {
             String digitStr = matcher.group();
             char digit = digitStr.charAt(0);
             char englishDigit;
-            if (PERSIAN_NUMERIC_CHARACTER_CLASS_PATTERN.matcher(digitStr).matches()) {
-                englishDigit = (char) (digit - '۰' + '0');
+            if (PERSIAN_NUMERIC_PATTERN.matcher(digitStr).matches()) {
+                englishDigit = (char) (digit - '\u06F0' + '0');
             } else {
-                englishDigit = (char) (digit - '٠' + '0');
+                englishDigit = (char) (digit - '\u0660' + '0');
             }
-            matcher.appendReplacement(result, Character.toString(englishDigit));
+            matcher.appendReplacement(result, String.valueOf(englishDigit));
         }
         matcher.appendTail(result);
         return result.toString();
@@ -112,8 +119,8 @@ public final class StringUtils {
     /**
      * Normalizes the input string by replacing Arabic characters with their Persian equivalents.
      * <p>
-     * Specifically, it replaces Arabic 'ي' with Persian 'ی' and Arabic 'ك' with Persian 'ک'.
-     * The input string is trimmed before processing.
+     * Specifically, it replaces Arabic 'ي' with Persian 'ی' and Arabic 'ك' with Persian 'ک' and Arabic digits with
+     * Persian digits. The input string is trimmed before processing.
      *
      * @param input the string to normalize
      * @return a normalized string with Persian characters
@@ -124,7 +131,15 @@ public final class StringUtils {
             throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
         }
         input = input.trim();
-        return input
+        StringBuffer result = new StringBuffer();
+        Matcher matcher = ARABIC_NUMERIC_PATTERN.matcher(input);
+        while (matcher.find()) {
+            char digit = matcher.group().charAt(0);
+            char persianDigit = (char) (digit - '\u0660' + '\u06F0');
+            matcher.appendReplacement(result, String.valueOf(persianDigit));
+        }
+        matcher.appendTail(result);
+        return result.toString()
                 .replace('ي', 'ی')
                 .replace('ك', 'ک');
     }
