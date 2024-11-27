@@ -19,12 +19,12 @@ package com.persiantools4j.utils;
 import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
+import java.util.Collections;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,8 +73,20 @@ class StringUtilsTest {
                 Arguments.of("صرفاً یک تست"),
                 Arguments.of("تِسُتَ"),
                 Arguments.of("تٍسٌتً"),
+                Arguments.of("گچپژ"),
+                Arguments.of("ؤإأءئ"),
                 Arguments.of("\u200Cـ،«»؛؟٬,؍٫٪"),
                 Arguments.of("!@#$%^&*()_\\-=+\\/{}\\[\\]\"':;?<>|.~`,×÷")
+        );
+    }
+
+    private static Stream<Arguments> normalizePersianCases() {
+        return Stream.of(
+                Arguments.of("اين يك تست كاربردي مي باشد", "این یک تست کاربردی می باشد"),
+                Arguments.of("٠١٢٣٤٥٦٧٨٩", "۰۱۲۳۴۵۶۷۸۹"),
+                Arguments.of("ؠ ؽ ؾ ؿ ي ٸ ۍ ێ ۑ ے ۓ", String.join(" ", Collections.nCopies(11, "ی"))),
+                Arguments.of("ٶ ۄ ۊ ۏ", String.join(" ", Collections.nCopies(4, "و"))),
+                Arguments.of("ك ڪ ګ ڬ ڮ ػ ؼ", String.join(" ", Collections.nCopies(7, "ک")))
         );
     }
 
@@ -148,17 +160,12 @@ class StringUtilsTest {
     @DisplayName("Normalize persian")
     class NormalizePersianTest {
 
-        @Test
+        @ParameterizedTest
         @DisplayName("Valid inputs")
-        void testNormalizePersian() {
-            String actual = "اين يك تست كاربردي مي باشد";
-            String expected = "این یک تست کاربردی می باشد";
-            assertThat(StringUtils.isPersian(actual)).isFalse();
-            assertThat(StringUtils.normalizePersian(actual)).isEqualTo(expected);
-            String actualDigits = "٠١٢٣٤٥٦٧٨٩";
-            String expectedDigits = "۰۱۲۳۴۵۶۷۸۹";
-            assertThat(StringUtils.isPersian(actualDigits)).isFalse();
-            assertThat(StringUtils.normalizePersian(actualDigits)).isEqualTo(expectedDigits);
+        @MethodSource("com.persiantools4j.utils.StringUtilsTest#normalizePersianCases")
+        void testNormalizePersian(String str, String expected) {
+            assertThat(StringUtils.isPersian(str)).isFalse();
+            assertThat(StringUtils.normalizePersian(str)).isEqualTo(expected);
         }
 
         @ParameterizedTest

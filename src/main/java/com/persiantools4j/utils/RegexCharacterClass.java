@@ -33,6 +33,21 @@ public enum RegexCharacterClass {
     ARABIC_NUMERIC("\\u0660-\\u0669"),
 
     /**
+     * Arabic yeh characters.
+     */
+    ARABIC_YEH("\\u0620\\u063D-\\u063F\\u064A\\u0678\\u06CD-\\u06CE\\u06D1-\\u06D3"),
+
+    /**
+     * Arabic waw characters.
+     */
+    ARABIC_WAW("\\u0676\\u06C4\\u06CA\\u06CF"),
+
+    /**
+     * Arabic kaf characters
+     */
+    ARABIC_KAF("\\u0643\\u06AA-\\u06AC\\u06AE\\u063B-\\u063C"),
+
+    /**
      * Numeric characters including Latin digits (0-9) and Persian digits.
      */
     NUMERIC("\\d" + PERSIAN_NUMERIC.classStr),
@@ -68,7 +83,7 @@ public enum RegexCharacterClass {
      * common symbols and whitespace.
      */
     PERSIAN(NUMERIC.classStr + PERSIAN_ALPHABET.classStr + PERSIAN_ARABIC_SHORT_VOWEL.classStr +
-            PERSIAN_ARABIC_TANVIN.classStr + PERSIAN_ARABIC_SYMBOL.classStr + SYMBOL.classStr + "\\s");
+            PERSIAN_ARABIC_TANVIN.classStr + PERSIAN_ARABIC_SYMBOL.classStr + SYMBOL.classStr);
 
     /**
      * The string representation of the regex character class.

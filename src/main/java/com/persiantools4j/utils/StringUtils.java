@@ -140,8 +140,9 @@ public final class StringUtils {
         }
         matcher.appendTail(result);
         return result.toString()
-                .replace('ي', 'ی')
-                .replace('ك', 'ک');
+                .replaceAll(String.format("[%s]", RegexCharacterClass.ARABIC_YEH.getClassStr()), "ی")
+                .replaceAll(String.format("[%s]", RegexCharacterClass.ARABIC_KAF.getClassStr()), "ک")
+                .replaceAll(String.format("[%s]", RegexCharacterClass.ARABIC_WAW.getClassStr()), "و");
     }
 
 }
