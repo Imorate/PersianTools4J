@@ -24,7 +24,7 @@ package com.persiantools4j.exception;
  * exception may provide details on the reason for failure or which part of the
  * input caused the issue.
  */
-public class ParseException extends IllegalArgumentException {
+public final class ParseException extends IllegalArgumentException {
 
     /**
      * Constructs a new {@code ParseException} with the specified detail message.

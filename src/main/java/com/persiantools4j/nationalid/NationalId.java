@@ -25,7 +25,7 @@ import java.util.Objects;
  * Represents a National ID in a result of parsing action with various components such as
  * hometown code, personal code, control digit and a {@link List} of {@link Hometown}(s).
  */
-public class NationalId {
+public final class NationalId {
 
     private final String id;
 
@@ -137,7 +137,7 @@ public class NationalId {
      */
     @Generated
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
