@@ -76,7 +76,7 @@ class StringUtilsTest {
                 Arguments.of("گچپژ"),
                 Arguments.of("ؤإأءئ"),
                 Arguments.of("\u200Cـ،«»؛؟٬,؍٫٪"),
-                Arguments.of("!@#$%^&*()_\\-=+\\/{}\\[\\]\"':;?<>|.~`,×÷")
+                Arguments.of("!@#$%^&*()_\\-=+\\/{}\\[\\]\"':;?<>|.~`,×÷€£¥")
         );
     }
 

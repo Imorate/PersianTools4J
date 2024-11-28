@@ -77,7 +77,7 @@ public enum RegexCharacterClass {
     /**
      * Common symbols used in regex patterns.
      */
-    SYMBOL("!@#$%^&*()_\\-=+\\\\/{}\\[\\]\"':;?<>|.~`×÷"),
+    SYMBOL("!@#$%^&*()_\\-=+\\\\/{}\\[\\]\"':;?<>|.~`×÷€£¥"),
 
     /**
      * A comprehensive character class including Persian and English numerics, alphabets, vowels, symbols,
