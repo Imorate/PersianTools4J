@@ -59,7 +59,8 @@ class NationalIdServiceImplTest {
                 Arguments.of("3520082780"),
                 Arguments.of("0076229645"),
                 Arguments.of("4271467685"),
-                Arguments.of("0200203241")
+                Arguments.of("0200203241"),
+                Arguments.of("1111111111")
         );
     }
 
@@ -93,7 +94,6 @@ class NationalIdServiceImplTest {
                 Arguments.of("123000000"),
                 Arguments.of("1230000000"),
                 Arguments.of("0684159415"),
-                Arguments.of("1111111111"),
                 Arguments.of(" 6104038932 "),
                 Arguments.of("3111001003 "),
                 Arguments.of(" 3413857604"),
@@ -115,7 +115,6 @@ class NationalIdServiceImplTest {
                 Arguments.of("9731001011"),
                 Arguments.of("3520082782"),
                 Arguments.of("0000000000"),
-                Arguments.of("1111111111"),
                 Arguments.of("2222222222"),
                 Arguments.of("3333333333"),
                 Arguments.of("4444444444"),

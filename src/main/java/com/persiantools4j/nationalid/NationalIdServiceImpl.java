@@ -36,7 +36,12 @@ import java.util.stream.IntStream;
 public final class NationalIdServiceImpl implements NationalIdService {
 
     private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{10}");
-    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{9}");
+
+    /**
+     * Regex pattern to detect invalid national IDs made up of the same digit repeated 10 times.
+     * Except for "1111111111", which is considered valid.
+     */
+    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
     private static final Logger LOGGER = LoggerFactory.getLogger(NationalIdServiceImpl.class);
 
     /**
