@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.utils;
+package com.persiantools4j.enums;
 
 /**
  * Enum representing various character classes for regex patterns.
