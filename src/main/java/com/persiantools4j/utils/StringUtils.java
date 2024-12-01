@@ -16,6 +16,7 @@
 
 package com.persiantools4j.utils;
 
+import com.persiantools4j.enums.RegexCharacterClass;
 import com.persiantools4j.exception.ValidationException;
 
 import java.util.regex.Matcher;
