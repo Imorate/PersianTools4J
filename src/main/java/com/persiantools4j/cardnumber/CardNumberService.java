@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Imorate <dev.imorate@gmail.com> and contributors.
+ * Copyright 2024 Imorate (Amir Mohammad Hl) <dev.imorate@gmail.com> and contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
