@@ -42,7 +42,7 @@ public final class PersianStringDeserializer extends JsonDeserializer<String> {
     @Override
     public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String value = jsonParser.getValueAsString();
-        if (value == null || value.isEmpty()) {
+        if (value.isEmpty()) {
             return value;
         }
         return StringUtils.normalizePersian(value);
