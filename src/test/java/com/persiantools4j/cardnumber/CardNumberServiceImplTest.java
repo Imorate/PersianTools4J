@@ -18,7 +18,7 @@ package com.persiantools4j.cardnumber;
 
 import com.persiantools4j.bank.Bank;
 import com.persiantools4j.exception.ValidationException;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("Card number service")
 class CardNumberServiceImplTest {
 
-    private CardNumberService cardNumberService;
+    private static CardNumberService cardNumberService;
 
     private static Stream<Arguments> validCardNumberCases() {
         return Stream.of(
@@ -79,8 +79,8 @@ class CardNumberServiceImplTest {
         );
     }
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void beforeAll() {
         cardNumberService = CardNumberServiceImpl.getInstance();
     }
 

@@ -20,7 +20,10 @@ import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,7 +42,7 @@ class NationalIdServiceImplTest {
 
     private static Hometown testHometown;
     private static Predicate<Hometown> hometownPredicate;
-    private NationalIdService nationalIdService;
+    private static NationalIdService nationalIdService;
 
     private static Stream<Arguments> validNationalIdCases() {
         return Stream.of(
@@ -132,13 +135,9 @@ class NationalIdServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
+        nationalIdService = NationalIdServiceImpl.getInstance();
         testHometown = Hometown.of(Arrays.asList("279", "280"), "آذربایجان غربی", "خوی");
         hometownPredicate = hometown -> !hometown.getProvince().isEmpty() && !hometown.getCity().isEmpty() && !hometown.getCode().isEmpty();
-    }
-
-    @BeforeEach
-    void setUp() {
-        nationalIdService = NationalIdServiceImpl.getInstance();
     }
 
     @Nested
@@ -317,20 +316,10 @@ class NationalIdServiceImplTest {
     @DisplayName("Hometown collection")
     class HometownCollectionTests {
 
-        private HometownCollection hometownCollection;
-
-        @BeforeEach
-        void setUp() {
-            hometownCollection = HometownCollection.getInstance();
-        }
-
         @Test
         @DisplayName("Get populated hometown list test")
         void testHometownPopulatedList() {
-            // Hometown list null check is true
-            hometownCollection.getCollection();
-            // Hometown list null check is false now and it's initialized
-            List<Hometown> hometownList = hometownCollection.getCollection();
+            List<Hometown> hometownList = HometownCollection.getInstance().getCollection();
             Pattern hometownCodePattern = Pattern.compile("\\d{3}");
             AssertionsForInterfaceTypes.assertThat(hometownList)
                     .isNotNull()

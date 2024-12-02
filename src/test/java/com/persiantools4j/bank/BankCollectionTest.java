@@ -17,7 +17,7 @@
 package com.persiantools4j.bank;
 
 import org.assertj.core.api.AssertionsForInterfaceTypes;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,19 +33,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Bank collection")
 class BankCollectionTest {
 
-    private BankCollection bankCollection;
+    private static BankCollection bankCollection;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void beforeAll() {
         bankCollection = BankCollection.getInstance();
     }
 
     @Test
     @DisplayName("Get populated bank list test")
     void testHometownPopulatedList() {
-        // Bank list null check is true
-        bankCollection.getCollection();
-        // Bank list null check is false now and it's initialized
         List<Bank> bankList = bankCollection.getCollection();
         Pattern bankCodePattern = Pattern.compile("0\\d{2}");
         AssertionsForInterfaceTypes.assertThat(bankList)
