@@ -29,6 +29,7 @@ class JsonObject {
     /**
      * No-args constructor.
      */
+    @SuppressWarnings("unused")
     public JsonObject() {
 
     }
@@ -49,15 +50,6 @@ class JsonObject {
      */
     public String getInput() {
         return input;
-    }
-
-    /**
-     * Sets the JSON input.
-     *
-     * @param input input value
-     */
-    public void setInput(String input) {
-        this.input = input;
     }
 
 }
