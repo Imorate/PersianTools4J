@@ -28,19 +28,15 @@ import java.util.regex.Pattern;
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 public final class StringUtils {
 
+    public static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
     private static final Pattern ENGLISH_NUMERIC_PATTERN = Pattern.compile("\\d+");
-
     private static final Pattern PERSIAN_ARABIC_NUMERIC_PATTERN =
             Pattern.compile(String.format("[%s%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr(),
                     RegexCharacterClass.ARABIC_NUMERIC.getClassStr()));
-
     private static final Pattern PERSIAN_NUMERIC_PATTERN =
             Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr()));
-
     private static final Pattern ARABIC_NUMERIC_PATTERN =
             Pattern.compile(String.format("[%s]", RegexCharacterClass.ARABIC_NUMERIC.getClassStr()));
-
-    private static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -50,34 +46,49 @@ public final class StringUtils {
     }
 
     /**
+     * Checks if the input string is blank (null, empty or only contains whitespace).
+     *
+     * @param input the string to check
+     * @return {@code true} if the input is null, empty, or contains only whitespace, otherwise {@code false}
+     */
+    public static boolean isBlank(String input) {
+        return input == null || input.trim().isEmpty();
+    }
+
+    /**
      * Returns the numeric value of a character at a specified index in the input string.
      *
      * @param input the string representing a number. Must only contain digit
      * @param index the index of the character to retrieve
      * @return the numeric value of the character at the specified index
-     * @throws ValidationException if the input is not a valid number or if the index is out of bounds
+     * @throws ValidationException if the input is not a valid number, input is {@code null}, input is empty or
+     *                             the index is out of bounds
      */
     public static int getNumericValue(String input, int index) {
-        if (!ENGLISH_NUMERIC_PATTERN.matcher(input).matches() || index >= input.length()) {
-            throw new ValidationException("Invalid number");
+        if (isBlank(input)) {
+            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
         }
-        return Character.getNumericValue(input.charAt(index));
+        input = input.trim();
+        if (index >= input.length() || !ENGLISH_NUMERIC_PATTERN.matcher(input).matches()) {
+            throw new ValidationException("Invalid number");
+        } else {
+            return Character.getNumericValue(input.charAt(index));
+        }
     }
 
     /**
      * Converts all Persian (Farsi) and Arabic digits in a given string to their equivalent English (Western) digits.
      * <p>
-     * Persian digits range from '۰' (U+06F0) to '۹' (U+06F9) and Arabic digits range from '۰' (U+0660) to '٩' (U+0669)
-     * are replaced with their corresponding English digits ('0' to '9'). Any non-digit characters are left unchanged.
+     * Persian digits (e.g., '۰' (U+06F0) to '۹' (U+06F9)) and Arabic digits (e.g., '۰' (U+0660) to '٩' (U+0669))
+     * are mapped to '0' to '9'. Any non-digit characters remain unchanged.
      *
-     * @param input the input string potentially containing Persian and Arabic digits
-     * @return a new string where all Persian and Arabic digits are replaced with English digits,
-     * while other characters are unchanged
-     * @throws ValidationException if the input string is null or empty
+     * @param input the input string containing potential Persian or Arabic digits
+     * @return a string with all digits converted to English; non-digits remain unchanged.
+     * Returns an empty string if input is blank.
      */
     public static String toEnglishDigits(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+        if (isBlank(input)) {
+            return "";
         }
         input = input.trim();
         StringBuffer result = new StringBuffer();
@@ -98,19 +109,17 @@ public final class StringUtils {
     }
 
     /**
-     * Determines if the input string consists only of Persian characters, numerics, and symbols.
+     * Determines if the input string contains only valid Persian characters, numerics, and symbols.
      * <p>
-     * The method trims the input string and validates it against a regex pattern that matches Persian
-     * numerics, alphabet, short vowels, Tanvin, and symbols, including whitespace.
+     * The method trims the input string before validation. Validates against a regex pattern that includes
+     * Persian alphabet, numerics, short vowels, Tanvin, symbols, and whitespace.
      *
-     * @param input the string to check
-     * @return {@code true} if the input string consists only of Persian characters
-     * and valid symbols; {@code false} otherwise
-     * @throws ValidationException if the input is {@code null} or empty
+     * @param input the string to be validated
+     * @return {@code true} if the string consists only of valid Persian characters and symbols; {@code false} otherwise
      */
     public static boolean isPersian(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+        if (isBlank(input)) {
+            return false;
         }
         input = input.trim();
         String regex = RegexCharacterClass.PERSIAN.getClassStr();
@@ -118,18 +127,21 @@ public final class StringUtils {
     }
 
     /**
-     * Normalizes the input string by replacing Arabic characters with their Persian equivalents.
-     * <p>
-     * Specifically, it replaces Arabic 'ي' with Persian 'ی' and Arabic 'ك' with Persian 'ک' and Arabic digits with
-     * Persian digits. The input string is trimmed before processing.
+     * Normalizes the trimmed string by converting Arabic characters and digits to their Persian equivalents.
+     * <ul>
+     *     <li>Arabic yeh is replaced with Persian 'ی'.</li>
+     *     <li>Arabic kaf is replaced with Persian 'ک'.</li>
+     *     <li>Arabic digits ('۰' (U+0660) to '٩' (U+0669)) are converted to
+     *     Persian digits ('۰' (U+06F0) to '۹' (U+06F9)).</li>
+     *     <li>Arabic waw is replaced with Persian 'و'.</li>
+     * </ul>
      *
      * @param input the string to normalize
      * @return a normalized string with Persian characters
-     * @throws ValidationException if the input is {@code null} or empty
      */
     public static String normalizePersian(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+        if (isBlank(input)) {
+            return "";
         }
         input = input.trim();
         StringBuffer result = new StringBuffer();
