@@ -19,8 +19,8 @@ package com.persiantools4j;
 import java.util.List;
 
 /**
- * The {@code Collectable} interface defines a contract for objects that are capable of
- * providing a collection of items of a specified type {@code T}.
+ * The {@code Collectable} interface defines a contract for objects that are capable of providing a collection of items
+ * of a specified type {@code T}.
  *
  * @param <T> the type of elements contained in the collection
  */

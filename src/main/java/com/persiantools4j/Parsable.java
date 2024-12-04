@@ -21,9 +21,8 @@ import com.persiantools4j.exception.ParseException;
 /**
  * A generic interface for parsing input data into meaningful structured parts.
  * <p>
- * The {@code Parsable} interface is intended to be implemented by classes
- * that take an input of a specified type and return a parsed output of another
- * specified type.
+ * The {@code Parsable} interface is intended to be implemented by classes that take an input of a specified type
+ * and return a parsed output of another specified type.
  *
  * @param <T> the type of input to be parsed
  * @param <R> the type of the result, which represents the structured output after parsing
@@ -33,13 +32,11 @@ public interface Parsable<T, R> {
     /**
      * Parses the given input into a structured result.
      * <p>
-     * This method takes an input of type {@code T} and processes it to extract
-     * meaningful parts, returning them as an instance of type {@code R}. Implementing
-     * classes define the parsing logic and the specific parts to be extracted.
+     * This method takes an input of type {@code T} and processes it to extract meaningful parts, returning them as an
+     * instance of type {@code R}. Implementing classes define the parsing logic and the specific parts to be extracted.
      *
      * @param input the input data to be parsed
-     * @return an instance of type {@code R} containing the parsed and structured parts
-     * of the input
+     * @return an instance of type {@code R} containing the parsed and structured parts of the input
      * @throws ParseException if the input is invalid or cannot be parsed
      */
     R parse(T input);
