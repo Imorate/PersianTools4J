@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.module.cardnumber;
+package com.persiantools4j.module.bank.cardnumber;
 
 import com.persiantools4j.Validator;
 import com.persiantools4j.module.bank.Bank;
