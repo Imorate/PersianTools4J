@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.nationalid;
+package com.persiantools4j.module.nationalid;
 
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
@@ -176,7 +176,7 @@ class NationalIdServiceImplTest {
     class IsValidTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("Valid national ID test")
         void testValidNationalId(String nationalId) {
             assertThat(nationalIdService.isValid(nationalId)).isTrue();
@@ -184,8 +184,8 @@ class NationalIdServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
         @DisplayName("Invalid national ID test")
         void testInvalidNationalId(String nationalId) {
@@ -199,7 +199,7 @@ class NationalIdServiceImplTest {
     class ValidationTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("National ID validation test")
         void testValidateNationalId(String nationalId) {
             assertThatCode(() -> nationalIdService.validate(nationalId)).doesNotThrowAnyException();
@@ -207,8 +207,8 @@ class NationalIdServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
         @DisplayName("Exceptional validation national ID test")
         void testExceptionValidateNationalId(String nationalId) {
@@ -222,7 +222,7 @@ class NationalIdServiceImplTest {
     class FindHometownTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("Valid national ID find hometown test")
         void testValidNationalIdFindHometown(String nationalId) {
             List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
@@ -241,7 +241,7 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases")
         @DisplayName("Valid national ID with multiple hometowns")
         void testValidNationalIdWithMultipleHometowns(String nationalId) {
             List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
@@ -251,8 +251,8 @@ class NationalIdServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
         @DisplayName("Invalid national ID find hometown test")
         void testInvalidNationalIdFindHometown(String nationalId) {
@@ -266,7 +266,7 @@ class NationalIdServiceImplTest {
     class ParseNationalIdTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#validNationalIdCases")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
         @DisplayName("Valid national ID parse test")
         void testValidNationalIdParse(String nationalId) {
             NationalId actualNationalId = nationalIdService.parse(nationalId);
@@ -295,8 +295,8 @@ class NationalIdServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
-                "com.persiantools4j.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
+                "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
         @DisplayName("Invalid national ID parse test")
         void testInvalidNationalIdParse(String nationalId) {
@@ -304,7 +304,7 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.nationalid.NationalIdServiceImplTest#notFoundHometownCases")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#notFoundHometownCases")
         @DisplayName("Not found national ID parse test")
         void testNotFoundNationalIdParse(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.parse(nationalId)).isInstanceOf(ParseException.class);

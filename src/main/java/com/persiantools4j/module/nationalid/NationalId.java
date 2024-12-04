@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.nationalid;
+package com.persiantools4j.module.nationalid;
 
 import com.persiantools4j.Generated;
 
@@ -28,13 +28,9 @@ import java.util.Objects;
 public final class NationalId {
 
     private final String id;
-
     private String hometownCode;
-
     private String personalCode;
-
     private int controlDigit;
-
     private List<Hometown> hometownList;
 
     /**

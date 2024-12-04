@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.cardnumber;
+package com.persiantools4j.module.cardnumber;
 
-import com.persiantools4j.bank.Bank;
-import com.persiantools4j.bank.BankCollection;
 import com.persiantools4j.exception.ValidationException;
+import com.persiantools4j.module.bank.Bank;
+import com.persiantools4j.module.bank.BankCollection;
 import com.persiantools4j.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

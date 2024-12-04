@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.cardnumber;
+package com.persiantools4j.module.cardnumber;
 
 import com.persiantools4j.Validator;
-import com.persiantools4j.bank.Bank;
+import com.persiantools4j.module.bank.Bank;
 
 import java.util.Optional;
 

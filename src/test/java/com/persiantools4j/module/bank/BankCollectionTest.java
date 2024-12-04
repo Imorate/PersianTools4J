@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.bank;
+package com.persiantools4j.module.bank;
 
 import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.BeforeAll;

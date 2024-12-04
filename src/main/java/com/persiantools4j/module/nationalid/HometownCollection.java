@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.bank;
+package com.persiantools4j.module.nationalid;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,46 +30,46 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The {@code BankCollection} class implements the {@link Collectable} interface to provide a collection
- * of {@link Bank} objects. It follows the Singleton design pattern to ensure that only a single instance
+ * The {@code HometownCollection} class implements the {@link Collectable} interface to provide a collection
+ * of {@link Hometown} objects. It follows the Singleton design pattern to ensure that only a single instance
  * of this class is used throughout the application.
  * <p>
- * The bank data is loaded from a JSON file ({@code bank/banks-data.json}) the first time the
+ * The hometown data is loaded from a JSON file ({@code nationalid/hometown-data.json}) the first time the
  * collection is accessed.
  */
-public final class BankCollection implements Collectable<Bank> {
+public final class HometownCollection implements Collectable<Hometown> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BankCollection.class);
-    private List<Bank> collection;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HometownCollection.class);
+    private List<Hometown> collection;
 
     /**
      * Private constructor to prevent direct instantiation. The data is read from the
-     * {@code bank/banks-data.json} file and parsed into a {@link List} of {@link Bank} objects.
+     * {@code nationalid/hometown-data.json} file and parsed into a {@link List} of {@link Hometown} objects.
      */
     @Generated
-    private BankCollection() {
+    private HometownCollection() {
         ObjectMapper objectMapper = ObjectMapperWrapper.getInstance();
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        try (InputStream inputStream = contextClassLoader.getResourceAsStream("bank/banks-data.json")) {
-            collection = objectMapper.readValue(inputStream, new TypeReference<List<Bank>>() {
+        try (InputStream inputStream = contextClassLoader.getResourceAsStream("nationalid/hometown-data.json")) {
+            collection = objectMapper.readValue(inputStream, new TypeReference<List<Hometown>>() {
             });
         } catch (IOException e) {
-            LOGGER.error("Bank collection cannot be parsed", e);
+            LOGGER.error("Hometown collection cannot be parsed", e);
             collection = Collections.emptyList();
         }
     }
 
     /**
-     * Retrieves the singleton instance of {@code BankCollection}.
+     * Retrieves the singleton instance of {@code HometownCollection}.
      *
-     * @return the singleton instance of {@code BankCollection}
+     * @return the singleton instance of {@code HometownCollection}
      */
-    public static BankCollection getInstance() {
+    public static HometownCollection getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
     @Override
-    public List<Bank> getCollection() {
+    public List<Hometown> getCollection() {
         return collection;
     }
 
@@ -77,7 +77,7 @@ public final class BankCollection implements Collectable<Bank> {
      * Private static helper class to implement the Singleton design pattern.
      */
     private static class InstanceHolder {
-        private static final BankCollection INSTANCE = new BankCollection();
+        private static final HometownCollection INSTANCE = new HometownCollection();
     }
 
 }

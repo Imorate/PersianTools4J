@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.cardnumber;
+package com.persiantools4j.module.cardnumber;
 
-import com.persiantools4j.bank.Bank;
 import com.persiantools4j.exception.ValidationException;
+import com.persiantools4j.module.bank.Bank;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -120,7 +120,7 @@ class CardNumberServiceImplTest {
     class IsValidTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
+        @MethodSource("com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
         @DisplayName("Valid card number test")
         void testValidCardNumber(String cardNumber) {
             assertThat(cardNumberService.isValid(cardNumber)).isTrue();
@@ -128,8 +128,8 @@ class CardNumberServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
-                "com.persiantools4j.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
+                "com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
+                "com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
         })
         @DisplayName("Invalid card number test")
         void testInvalidCardNumber(String cardNumber) {
@@ -143,7 +143,7 @@ class CardNumberServiceImplTest {
     class ValidationTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
+        @MethodSource("com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
         @DisplayName("Card number validation test")
         void testValidateCardNumber(String cardNumber) {
             assertThatCode(() -> cardNumberService.validate(cardNumber)).doesNotThrowAnyException();
@@ -151,8 +151,8 @@ class CardNumberServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
-                "com.persiantools4j.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
+                "com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
+                "com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
         })
         @DisplayName("Exceptional format validation card number test")
         void testExceptionFormatValidateCardNumber(String cardNumber) {
@@ -166,7 +166,7 @@ class CardNumberServiceImplTest {
     class FindBankTests {
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
+        @MethodSource("com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
         @DisplayName("Valid card number find bank test")
         void testValidCardNumberFindBank(String cardNumber) {
             Optional<Bank> bankOptional = cardNumberService.findBank(cardNumber);
@@ -192,8 +192,8 @@ class CardNumberServiceImplTest {
 
         @ParameterizedTest
         @MethodSource({
-                "com.persiantools4j.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
-                "com.persiantools4j.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
+                "com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
+                "com.persiantools4j.module.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
         })
         @DisplayName("Invalid card number find bank test")
         void testInvalidCardNumberFindBank(String cardNumber) {

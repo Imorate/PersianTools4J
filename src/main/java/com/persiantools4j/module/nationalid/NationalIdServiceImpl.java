@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.nationalid;
+package com.persiantools4j.module.nationalid;
 
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
