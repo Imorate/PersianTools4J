@@ -19,12 +19,11 @@ package com.persiantools4j.exception;
 /**
  * The {@code ParseException} thrown when an error occurs during the parsing of an input.
  * <p>
- * This exception indicates that a parsing operation failed, usually because
- * the input was invalid, malformed, or did not meet the required format. The
- * exception may provide details on the reason for failure or which part of the
+ * This exception indicates that a parsing operation failed, usually because the input was invalid, malformed or
+ * did not meet the required format. The exception may provide details on the reason for failure or which part of the
  * input caused the issue.
  */
-public final class ParseException extends IllegalArgumentException {
+public class ParseException extends IllegalArgumentException {
 
     /**
      * Constructs a new {@code ParseException} with the specified detail message.

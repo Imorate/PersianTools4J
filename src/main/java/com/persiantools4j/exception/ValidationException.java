@@ -22,12 +22,10 @@ package com.persiantools4j.exception;
  * This exception extends {@link IllegalArgumentException}, indicating that the input or argument provided
  * does not meet the required validation criteria.
  */
-public final class ValidationException extends IllegalArgumentException {
+public class ValidationException extends IllegalArgumentException {
 
     /**
      * Constructs a new {@code ValidationException} with the specified detail message.
-     * <p>
-     * The detail message provides more information about why the validation failed.
      *
      * @param s the detail message explaining the reason for the validation failure
      */
