@@ -19,17 +19,17 @@ package com.persiantools4j;
 import java.util.List;
 
 /**
- * The {@code Collectable} interface defines a contract for objects that can provide
- * a collection of items of a specified type {@code T}.
+ * The {@code Collectable} interface defines a contract for objects that are capable of
+ * providing a collection of items of a specified type {@code T}.
  *
- * @param <T> the type of elements held in the collection
+ * @param <T> the type of elements contained in the collection
  */
 public interface Collectable<T> {
 
     /**
      * Retrieves the collection of elements.
      *
-     * @return a {@link List} containing elements of type {@code T}
+     * @return a {@link List} of elements of type {@code T}
      */
     List<T> getCollection();
 

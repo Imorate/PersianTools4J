@@ -20,6 +20,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.Collectable;
 import com.persiantools4j.Generated;
+import com.persiantools4j.objectmapper.ObjectMapperWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,44 +31,45 @@ import java.util.List;
 
 /**
  * The {@code BankCollection} class implements the {@link Collectable} interface to provide a collection
- * of {@link Bank} objects. This class follows the Singleton design pattern to ensure a single instance
- * is used throughout the application.
+ * of {@link Bank} objects. It follows the Singleton design pattern to ensure that only a single instance
+ * of this class is used throughout the application.
  * <p>
- * The bank data is read from a JSON file ({@code bank/banks-data.json}) when the collection
- * is accessed for the first time.
+ * The bank data is loaded from a JSON file ({@code bank/banks-data.json}) the first time the
+ * collection is accessed.
  */
 public final class BankCollection implements Collectable<Bank> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankCollection.class);
     private List<Bank> collection;
 
     /**
-     * Private constructor to prevent direct instantiation.
+     * Private constructor to prevent direct instantiation. The data is read from the
+     * {@code bank/banks-data.json} file and parsed into a {@link List} of {@link Bank} objects.
      */
+    @Generated
     private BankCollection() {
+        ObjectMapper objectMapper = ObjectMapperWrapper.getInstance();
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream inputStream = contextClassLoader.getResourceAsStream("bank/banks-data.json")) {
+            collection = objectMapper.readValue(inputStream, new TypeReference<List<Bank>>() {
+            });
+        } catch (IOException e) {
+            LOGGER.error("Bank collection cannot be parsed", e);
+            collection = Collections.emptyList();
+        }
     }
 
     /**
-     * Returns the singleton instance of {@code BankCollection}.
+     * Retrieves the singleton instance of {@code BankCollection}.
      *
-     * @return the single instance of {@code BankCollection}
+     * @return the singleton instance of {@code BankCollection}
      */
     public static BankCollection getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
-    @Generated
     @Override
     public List<Bank> getCollection() {
-        if (collection == null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-            try (InputStream inputStream = contextClassLoader.getResourceAsStream("bank/banks-data.json")) {
-                collection = objectMapper.readValue(inputStream, new TypeReference<List<Bank>>() {
-                });
-            } catch (IOException e) {
-                collection = Collections.emptyList();
-            }
-        }
         return collection;
     }
 

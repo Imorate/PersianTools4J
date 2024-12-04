@@ -20,6 +20,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.Collectable;
 import com.persiantools4j.Generated;
+import com.persiantools4j.objectmapper.ObjectMapperWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,44 +31,45 @@ import java.util.List;
 
 /**
  * The {@code HometownCollection} class implements the {@link Collectable} interface to provide a collection
- * of {@link Hometown} objects. This class follows the Singleton design pattern to ensure a single instance
- * is used throughout the application.
+ * of {@link Hometown} objects. It follows the Singleton design pattern to ensure that only a single instance
+ * of this class is used throughout the application.
  * <p>
- * The hometown data is read from a JSON file ({@code nationalid/hometown-data.json}) when the collection
- * is accessed for the first time.
+ * The hometown data is loaded from a JSON file ({@code nationalid/hometown-data.json}) the first time the
+ * collection is accessed.
  */
 public final class HometownCollection implements Collectable<Hometown> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HometownCollection.class);
     private List<Hometown> collection;
 
     /**
-     * Private constructor to prevent direct instantiation.
+     * Private constructor to prevent direct instantiation. The data is read from the
+     * {@code nationalid/hometown-data.json} file and parsed into a {@link List} of {@link Hometown} objects.
      */
+    @Generated
     private HometownCollection() {
+        ObjectMapper objectMapper = ObjectMapperWrapper.getInstance();
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream inputStream = contextClassLoader.getResourceAsStream("nationalid/hometown-data.json")) {
+            collection = objectMapper.readValue(inputStream, new TypeReference<List<Hometown>>() {
+            });
+        } catch (IOException e) {
+            LOGGER.error("Hometown collection cannot be parsed", e);
+            collection = Collections.emptyList();
+        }
     }
 
     /**
-     * Returns the singleton instance of {@code HometownCollection}.
+     * Retrieves the singleton instance of {@code HometownCollection}.
      *
-     * @return the single instance of {@code HometownCollection}
+     * @return the singleton instance of {@code HometownCollection}
      */
     public static HometownCollection getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
-    @Generated
     @Override
     public List<Hometown> getCollection() {
-        if (collection == null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-            try (InputStream inputStream = contextClassLoader.getResourceAsStream("nationalid/hometown-data.json")) {
-                collection = objectMapper.readValue(inputStream, new TypeReference<List<Hometown>>() {
-                });
-            } catch (IOException e) {
-                collection = Collections.emptyList();
-            }
-        }
         return collection;
     }
 
