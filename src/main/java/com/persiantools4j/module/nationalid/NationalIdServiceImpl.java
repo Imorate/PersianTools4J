@@ -52,9 +52,9 @@ public final class NationalIdServiceImpl implements NationalIdService {
     }
 
     /**
-     * Returns the singleton instance of {@code NationalIdServiceImpl}.
+     * Retrieves the singleton instance of {@code NationalIdServiceImpl}.
      *
-     * @return the single instance of {@code NationalIdServiceImpl}
+     * @return the singleton instance of {@code NationalIdServiceImpl}
      */
     public static NationalIdServiceImpl getInstance() {
         return InstanceHolder.INSTANCE;

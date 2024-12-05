@@ -47,9 +47,9 @@ public final class CardNumberServiceImpl implements CardNumberService {
     }
 
     /**
-     * Returns the singleton instance of {@code CardNumberServiceImpl}.
+     * Retrieves the singleton instance of {@code CardNumberServiceImpl}.
      *
-     * @return the single instance of {@code CardNumberServiceImpl}
+     * @return the singleton instance of {@code CardNumberServiceImpl}
      */
     public static CardNumberServiceImpl getInstance() {
         return InstanceHolder.INSTANCE;

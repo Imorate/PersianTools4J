@@ -39,9 +39,9 @@ public final class ObjectMapperWrapper {
     }
 
     /**
-     * Returns the singleton instance of {@link ObjectMapper}.
+     * Retrieves the singleton instance of {@link ObjectMapper}.
      *
-     * @return the single {@link ObjectMapper} instance
+     * @return the singleton instance of {@link ObjectMapper}
      */
     public static ObjectMapper getInstance() {
         return ObjectMapperWrapper.InstanceHolder.INSTANCE;

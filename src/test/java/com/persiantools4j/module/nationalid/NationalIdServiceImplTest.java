@@ -142,11 +142,11 @@ class NationalIdServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Get instance tests")
-    class GetInstanceTests {
+    @DisplayName("Get instance")
+    class GetInstanceTest {
 
         @Test
-        @DisplayName("Non-thread-safe test")
+        @DisplayName("Non-thread-safe")
         void testGetInstance() {
             NationalIdService firstNationalIdService = NationalIdServiceImpl.getInstance();
             assertThat(firstNationalIdService).isNotNull();
@@ -156,7 +156,7 @@ class NationalIdServiceImplTest {
         }
 
         @Test
-        @DisplayName("Thread-safe test")
+        @DisplayName("Thread-safe")
         void testGetInstanceThreadSafe() throws InterruptedException {
             NationalIdService[] nationalIdServices = new NationalIdService[2];
             Thread firstThread = new Thread(() -> nationalIdServices[0] = NationalIdServiceImpl.getInstance());
@@ -173,22 +173,22 @@ class NationalIdServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Is valid tests")
-    class IsValidTests {
+    @DisplayName("Is valid")
+    class IsValidTest {
 
         @ParameterizedTest
+        @DisplayName("Valid national ID")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
-        @DisplayName("Valid national ID test")
         void testValidNationalId(String nationalId) {
             assertThat(nationalIdService.isValid(nationalId)).isTrue();
         }
 
         @ParameterizedTest
+        @DisplayName("Invalid national ID")
         @MethodSource({
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
-        @DisplayName("Invalid national ID test")
         void testInvalidNationalId(String nationalId) {
             assertThat(nationalIdService.isValid(nationalId)).isFalse();
         }
@@ -196,22 +196,22 @@ class NationalIdServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Validation tests")
-    class ValidationTests {
+    @DisplayName("Validation")
+    class ValidationTest {
 
         @ParameterizedTest
+        @DisplayName("National ID validation")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
-        @DisplayName("National ID validation test")
         void testValidateNationalId(String nationalId) {
             assertThatCode(() -> nationalIdService.validate(nationalId)).doesNotThrowAnyException();
         }
 
         @ParameterizedTest
+        @DisplayName("Exceptional validation national ID")
         @MethodSource({
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
-        @DisplayName("Exceptional validation national ID test")
         void testExceptionValidateNationalId(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.validate(nationalId)).isInstanceOf(ValidationException.class);
         }
@@ -220,11 +220,11 @@ class NationalIdServiceImplTest {
 
     @Nested
     @DisplayName("Find hometown")
-    class FindHometownTests {
+    class FindHometownTest {
 
         @ParameterizedTest
+        @DisplayName("Valid national ID find hometown")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
-        @DisplayName("Valid national ID find hometown test")
         void testValidNationalIdFindHometown(String nationalId) {
             List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
             assertThat(hometownList)
@@ -233,7 +233,7 @@ class NationalIdServiceImplTest {
         }
 
         @Test
-        @DisplayName("Single valid national ID find single hometown test")
+        @DisplayName("Single valid national ID find single hometown")
         void testSingleValidNationalIdFindHometown() {
             List<Hometown> hometownList = nationalIdService.findHometown("2791567895");
             assertThat(hometownList)
@@ -242,8 +242,8 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
-        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases")
         @DisplayName("Valid national ID with multiple hometowns")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdWithMultipleHometownCases")
         void testValidNationalIdWithMultipleHometowns(String nationalId) {
             List<Hometown> hometownList = nationalIdService.findHometown(nationalId);
             assertThat(hometownList)
@@ -251,11 +251,11 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
+        @DisplayName("Invalid national ID find hometown")
         @MethodSource({
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
-        @DisplayName("Invalid national ID find hometown test")
         void testInvalidNationalIdFindHometown(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.findHometown(nationalId)).isInstanceOf(ValidationException.class);
         }
@@ -264,11 +264,11 @@ class NationalIdServiceImplTest {
 
     @Nested
     @DisplayName("Parse national ID")
-    class ParseNationalIdTests {
+    class ParseNationalIdTest {
 
         @ParameterizedTest
+        @DisplayName("Valid national ID parse")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#validNationalIdCases")
-        @DisplayName("Valid national ID parse test")
         void testValidNationalIdParse(String nationalId) {
             NationalId actualNationalId = nationalIdService.parse(nationalId);
             assertThat(actualNationalId).isNotNull();
@@ -281,7 +281,7 @@ class NationalIdServiceImplTest {
         }
 
         @Test
-        @DisplayName("Single valid national ID parse test")
+        @DisplayName("Single valid national ID parse")
         void testSingleValidNationalIdParse() {
             NationalId nationalId = nationalIdService.parse("2791567895");
             assertThat(nationalId).isNotNull();
@@ -295,18 +295,18 @@ class NationalIdServiceImplTest {
         }
 
         @ParameterizedTest
+        @DisplayName("Invalid national ID parse")
         @MethodSource({
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdFormatCases",
                 "com.persiantools4j.module.nationalid.NationalIdServiceImplTest#invalidNationalIdCases"
         })
-        @DisplayName("Invalid national ID parse test")
         void testInvalidNationalIdParse(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.parse(nationalId)).isInstanceOf(ValidationException.class);
         }
 
         @ParameterizedTest
+        @DisplayName("Not found national ID parse")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#notFoundHometownCases")
-        @DisplayName("Not found national ID parse test")
         void testNotFoundNationalIdParse(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.parse(nationalId)).isInstanceOf(ParseException.class);
         }
@@ -315,11 +315,11 @@ class NationalIdServiceImplTest {
 
     @Nested
     @DisplayName("Hometown collection")
-    class HometownCollectionTests {
+    class HometownCollectionTest {
 
         @Test
-        @DisplayName("Get populated hometown list test")
-        void testHometownPopulatedList() {
+        @DisplayName("Get populated hometown list")
+        void testPopulatedHometownList() {
             List<Hometown> hometownList = HometownCollection.getInstance().getCollection();
             Pattern hometownCodePattern = Pattern.compile("\\d{3}");
             Hometown expectedContainingHometown = new Hometown("تهران مرکزی", "تهران",
@@ -337,11 +337,11 @@ class NationalIdServiceImplTest {
         }
 
         @Nested
-        @DisplayName("Get instance tests")
-        class GetInstanceTests {
+        @DisplayName("Get instance")
+        class GetInstanceTest {
 
             @Test
-            @DisplayName("Non-thread-safe test")
+            @DisplayName("Non-thread-safe")
             void testGetInstance() {
                 HometownCollection firstHometownCollection = HometownCollection.getInstance();
                 assertThat(firstHometownCollection).isNotNull();
@@ -351,7 +351,7 @@ class NationalIdServiceImplTest {
             }
 
             @Test
-            @DisplayName("Thread-safe test")
+            @DisplayName("Thread-safe")
             void testGetInstanceThreadSafe() throws InterruptedException {
                 HometownCollection[] hometownCollections = new HometownCollection[2];
                 Thread firstThread = new Thread(() -> hometownCollections[0] = HometownCollection.getInstance());

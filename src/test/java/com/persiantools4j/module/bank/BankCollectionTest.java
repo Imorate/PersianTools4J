@@ -16,7 +16,6 @@
 
 package com.persiantools4j.module.bank;
 
-import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -41,17 +40,17 @@ class BankCollectionTest {
     }
 
     @Test
-    @DisplayName("Get populated bank list test")
-    void testHometownPopulatedList() {
+    @DisplayName("Get populated bank list")
+    void testPopulatedBankList() {
         List<Bank> bankList = bankCollection.getCollection();
         Pattern bankCodePattern = Pattern.compile("0\\d{2}");
         Bank expectedContainingBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
                 Collections.singletonList("012"), Arrays.asList(610433, 991975));
-        AssertionsForInterfaceTypes.assertThat(bankList)
+        assertThat(bankList)
                 .isNotNull()
                 .contains(expectedContainingBank)
                 .allSatisfy(bank -> {
-                    AssertionsForInterfaceTypes.assertThat(bank.getCodes())
+                    assertThat(bank.getCodes())
                             .isNotEmpty()
                             .allMatch(code -> bankCodePattern.matcher(code).matches());
                     assertThat(bank.getId()).isNotBlank();
@@ -61,11 +60,11 @@ class BankCollectionTest {
     }
 
     @Nested
-    @DisplayName("Get instance tests")
-    class GetInstanceTests {
+    @DisplayName("Get instance")
+    class GetInstanceTest {
 
         @Test
-        @DisplayName("Non-thread-safe test")
+        @DisplayName("Non-thread-safe")
         void testGetInstance() {
             BankCollection firstBankCollection = BankCollection.getInstance();
             assertThat(firstBankCollection).isNotNull();
@@ -75,7 +74,7 @@ class BankCollectionTest {
         }
 
         @Test
-        @DisplayName("Thread-safe test")
+        @DisplayName("Thread-safe")
         void testGetInstanceThreadSafe() throws InterruptedException {
             BankCollection[] bankCollections = new BankCollection[2];
             Thread firstThread = new Thread(() -> bankCollections[0] = BankCollection.getInstance());

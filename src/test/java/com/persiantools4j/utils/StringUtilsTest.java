@@ -91,6 +91,7 @@ class StringUtilsTest {
                 Arguments.of(null, false),
                 Arguments.of("", false),
                 Arguments.of(" ", false),
+                Arguments.of("test", false),
                 Arguments.of("۰۱۲۳۴۵۶۷۸۹", true),
                 Arguments.of("0123456789", true),
                 Arguments.of("سلام! این یک متن \"تست\"، جهت بررسی متون فارسی می‌باشد.", true),

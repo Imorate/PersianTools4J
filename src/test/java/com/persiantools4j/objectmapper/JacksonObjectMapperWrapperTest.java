@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Jackson object mapper wrapper")
-class ObjectMapperWrapperTest {
+class JacksonObjectMapperWrapperTest {
 
     private static ObjectMapper objectMapper;
 
@@ -55,7 +55,7 @@ class ObjectMapperWrapperTest {
     @Test
     @DisplayName("Module existence")
     void testModuleExistence() {
-        assertThat(ObjectMapperWrapper.getInstance().getRegisteredModuleIds())
+        assertThat(objectMapper.getRegisteredModuleIds())
                 .hasSize(1)
                 .containsOnly("Persian-Module");
     }
