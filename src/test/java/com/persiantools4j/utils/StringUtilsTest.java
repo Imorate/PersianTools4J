@@ -119,21 +119,21 @@ class StringUtilsTest {
 
     @ParameterizedTest
     @DisplayName("Is blank")
-    @MethodSource("com.persiantools4j.utils.StringUtilsTest#isBlankCases")
+    @MethodSource("isBlankCases")
     void testIsBlank(String input, boolean expected) {
         assertThat(StringUtils.isBlank(input)).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @DisplayName("To english digits")
-    @MethodSource("com.persiantools4j.utils.StringUtilsTest#toEnglishDigitsCases")
+    @MethodSource("toEnglishDigitsCases")
     void testToEnglishDigits(String input, String expected) {
         assertThat(StringUtils.toEnglishDigits(input)).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @DisplayName("Normalize persian")
-    @MethodSource("com.persiantools4j.utils.StringUtilsTest#normalizePersianCases")
+    @MethodSource("normalizePersianCases")
     void testNormalizePersian(String input, String expected) {
         assertThat(StringUtils.isPersian(input)).isFalse();
         assertThat(StringUtils.normalizePersian(input)).isEqualTo(expected);
@@ -141,7 +141,7 @@ class StringUtilsTest {
 
     @ParameterizedTest
     @DisplayName("Is persian")
-    @MethodSource("com.persiantools4j.utils.StringUtilsTest#isPersianStringCases")
+    @MethodSource("isPersianStringCases")
     void testIsPersian(String input, boolean expected) {
         assertThat(StringUtils.isPersian(input)).isEqualTo(expected);
     }

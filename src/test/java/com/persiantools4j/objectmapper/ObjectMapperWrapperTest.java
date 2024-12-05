@@ -62,7 +62,7 @@ class ObjectMapperWrapperTest {
 
     @ParameterizedTest
     @DisplayName("Deserialize")
-    @MethodSource("com.persiantools4j.objectmapper.ObjectMapperWrapperTest#deserializationCases")
+    @MethodSource("deserializationCases")
     void testDeserialize(String input, String expected) throws IOException {
         String serializedJsonObject = objectMapper.writeValueAsString(new JsonObject(input));
         JsonObject deserializedJsonObject = objectMapper.readValue(serializedJsonObject, JsonObject.class);
