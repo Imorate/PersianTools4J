@@ -136,8 +136,9 @@ class NationalIdServiceImplTest {
     @BeforeAll
     static void beforeAll() {
         nationalIdService = NationalIdServiceImpl.getInstance();
-        testHometown = Hometown.of(Arrays.asList("279", "280"), "آذربایجان غربی", "خوی");
-        hometownPredicate = hometown -> !hometown.getProvince().isEmpty() && !hometown.getCity().isEmpty() && !hometown.getCode().isEmpty();
+        testHometown = new Hometown("خوی", "آذربایجان غربی", Arrays.asList("279", "280"));
+        hometownPredicate = hometown -> !hometown.getProvince().isEmpty() && !hometown.getCity().isEmpty()
+                && !hometown.getCode().isEmpty();
     }
 
     @Nested
@@ -321,12 +322,12 @@ class NationalIdServiceImplTest {
         void testHometownPopulatedList() {
             List<Hometown> hometownList = HometownCollection.getInstance().getCollection();
             Pattern hometownCodePattern = Pattern.compile("\\d{3}");
+            Hometown expectedContainingHometown = new Hometown("تهران مرکزی", "تهران",
+                    Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
             AssertionsForInterfaceTypes.assertThat(hometownList)
                     .isNotNull()
-                    .contains(Hometown.of(
-                            Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"),
-                            "تهران", "تهران مرکزی")
-                    ).allSatisfy(hometown -> {
+                    .contains(expectedContainingHometown)
+                    .allSatisfy(hometown -> {
                         AssertionsForInterfaceTypes.assertThat(hometown.getCode())
                                 .isNotEmpty()
                                 .allMatch(code -> hometownCodePattern.matcher(code).matches());

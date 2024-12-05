@@ -123,10 +123,10 @@ public final class NationalIdServiceImpl implements NationalIdService {
         if (hometownList.isEmpty()) {
             throw new ParseException("Unable to find hometown associated to the national ID: " + nationalId);
         }
+        String controlDigit = nationalId.substring(9);
         NationalId nationalIdObj = new NationalId(nationalId);
         nationalIdObj.setHometownCode(nationalId.substring(0, 3));
-        nationalIdObj.setPersonalCode(nationalId.substring(3, nationalIdObj.getId().length() - 1));
-        String controlDigit = nationalIdObj.getId().substring(9);
+        nationalIdObj.setPersonalCode(nationalId.substring(3, nationalId.length() - 1));
         nationalIdObj.setControlDigit(Integer.parseInt(controlDigit));
         nationalIdObj.setHometownList(hometownList);
         return nationalIdObj;

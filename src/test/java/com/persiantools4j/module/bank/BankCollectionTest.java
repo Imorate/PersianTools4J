@@ -45,12 +45,12 @@ class BankCollectionTest {
     void testHometownPopulatedList() {
         List<Bank> bankList = bankCollection.getCollection();
         Pattern bankCodePattern = Pattern.compile("0\\d{2}");
+        Bank expectedContainingBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
+                Collections.singletonList("012"), Arrays.asList(610433, 991975));
         AssertionsForInterfaceTypes.assertThat(bankList)
                 .isNotNull()
-                .contains(
-                        Bank.of("mellat", "Mellat Bank", "بانک ملت",
-                                Collections.singletonList("012"), Arrays.asList(610433, 991975))
-                ).allSatisfy(bank -> {
+                .contains(expectedContainingBank)
+                .allSatisfy(bank -> {
                     AssertionsForInterfaceTypes.assertThat(bank.getCodes())
                             .isNotEmpty()
                             .allMatch(code -> bankCodePattern.matcher(code).matches());

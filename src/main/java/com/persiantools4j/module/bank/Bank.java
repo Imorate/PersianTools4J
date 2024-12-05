@@ -35,20 +35,21 @@ public final class Bank {
     private final String persianName;
     private final List<String> codes;
     private final List<Integer> bins;
-
+    
     /**
-     * Private constructor for creating an immutable Bank instance and also Jackson creator.
+     * Constructs an immutable {@code Bank} instance.
      * <p>
-     * To instantiate this class, use the static factory method {@link #of(String, String, String, List, List)}.
+     * This constructor is annotated with {@link JsonCreator} to enable Jackson deserialization,
+     * mapping the specified JSON properties to the corresponding fields.
      *
-     * @param id          the bank ID
-     * @param name        the name of the bank in English
-     * @param persianName the name of the bank in Persian (Farsi)
-     * @param codes       a list of code(s) associated to the bank
-     * @param bins        a list of BIN(s) associated to the bank
+     * @param id          the bank ID, mapped from the {@code "id"} JSON property
+     * @param name        the name of the bank in English, mapped from the {@code "name"} JSON property
+     * @param persianName the name of the bank in Persian (Farsi), mapped from the {@code "persianName"} JSON property
+     * @param codes       a list of code(s) associated to the bank, mapped from the {@code "codes"} JSON property
+     * @param bins        a list of BIN(s) associated to the bank, mapped from the {@code "bins"} JSON property
      */
     @JsonCreator
-    private Bank(
+    public Bank(
             @JsonProperty("id") String id,
             @JsonProperty("name") String name,
             @JsonProperty("persianName") String persianName,
@@ -60,20 +61,6 @@ public final class Bank {
         this.persianName = persianName;
         this.codes = codes;
         this.bins = bins;
-    }
-
-    /**
-     * Creates a new {@code Bank} instance with the specified ID, name, persian name, code(s), bin(s).
-     *
-     * @param id          the bank id
-     * @param name        the name of the bank in English
-     * @param persianName the name of the bank in Persian (Farsi)
-     * @param codes       a list of code(s) associated to the bank
-     * @param bins        a list of BIN(s) associated to the bank
-     * @return a new {@code Bank} instance
-     */
-    public static Bank of(String id, String name, String persianName, List<String> codes, List<Integer> bins) {
-        return new Bank(id, name, persianName, codes, bins);
     }
 
     /**

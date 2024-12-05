@@ -35,35 +35,26 @@ public final class Hometown {
     private final String city;
 
     /**
-     * Private constructor for creating an immutable {@code Hometown} instance and also Jackson creator.
+     * Constructs an immutable {@code Hometown} instance.
      * <p>
-     * To instantiate this class, use the static factory method {@link #of(List, String, String)}.
+     * This constructor is annotated with {@link JsonCreator} to enable Jackson deserialization,
+     * mapping the specified JSON properties to the corresponding fields.
      *
-     * @param code     a list of code(s) associated with the {@code Hometown}
-     * @param province the name of the province where the city is located
-     * @param city     the name of the city
+     * @param city     the name of the city, mapped from the {@code "city"} JSON property
+     * @param province the name of the province where the city is located,
+     *                 mapped from the {@code "province"} JSON property
+     * @param code     a list of code(s) associated with the {@code Hometown},
+     *                 mapped from the {@code "code"} JSON property
      */
     @JsonCreator
-    private Hometown(
-            @JsonProperty("code") List<String> code,
+    public Hometown(
+            @JsonProperty("city") String city,
             @JsonProperty("province") String province,
-            @JsonProperty("city") String city
+            @JsonProperty("code") List<String> code
     ) {
-        this.code = code;
-        this.province = province;
         this.city = city;
-    }
-
-    /**
-     * Creates a new {@code Hometown} instance with the specified code(s), province, and city.
-     *
-     * @param code     a list of code(s) representing the hometown
-     * @param province the name of the province where the city is located
-     * @param city     the name of the city
-     * @return a new {@code Hometown} instance
-     */
-    public static Hometown of(List<String> code, String province, String city) {
-        return new Hometown(code, province, city);
+        this.province = province;
+        this.code = code;
     }
 
     /**
