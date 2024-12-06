@@ -22,6 +22,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
 import java.util.stream.Stream;
@@ -48,14 +50,6 @@ class StringUtilsTest {
                 Arguments.of("1", "0", "1"),
                 Arguments.of("6104038932", "9", "2"),
                 Arguments.of("523", "2", "3")
-        );
-    }
-
-    private static Stream<Arguments> exceptionalNullOrEmptyGetNumericValueCases() {
-        return Stream.of(
-                Arguments.of((Object) null),
-                Arguments.of(""),
-                Arguments.of(" ")
         );
     }
 
@@ -160,7 +154,8 @@ class StringUtilsTest {
 
         @ParameterizedTest
         @DisplayName("Exceptional empty or null inputs")
-        @MethodSource("com.persiantools4j.utils.StringUtilsTest#exceptionalNullOrEmptyGetNumericValueCases")
+        @ValueSource(strings = " ")
+        @NullAndEmptySource
         void testExceptionalEmptyOrNullGetNumericValue(String input) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, 1))
                     .isInstanceOf(ValidationException.class)

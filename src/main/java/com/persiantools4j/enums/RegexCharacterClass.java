@@ -18,6 +18,7 @@ package com.persiantools4j.enums;
 
 /**
  * Enum representing various character classes for regex patterns.
+ * <p>
  * Specifically tailored for Persian and Arabic characters, numerics, symbols, and their combinations.
  */
 public enum RegexCharacterClass {
