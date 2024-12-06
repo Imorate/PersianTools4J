@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.nationalid;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,10 +30,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Hometown collection")
 class HometownCollectionTest {
 
+    private static HometownCollection hometownCollection;
+
+    @BeforeAll
+    static void beforeAll() {
+        hometownCollection = HometownCollection.getInstance();
+    }
+
     @Test
     @DisplayName("Get populated hometown list")
     void testPopulatedHometownList() {
-        List<Hometown> hometownList = HometownCollection.getInstance().getCollection();
+        List<Hometown> hometownList = hometownCollection.getCollection();
         Pattern hometownCodePattern = Pattern.compile("\\d{3}");
         Hometown expectedContainingHometown = new Hometown("تهران مرکزی", "تهران",
                 Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
