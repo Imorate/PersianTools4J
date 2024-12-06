@@ -18,8 +18,6 @@ package com.persiantools4j.module.nationalid;
 
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
-import org.assertj.core.api.AssertionsForClassTypes;
-import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +29,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
@@ -309,62 +306,6 @@ class NationalIdServiceImplTest {
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceImplTest#notFoundHometownCases")
         void testNotFoundNationalIdParse(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.parse(nationalId)).isInstanceOf(ParseException.class);
-        }
-
-    }
-
-    @Nested
-    @DisplayName("Hometown collection")
-    class HometownCollectionTest {
-
-        @Test
-        @DisplayName("Get populated hometown list")
-        void testPopulatedHometownList() {
-            List<Hometown> hometownList = HometownCollection.getInstance().getCollection();
-            Pattern hometownCodePattern = Pattern.compile("\\d{3}");
-            Hometown expectedContainingHometown = new Hometown("تهران مرکزی", "تهران",
-                    Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
-            AssertionsForInterfaceTypes.assertThat(hometownList)
-                    .isNotNull()
-                    .contains(expectedContainingHometown)
-                    .allSatisfy(hometown -> {
-                        AssertionsForInterfaceTypes.assertThat(hometown.getCode())
-                                .isNotEmpty()
-                                .allMatch(code -> hometownCodePattern.matcher(code).matches());
-                        AssertionsForClassTypes.assertThat(hometown.getCity()).isNotBlank();
-                        AssertionsForClassTypes.assertThat(hometown.getProvince()).isNotBlank();
-                    });
-        }
-
-        @Nested
-        @DisplayName("Get instance")
-        class GetInstanceTest {
-
-            @Test
-            @DisplayName("Non-thread-safe")
-            void testGetInstance() {
-                HometownCollection firstHometownCollection = HometownCollection.getInstance();
-                assertThat(firstHometownCollection).isNotNull();
-                HometownCollection secondHometownCollection = HometownCollection.getInstance();
-                assertThat(secondHometownCollection).isNotNull();
-                assertThat(firstHometownCollection).isSameAs(secondHometownCollection);
-            }
-
-            @Test
-            @DisplayName("Thread-safe")
-            void testGetInstanceThreadSafe() throws InterruptedException {
-                HometownCollection[] hometownCollections = new HometownCollection[2];
-                Thread firstThread = new Thread(() -> hometownCollections[0] = HometownCollection.getInstance());
-                Thread secondThread = new Thread(() -> hometownCollections[1] = HometownCollection.getInstance());
-                firstThread.start();
-                secondThread.start();
-                firstThread.join();
-                secondThread.join();
-                assertThat(hometownCollections[0]).isNotNull();
-                assertThat(hometownCollections[1]).isNotNull();
-                assertThat(hometownCollections[0]).isSameAs(hometownCollections[1]);
-            }
-
         }
 
     }
