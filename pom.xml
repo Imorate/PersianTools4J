@@ -40,8 +40,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.organization>imorate</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <junit.version>5.11.3</junit.version>
         <asserj.version>3.26.3</asserj.version>
         <jackson-databind.version>2.18.2</jackson-databind.version>
