@@ -31,12 +31,12 @@ public final class StringUtils {
     public static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
     private static final Pattern ENGLISH_NUMERIC_PATTERN = Pattern.compile("\\d+");
     private static final Pattern PERSIAN_ARABIC_NUMERIC_PATTERN =
-            Pattern.compile(String.format("[%s%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr(),
-                    RegexCharacterClass.ARABIC_NUMERIC.getClassStr()));
+            Pattern.compile("[" + RegexCharacterClass.PERSIAN_NUMERIC.getClassStr() +
+                    RegexCharacterClass.ARABIC_NUMERIC.getClassStr() + "]");
     private static final Pattern PERSIAN_NUMERIC_PATTERN =
-            Pattern.compile(String.format("[%s]", RegexCharacterClass.PERSIAN_NUMERIC.getClassStr()));
+            Pattern.compile("[" + RegexCharacterClass.PERSIAN_NUMERIC.getClassStr() + "]");
     private static final Pattern ARABIC_NUMERIC_PATTERN =
-            Pattern.compile(String.format("[%s]", RegexCharacterClass.ARABIC_NUMERIC.getClassStr()));
+            Pattern.compile("[" + RegexCharacterClass.ARABIC_NUMERIC.getClassStr() + "]");
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -123,7 +123,7 @@ public final class StringUtils {
         }
         input = input.trim();
         String regex = RegexCharacterClass.PERSIAN.getClassStr();
-        return input.matches(String.format("[%s\\s]+", regex));
+        return input.matches("[" + regex + "\\s]+");
     }
 
     /**
@@ -153,9 +153,9 @@ public final class StringUtils {
         }
         matcher.appendTail(result);
         return result.toString()
-                .replaceAll(String.format("[%s]", RegexCharacterClass.ARABIC_YEH.getClassStr()), "ی")
-                .replaceAll(String.format("[%s]", RegexCharacterClass.ARABIC_KAF.getClassStr()), "ک")
-                .replaceAll(String.format("[%s]", RegexCharacterClass.ARABIC_WAW.getClassStr()), "و");
+                .replaceAll("[" + RegexCharacterClass.ARABIC_YEH.getClassStr() + "]", "ی")
+                .replaceAll("[" + RegexCharacterClass.ARABIC_KAF.getClassStr() + "]", "ک")
+                .replaceAll("[" + RegexCharacterClass.ARABIC_WAW.getClassStr() + "]", "و");
     }
 
 }

@@ -108,7 +108,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
     @Override
     public Optional<Bank> findBank(String cardNumber) {
         validate(cardNumber);
-        int firstSixDigits = Integer.parseInt(cardNumber.substring(0, 6));
+        String firstSixDigits = cardNumber.substring(0, 6);
         return BankCollection.getInstance()
                 .getCollection().stream()
                 .filter(bank -> bank.getBins().contains(firstSixDigits))

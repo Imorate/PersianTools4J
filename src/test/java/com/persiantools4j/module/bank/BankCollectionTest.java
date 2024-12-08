@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.bank;
 
+import com.persiantools4j.enums.RegexCharacterClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,8 +24,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,30 +32,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BankCollectionTest {
 
     private static BankCollection bankCollection;
+    private static Bank testBank;
 
     @BeforeAll
     static void beforeAll() {
         bankCollection = BankCollection.getInstance();
+        testBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
+                Collections.singletonList("012"), Arrays.asList("610433", "991975"));
     }
 
     @Test
     @DisplayName("Get populated bank list")
     void testPopulatedBankList() {
-        List<Bank> bankList = bankCollection.getCollection();
-        Pattern bankCodePattern = Pattern.compile("0\\d{2}");
-        Bank expectedContainingBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
-                Collections.singletonList("012"), Arrays.asList(610433, 991975));
-        assertThat(bankList)
+        assertThat(bankCollection.getCollection())
                 .isNotNull()
-                .contains(expectedContainingBank)
+                .isNotEmpty()
+                .contains(testBank)
                 .allSatisfy(bank -> {
                     assertThat(bank.getCodes())
+                            .isNotNull()
                             .isNotEmpty()
-                            .allMatch(code -> bankCodePattern.matcher(code).matches());
-                    assertThat(bank.getId()).isNotBlank();
-                    assertThat(bank.getName()).isNotBlank();
-                    assertThat(bank.getPersianName()).isNotBlank();
-                });
+                            .allMatch(code -> code.matches("0\\d{2}"));
+                    assertThat(bank.getId())
+                            .isNotBlank()
+                            .matches(id -> id.matches("[a-z-]+"));
+                    assertThat(bank.getName())
+                            .isNotBlank()
+                            .matches(name -> name.matches("[a-zA-Z-\\s]+"));
+                    assertThat(bank.getPersianName())
+                            .isNotBlank()
+                            .matches(persianName -> persianName.matches("[" +
+                                    RegexCharacterClass.PERSIAN_ALPHABET.getClassStr() + "\\s]+"));
+                })
+                .anySatisfy(bank -> assertThat(bank.getBins())
+                        .isNotNull()
+                        .isNotEmpty()
+                        .allMatch(bin -> bin.matches("\\d{6}")));
     }
 
     @Nested

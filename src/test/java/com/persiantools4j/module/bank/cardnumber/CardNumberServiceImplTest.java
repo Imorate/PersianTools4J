@@ -184,7 +184,7 @@ class CardNumberServiceImplTest {
         @DisplayName("Single valid card number find bank")
         void testSingleValidCardNumberFindBank() {
             Bank expectedHometown = new Bank("keshavarzi", "Keshavarzi", "بانک کشاورزی",
-                    Collections.singletonList("016"), Arrays.asList(603770, 639217));
+                    Collections.singletonList("016"), Arrays.asList("603770", "639217"));
             Optional<Bank> bankOptional = cardNumberService.findBank("6037701689095443");
             assertThat(bankOptional).isPresent();
             bankOptional.ifPresent(bank -> assertThat(bank).isEqualTo(expectedHometown));

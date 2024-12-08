@@ -34,8 +34,8 @@ public final class Bank {
     private final String name;
     private final String persianName;
     private final List<String> codes;
-    private final List<Integer> bins;
-    
+    private final List<String> bins;
+
     /**
      * Constructs an immutable {@code Bank} instance.
      * <p>
@@ -54,7 +54,7 @@ public final class Bank {
             @JsonProperty("name") String name,
             @JsonProperty("persianName") String persianName,
             @JsonProperty("code") List<String> codes,
-            @JsonProperty("bin") List<Integer> bins
+            @JsonProperty("bin") List<String> bins
     ) {
         this.id = id;
         this.name = name;
@@ -104,7 +104,7 @@ public final class Bank {
      *
      * @return the list of BIN(s)
      */
-    public List<Integer> getBins() {
+    public List<String> getBins() {
         return bins;
     }
 

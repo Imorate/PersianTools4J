@@ -16,14 +16,13 @@
 
 package com.persiantools4j.module.nationalid;
 
+import com.persiantools4j.enums.RegexCharacterClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,28 +30,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HometownCollectionTest {
 
     private static HometownCollection hometownCollection;
+    private static Hometown testHometown;
 
     @BeforeAll
     static void beforeAll() {
         hometownCollection = HometownCollection.getInstance();
+        testHometown = new Hometown("تهران مرکزی", "تهران",
+                Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
     }
 
     @Test
     @DisplayName("Get populated hometown list")
     void testPopulatedHometownList() {
-        List<Hometown> hometownList = hometownCollection.getCollection();
-        Pattern hometownCodePattern = Pattern.compile("\\d{3}");
-        Hometown expectedContainingHometown = new Hometown("تهران مرکزی", "تهران",
-                Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
-        assertThat(hometownList)
+        assertThat(hometownCollection.getCollection())
                 .isNotNull()
-                .contains(expectedContainingHometown)
+                .isNotEmpty()
+                .contains(testHometown)
                 .allSatisfy(hometown -> {
                     assertThat(hometown.getCode())
+                            .isNotNull()
                             .isNotEmpty()
-                            .allMatch(code -> hometownCodePattern.matcher(code).matches());
-                    assertThat(hometown.getCity()).isNotBlank();
-                    assertThat(hometown.getProvince()).isNotBlank();
+                            .allMatch(code -> code.matches("\\d{3}"));
+                    assertThat(hometown.getCity())
+                            .isNotBlank()
+                            .matches(persianName -> persianName.matches("[" +
+                                    RegexCharacterClass.PERSIAN_ALPHABET.getClassStr() + "()0-9\\s]+"));
+                    assertThat(hometown.getProvince())
+                            .isNotBlank()
+                            .matches(persianName -> persianName.matches("[" +
+                                    RegexCharacterClass.PERSIAN_ALPHABET.getClassStr() + "\\s]+"));
                 });
     }
 
