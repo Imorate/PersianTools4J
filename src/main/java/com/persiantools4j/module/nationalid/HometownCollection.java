@@ -19,7 +19,6 @@ package com.persiantools4j.module.nationalid;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.persiantools4j.Collectable;
-import com.persiantools4j.Generated;
 import com.persiantools4j.objectmapper.ObjectMapperWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +45,6 @@ public final class HometownCollection implements Collectable<Hometown> {
      * Private constructor to prevent direct instantiation. The data is read from the
      * {@code nationalid/hometown-data.json} file and parsed into a {@link List} of {@link Hometown} objects.
      */
-    @Generated
     private HometownCollection() {
         ObjectMapper objectMapper = ObjectMapperWrapper.getInstance();
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
