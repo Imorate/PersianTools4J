@@ -9,6 +9,10 @@ on:
     paths-ignore:
       - README.md
   workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+  checks: write
 jobs:
   build:
     name: Build and analyze
@@ -34,7 +38,7 @@ jobs:
         if: success() || failure()
         with:
           name: JUnit Tests
-          path: ./target/surefire-reports/TEST-*.xml
+          path: target/surefire-reports/TEST-*.xml
           reporter: java-junit
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
