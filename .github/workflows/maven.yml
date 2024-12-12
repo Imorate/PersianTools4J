@@ -40,7 +40,4 @@ jobs:
           name: JUnit Tests
           path: target/surefire-reports/TEST-*.xml
           reporter: java-junit
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          only-summary: 'false'
