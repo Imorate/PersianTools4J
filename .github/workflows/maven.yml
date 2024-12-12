@@ -38,6 +38,7 @@ jobs:
         if: success() || failure()
         with:
           name: JUnit Tests
-          path: target/surefire-reports/TEST-*.xml
+          working-directory: 'target/surefire-reports'
+          path: TEST-*.xml
           reporter: java-junit
           only-summary: 'true'
