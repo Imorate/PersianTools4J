@@ -40,4 +40,4 @@ jobs:
           name: JUnit Tests
           path: target/surefire-reports/TEST-*.xml
           reporter: java-junit
-          only-summary: 'false'
+          only-summary: 'true'
