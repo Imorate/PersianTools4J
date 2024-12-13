@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.nationalid;
 
+import com.persiantools4j.Collectable;
 import com.persiantools4j.enums.RegexCharacterClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Hometown collection")
 class HometownCollectionTest {
 
-    private static HometownCollection hometownCollection;
+    private static Collectable<Hometown> hometownCollection;
     private static Hometown testHometown;
 
     @BeforeAll

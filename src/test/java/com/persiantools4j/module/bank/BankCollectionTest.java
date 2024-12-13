@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.bank;
 
+import com.persiantools4j.Collectable;
 import com.persiantools4j.enums.RegexCharacterClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Bank collection")
 class BankCollectionTest {
 
-    private static BankCollection bankCollection;
+    private static Collectable<Bank> bankCollection;
     private static Bank testBank;
 
     @BeforeAll
