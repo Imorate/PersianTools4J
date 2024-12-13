@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.utils;
+package com.persiantools4j.util;
 
 import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.DisplayName;
@@ -147,7 +147,7 @@ class StringUtilsTest {
 
         @ParameterizedTest
         @DisplayName("Valid inputs")
-        @MethodSource("com.persiantools4j.utils.StringUtilsTest#getNumericValueCases")
+        @MethodSource("com.persiantools4j.util.StringUtilsTest#getNumericValueCases")
         void testGetNumericValue(String input, int index, int expected) {
             assertThat(StringUtils.getNumericValue(input, index)).isEqualTo(expected);
         }
@@ -164,7 +164,7 @@ class StringUtilsTest {
 
         @ParameterizedTest
         @DisplayName("Exceptional invalid inputs")
-        @MethodSource("com.persiantools4j.utils.StringUtilsTest#exceptionalInvalidGetNumericValueCases")
+        @MethodSource("com.persiantools4j.util.StringUtilsTest#exceptionalInvalidGetNumericValueCases")
         void testExceptionalInvalidGetNumericValue(String input, int index) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, index))
                     .isInstanceOf(ValidationException.class)

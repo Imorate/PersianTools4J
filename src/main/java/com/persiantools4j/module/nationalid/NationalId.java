@@ -17,6 +17,7 @@
 package com.persiantools4j.module.nationalid;
 
 import com.persiantools4j.Generated;
+import com.persiantools4j.collection.hometown.Hometown;
 
 import java.util.List;
 import java.util.Objects;

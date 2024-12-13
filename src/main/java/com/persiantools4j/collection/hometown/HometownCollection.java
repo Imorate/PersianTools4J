@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.module.nationalid;
+package com.persiantools4j.collection.hometown;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

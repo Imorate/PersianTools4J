@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.module.bank;
+package com.persiantools4j.collection.bank;
 
 import com.persiantools4j.Collectable;
 import com.persiantools4j.enums.RegexCharacterClass;

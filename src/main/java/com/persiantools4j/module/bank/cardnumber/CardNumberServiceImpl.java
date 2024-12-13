@@ -16,10 +16,10 @@
 
 package com.persiantools4j.module.bank.cardnumber;
 
+import com.persiantools4j.collection.bank.Bank;
+import com.persiantools4j.collection.bank.BankCollection;
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.module.bank.Bank;
-import com.persiantools4j.module.bank.BankCollection;
-import com.persiantools4j.utils.StringUtils;
+import com.persiantools4j.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

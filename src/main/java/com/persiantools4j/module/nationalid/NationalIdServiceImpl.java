@@ -16,9 +16,11 @@
 
 package com.persiantools4j.module.nationalid;
 
+import com.persiantools4j.collection.hometown.Hometown;
+import com.persiantools4j.collection.hometown.HometownCollection;
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.utils.StringUtils;
+import com.persiantools4j.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.module.bank;
+package com.persiantools4j.collection.bank;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

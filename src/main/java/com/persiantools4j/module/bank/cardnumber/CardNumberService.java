@@ -17,7 +17,7 @@
 package com.persiantools4j.module.bank.cardnumber;
 
 import com.persiantools4j.Validator;
-import com.persiantools4j.module.bank.Bank;
+import com.persiantools4j.collection.bank.Bank;
 
 import java.util.Optional;
 

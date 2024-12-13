@@ -18,6 +18,7 @@ package com.persiantools4j.module.nationalid;
 
 import com.persiantools4j.Parsable;
 import com.persiantools4j.Validator;
+import com.persiantools4j.collection.hometown.Hometown;
 
 import java.util.List;
 

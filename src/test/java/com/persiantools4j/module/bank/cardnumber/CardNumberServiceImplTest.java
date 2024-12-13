@@ -16,8 +16,8 @@
 
 package com.persiantools4j.module.bank.cardnumber;
 
+import com.persiantools4j.collection.bank.Bank;
 import com.persiantools4j.exception.ValidationException;
-import com.persiantools4j.module.bank.Bank;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

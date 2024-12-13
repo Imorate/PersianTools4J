@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.persiantools4j.utils;
+package com.persiantools4j.util;
 
 import com.persiantools4j.enums.RegexCharacterClass;
 import com.persiantools4j.exception.ValidationException;

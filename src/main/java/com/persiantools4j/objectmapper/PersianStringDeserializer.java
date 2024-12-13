@@ -19,7 +19,7 @@ package com.persiantools4j.objectmapper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.persiantools4j.utils.StringUtils;
+import com.persiantools4j.util.StringUtils;
 
 import java.io.IOException;
 

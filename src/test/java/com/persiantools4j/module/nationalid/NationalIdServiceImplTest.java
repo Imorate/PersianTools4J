@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.nationalid;
 
+import com.persiantools4j.collection.hometown.Hometown;
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.BeforeAll;

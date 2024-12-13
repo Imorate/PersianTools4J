@@ -17,7 +17,7 @@
 package com.persiantools4j.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.persiantools4j.utils.StringUtils;
+import com.persiantools4j.util.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
