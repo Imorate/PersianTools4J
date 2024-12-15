@@ -35,9 +35,9 @@ import java.util.stream.IntStream;
  */
 public final class CardNumberServiceImpl implements CardNumberService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CardNumberServiceImpl.class);
     private static final Pattern CARD_NUMBER_PATTERN = Pattern.compile("\\d{16}");
     private static final Pattern CARD_NUMBER_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{15}");
-    private static final Logger LOGGER = LoggerFactory.getLogger(CardNumberServiceImpl.class);
 
     /**
      * Private constructor to prevent direct instantiation.
@@ -112,7 +112,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
         return BankCollection.getInstance()
                 .getCollection().stream()
                 .filter(bank -> bank.getBins().contains(firstSixDigits))
-                .findFirst();
+                .findAny();
     }
 
     /**

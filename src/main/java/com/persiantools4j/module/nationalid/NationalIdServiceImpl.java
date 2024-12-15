@@ -37,6 +37,7 @@ import java.util.stream.IntStream;
  */
 public final class NationalIdServiceImpl implements NationalIdService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(NationalIdServiceImpl.class);
     private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{10}");
 
     /**
@@ -44,7 +45,6 @@ public final class NationalIdServiceImpl implements NationalIdService {
      * Except for "1111111111", which is considered valid.
      */
     private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
-    private static final Logger LOGGER = LoggerFactory.getLogger(NationalIdServiceImpl.class);
 
     /**
      * Private constructor to prevent direct instantiation.
