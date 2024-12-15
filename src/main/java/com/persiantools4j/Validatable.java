@@ -19,11 +19,11 @@ package com.persiantools4j;
 import com.persiantools4j.exception.ValidationException;
 
 /**
- * The {@code Validator} interface defines a contract for validating objects of type {@code T}.
+ * The {@code Validatable} interface defines a contract for validating objects of type {@code T}.
  *
- * @param <T> the type of object that this {@code Validator} can validate
+ * @param <T> the type of object that this {@code Validatable} can validate
  */
-public interface Validator<T> {
+public interface Validatable<T> {
 
     /**
      * Checks if the specified object is valid.

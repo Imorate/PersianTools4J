@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Card number service")
-class CardNumberServiceImplTest {
+class CardNumberServiceTest {
 
     private static CardNumberService cardNumberService;
 
@@ -81,7 +81,7 @@ class CardNumberServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        cardNumberService = CardNumberServiceImpl.getInstance();
+        cardNumberService = CardNumberService.getInstance();
     }
 
     @Nested
@@ -91,9 +91,9 @@ class CardNumberServiceImplTest {
         @Test
         @DisplayName("Non-thread-safe")
         void testGetInstance() {
-            CardNumberService firstCardNumberService = CardNumberServiceImpl.getInstance();
+            CardNumberService firstCardNumberService = CardNumberService.getInstance();
             assertThat(firstCardNumberService).isNotNull();
-            CardNumberService secondCardNumberService = CardNumberServiceImpl.getInstance();
+            CardNumberService secondCardNumberService = CardNumberService.getInstance();
             assertThat(secondCardNumberService).isNotNull();
             assertThat(firstCardNumberService).isSameAs(secondCardNumberService);
         }
@@ -102,8 +102,8 @@ class CardNumberServiceImplTest {
         @DisplayName("Thread-safe")
         void testGetInstanceThreadSafe() throws InterruptedException {
             CardNumberService[] cardNumberServices = new CardNumberService[2];
-            Thread firstThread = new Thread(() -> cardNumberServices[0] = CardNumberServiceImpl.getInstance());
-            Thread secondThread = new Thread(() -> cardNumberServices[1] = CardNumberServiceImpl.getInstance());
+            Thread firstThread = new Thread(() -> cardNumberServices[0] = CardNumberService.getInstance());
+            Thread secondThread = new Thread(() -> cardNumberServices[1] = CardNumberService.getInstance());
             firstThread.start();
             secondThread.start();
             firstThread.join();
@@ -121,7 +121,7 @@ class CardNumberServiceImplTest {
 
         @ParameterizedTest
         @DisplayName("Valid card number")
-        @MethodSource("com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
+        @MethodSource("com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#validCardNumberCases")
         void testValidCardNumber(String cardNumber) {
             assertThat(cardNumberService.isValid(cardNumber)).isTrue();
         }
@@ -129,8 +129,8 @@ class CardNumberServiceImplTest {
         @ParameterizedTest
         @DisplayName("Invalid card number")
         @MethodSource({
-                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
-                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
+                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#invalidCardNumberFormatCases",
+                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#invalidCardNumberCases"
         })
         void testInvalidCardNumber(String cardNumber) {
             assertThat(cardNumberService.isValid(cardNumber)).isFalse();
@@ -144,7 +144,7 @@ class CardNumberServiceImplTest {
 
         @ParameterizedTest
         @DisplayName("Card number validation")
-        @MethodSource("com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
+        @MethodSource("com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#validCardNumberCases")
         void testValidateCardNumber(String cardNumber) {
             assertThatCode(() -> cardNumberService.validate(cardNumber)).doesNotThrowAnyException();
         }
@@ -152,8 +152,8 @@ class CardNumberServiceImplTest {
         @ParameterizedTest
         @DisplayName("Exceptional format validation card number")
         @MethodSource({
-                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
-                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
+                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#invalidCardNumberFormatCases",
+                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#invalidCardNumberCases"
         })
         void testExceptionFormatValidateCardNumber(String cardNumber) {
             assertThatThrownBy(() -> cardNumberService.validate(cardNumber)).isInstanceOf(ValidationException.class);
@@ -167,7 +167,7 @@ class CardNumberServiceImplTest {
 
         @ParameterizedTest
         @DisplayName("Valid card number find bank")
-        @MethodSource("com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#validCardNumberCases")
+        @MethodSource("com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#validCardNumberCases")
         void testValidCardNumberFindBank(String cardNumber) {
             Optional<Bank> bankOptional = cardNumberService.findBank(cardNumber);
             assertThat(bankOptional).isPresent();
@@ -193,8 +193,8 @@ class CardNumberServiceImplTest {
         @ParameterizedTest
         @DisplayName("Invalid card number find bank")
         @MethodSource({
-                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#invalidCardNumberFormatCases",
-                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceImplTest#invalidCardNumberCases"
+                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#invalidCardNumberFormatCases",
+                "com.persiantools4j.module.bank.cardnumber.CardNumberServiceTest#invalidCardNumberCases"
         })
         void testInvalidCardNumberFindBank(String cardNumber) {
             assertThatThrownBy(() -> cardNumberService.findBank(cardNumber)).isInstanceOf(ValidationException.class);
