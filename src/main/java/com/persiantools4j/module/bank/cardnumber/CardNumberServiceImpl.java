@@ -110,9 +110,7 @@ public final class CardNumberServiceImpl implements CardNumberService {
         validate(cardNumber);
         String firstSixDigits = cardNumber.substring(0, 6);
         return BankCollection.getInstance()
-                .getCollection().stream()
-                .filter(bank -> bank.getBins().contains(firstSixDigits))
-                .findAny();
+                .findBy(bank -> bank.getBins().contains(firstSixDigits));
     }
 
     /**

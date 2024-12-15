@@ -16,9 +16,9 @@
 
 package com.persiantools4j.collection.hometown;
 
-import com.persiantools4j.Collectable;
+import com.persiantools4j.collection.Collection;
+import com.persiantools4j.collection.CollectionTest;
 import com.persiantools4j.enums.RegexCharacterClass;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,22 +28,19 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Hometown collection")
-class HometownCollectionTest {
+class HometownCollectionTest extends CollectionTest<Hometown> {
 
-    private static Collectable<Hometown> hometownCollection;
-    private static Hometown testHometown;
-
-    @BeforeAll
-    static void beforeAll() {
-        hometownCollection = HometownCollection.getInstance();
-        testHometown = new Hometown("تهران مرکزی", "تهران",
-                Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
+    @Override
+    protected Collection<Hometown> getTestInstance() {
+        return HometownCollection.getInstance();
     }
 
     @Test
     @DisplayName("Get populated hometown list")
     void testPopulatedHometownList() {
-        assertThat(hometownCollection.getCollection())
+        Hometown testHometown = new Hometown("تهران مرکزی", "تهران",
+                Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
+        assertThat(getTestInstance().findAllBy(hometown -> true))
                 .isNotNull()
                 .isNotEmpty()
                 .contains(testHometown)

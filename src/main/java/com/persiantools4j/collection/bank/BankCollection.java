@@ -18,7 +18,7 @@ package com.persiantools4j.collection.bank;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.persiantools4j.Collectable;
+import com.persiantools4j.collection.Collection;
 import com.persiantools4j.objectmapper.ObjectMapperWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +29,16 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The {@code BankCollection} class implements the {@link Collectable} interface to provide a collection
+ * The {@code BankCollection} class extends the {@link Collection} abstract class to provide a collection
  * of {@link Bank} objects. It follows the Singleton design pattern to ensure that only a single instance
  * of this class is used throughout the application.
  * <p>
  * The bank data is loaded from a JSON file ({@code bank/banks-data.json}) the first time the
  * collection is accessed.
  */
-public final class BankCollection implements Collectable<Bank> {
+public final class BankCollection extends Collection<Bank> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BankCollection.class);
-    private List<Bank> collection;
 
     /**
      * Private constructor to prevent direct instantiation. The data is read from the
@@ -49,11 +48,11 @@ public final class BankCollection implements Collectable<Bank> {
         ObjectMapper objectMapper = ObjectMapperWrapper.getInstance();
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         try (InputStream inputStream = contextClassLoader.getResourceAsStream("bank/banks-data.json")) {
-            collection = objectMapper.readValue(inputStream, new TypeReference<List<Bank>>() {
+            collectionList = objectMapper.readValue(inputStream, new TypeReference<List<Bank>>() {
             });
         } catch (IOException e) {
             LOGGER.error("Bank collection cannot be parsed", e);
-            collection = Collections.emptyList();
+            collectionList = Collections.emptyList();
         }
     }
 
@@ -64,11 +63,6 @@ public final class BankCollection implements Collectable<Bank> {
      */
     public static BankCollection getInstance() {
         return InstanceHolder.INSTANCE;
-    }
-
-    @Override
-    public List<Bank> getCollection() {
-        return collection;
     }
 
     /**

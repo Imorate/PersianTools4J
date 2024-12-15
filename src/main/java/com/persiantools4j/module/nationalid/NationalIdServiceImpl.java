@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -114,9 +113,7 @@ public final class NationalIdServiceImpl implements NationalIdService {
         validate(nationalId);
         String firstThreeDigits = nationalId.substring(0, 3);
         return HometownCollection.getInstance()
-                .getCollection().stream()
-                .filter(hometown -> hometown.getCode().contains(firstThreeDigits))
-                .collect(Collectors.toList());
+                .findAllBy(hometown -> hometown.getCode().contains(firstThreeDigits));
     }
 
     @Override

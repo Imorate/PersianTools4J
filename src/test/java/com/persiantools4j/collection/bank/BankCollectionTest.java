@@ -16,9 +16,9 @@
 
 package com.persiantools4j.collection.bank;
 
-import com.persiantools4j.Collectable;
+import com.persiantools4j.collection.Collection;
+import com.persiantools4j.collection.CollectionTest;
 import com.persiantools4j.enums.RegexCharacterClass;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,22 +30,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DisplayName("Bank collection")
-class BankCollectionTest {
+class BankCollectionTest extends CollectionTest<Bank> {
 
-    private static Collectable<Bank> bankCollection;
-    private static Bank testBank;
-
-    @BeforeAll
-    static void beforeAll() {
-        bankCollection = BankCollection.getInstance();
-        testBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
-                Collections.singletonList("012"), Arrays.asList("610433", "991975"));
+    @Override
+    protected Collection<Bank> getTestInstance() {
+        return BankCollection.getInstance();
     }
 
     @Test
     @DisplayName("Get populated bank list")
     void testPopulatedBankList() {
-        assertThat(bankCollection.getCollection())
+        Bank testBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
+                Collections.singletonList("012"), Arrays.asList("610433", "991975"));
+        assertThat(getTestInstance().findAllBy(bank -> true))
                 .isNotNull()
                 .isNotEmpty()
                 .contains(testBank)
