@@ -16,6 +16,7 @@
 
 package com.persiantools4j.collection;
 
+import com.persiantools4j.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,14 +25,14 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public abstract class CollectionTest<T> {
+public abstract class CollectionTest<T, E> extends BaseTest<T> {
 
-    protected abstract Collection<T> getTestInstance();
+    protected abstract Collection<E> getTestCollectionInstance();
 
     @Test
     @DisplayName("Find all with null predicate")
     void testFindAllByWithNullPredicate() {
-        assertThat(getTestInstance().findAllBy(null))
+        assertThat(getTestCollectionInstance().findAllBy(null))
                 .isNotNull()
                 .isEqualTo(Collections.emptyList());
     }
@@ -39,7 +40,7 @@ public abstract class CollectionTest<T> {
     @Test
     @DisplayName("Find by with null predicate")
     void testFindByWithNullPredicate() {
-        assertThat(getTestInstance().findBy(null))
+        assertThat(getTestCollectionInstance().findBy(null))
                 .isNotNull()
                 .isEqualTo(Optional.empty());
     }

@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.nationalid;
 
+import com.persiantools4j.BaseTest;
 import com.persiantools4j.collection.hometown.Hometown;
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
@@ -36,7 +37,7 @@ import static org.assertj.core.api.Assertions.*;
 
 
 @DisplayName("National ID service")
-class NationalIdServiceTest {
+class NationalIdServiceTest extends BaseTest<NationalIdService> {
 
     private static Hometown testHometown;
     private static Predicate<Hometown> hometownPredicate;
@@ -139,35 +140,9 @@ class NationalIdServiceTest {
                 && !hometown.getCode().isEmpty();
     }
 
-    @Nested
-    @DisplayName("Get instance")
-    class GetInstanceTest {
-
-        @Test
-        @DisplayName("Non-thread-safe")
-        void testGetInstance() {
-            NationalIdService firstNationalIdService = NationalIdService.getInstance();
-            assertThat(firstNationalIdService).isNotNull();
-            NationalIdService secondNationalIdService = NationalIdService.getInstance();
-            assertThat(secondNationalIdService).isNotNull();
-            assertThat(firstNationalIdService).isSameAs(secondNationalIdService);
-        }
-
-        @Test
-        @DisplayName("Thread-safe")
-        void testGetInstanceThreadSafe() throws InterruptedException {
-            NationalIdService[] nationalIdServices = new NationalIdService[2];
-            Thread firstThread = new Thread(() -> nationalIdServices[0] = NationalIdService.getInstance());
-            Thread secondThread = new Thread(() -> nationalIdServices[1] = NationalIdService.getInstance());
-            firstThread.start();
-            secondThread.start();
-            firstThread.join();
-            secondThread.join();
-            assertThat(nationalIdServices[0]).isNotNull();
-            assertThat(nationalIdServices[1]).isNotNull();
-            assertThat(nationalIdServices[0]).isSameAs(nationalIdServices[1]);
-        }
-
+    @Override
+    protected NationalIdService getTestInstance() {
+        return NationalIdService.getInstance();
     }
 
     @Nested

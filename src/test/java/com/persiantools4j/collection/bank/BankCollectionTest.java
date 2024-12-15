@@ -20,7 +20,6 @@ import com.persiantools4j.collection.Collection;
 import com.persiantools4j.collection.CollectionTest;
 import com.persiantools4j.enums.RegexCharacterClass;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -30,10 +29,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DisplayName("Bank collection")
-class BankCollectionTest extends CollectionTest<Bank> {
+class BankCollectionTest extends CollectionTest<BankCollection, Bank> {
 
     @Override
-    protected Collection<Bank> getTestInstance() {
+    protected BankCollection getTestInstance() {
+        return BankCollection.getInstance();
+    }
+
+    @Override
+    protected Collection<Bank> getTestCollectionInstance() {
         return BankCollection.getInstance();
     }
 
@@ -42,7 +46,7 @@ class BankCollectionTest extends CollectionTest<Bank> {
     void testPopulatedBankList() {
         Bank testBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
                 Collections.singletonList("012"), Arrays.asList("610433", "991975"));
-        assertThat(getTestInstance().findAllBy(bank -> true))
+        assertThat(getTestCollectionInstance().findAllBy(bank -> true))
                 .isNotNull()
                 .isNotEmpty()
                 .contains(testBank)
@@ -66,37 +70,6 @@ class BankCollectionTest extends CollectionTest<Bank> {
                         .isNotNull()
                         .isNotEmpty()
                         .allMatch(bin -> bin.matches("\\d{6}")));
-    }
-
-    @Nested
-    @DisplayName("Get instance")
-    class GetInstanceTest {
-
-        @Test
-        @DisplayName("Non-thread-safe")
-        void testGetInstance() {
-            BankCollection firstBankCollection = BankCollection.getInstance();
-            assertThat(firstBankCollection).isNotNull();
-            BankCollection secondBankCollection = BankCollection.getInstance();
-            assertThat(secondBankCollection).isNotNull();
-            assertThat(firstBankCollection).isSameAs(secondBankCollection);
-        }
-
-        @Test
-        @DisplayName("Thread-safe")
-        void testGetInstanceThreadSafe() throws InterruptedException {
-            BankCollection[] bankCollections = new BankCollection[2];
-            Thread firstThread = new Thread(() -> bankCollections[0] = BankCollection.getInstance());
-            Thread secondThread = new Thread(() -> bankCollections[1] = BankCollection.getInstance());
-            firstThread.start();
-            secondThread.start();
-            firstThread.join();
-            secondThread.join();
-            assertThat(bankCollections[0]).isNotNull();
-            assertThat(bankCollections[1]).isNotNull();
-            assertThat(bankCollections[0]).isSameAs(bankCollections[1]);
-        }
-
     }
 
 }

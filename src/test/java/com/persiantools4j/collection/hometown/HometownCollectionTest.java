@@ -20,7 +20,6 @@ import com.persiantools4j.collection.Collection;
 import com.persiantools4j.collection.CollectionTest;
 import com.persiantools4j.enums.RegexCharacterClass;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -28,10 +27,15 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Hometown collection")
-class HometownCollectionTest extends CollectionTest<Hometown> {
+class HometownCollectionTest extends CollectionTest<HometownCollection, Hometown> {
 
     @Override
-    protected Collection<Hometown> getTestInstance() {
+    protected HometownCollection getTestInstance() {
+        return HometownCollection.getInstance();
+    }
+
+    @Override
+    protected Collection<Hometown> getTestCollectionInstance() {
         return HometownCollection.getInstance();
     }
 
@@ -40,7 +44,7 @@ class HometownCollectionTest extends CollectionTest<Hometown> {
     void testPopulatedHometownList() {
         Hometown testHometown = new Hometown("تهران مرکزی", "تهران",
                 Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
-        assertThat(getTestInstance().findAllBy(hometown -> true))
+        assertThat(getTestCollectionInstance().findAllBy(hometown -> true))
                 .isNotNull()
                 .isNotEmpty()
                 .contains(testHometown)
@@ -58,37 +62,6 @@ class HometownCollectionTest extends CollectionTest<Hometown> {
                             .matches(persianName -> persianName.matches("[" +
                                     RegexCharacterClass.PERSIAN_ALPHABET.getClassStr() + "\\s]+"));
                 });
-    }
-
-    @Nested
-    @DisplayName("Get instance")
-    class GetInstanceTest {
-
-        @Test
-        @DisplayName("Non-thread-safe")
-        void testGetInstance() {
-            HometownCollection firstHometownCollection = HometownCollection.getInstance();
-            assertThat(firstHometownCollection).isNotNull();
-            HometownCollection secondHometownCollection = HometownCollection.getInstance();
-            assertThat(secondHometownCollection).isNotNull();
-            assertThat(firstHometownCollection).isSameAs(secondHometownCollection);
-        }
-
-        @Test
-        @DisplayName("Thread-safe")
-        void testGetInstanceThreadSafe() throws InterruptedException {
-            HometownCollection[] hometownCollections = new HometownCollection[2];
-            Thread firstThread = new Thread(() -> hometownCollections[0] = HometownCollection.getInstance());
-            Thread secondThread = new Thread(() -> hometownCollections[1] = HometownCollection.getInstance());
-            firstThread.start();
-            secondThread.start();
-            firstThread.join();
-            secondThread.join();
-            assertThat(hometownCollections[0]).isNotNull();
-            assertThat(hometownCollections[1]).isNotNull();
-            assertThat(hometownCollections[0]).isSameAs(hometownCollections[1]);
-        }
-
     }
 
 }

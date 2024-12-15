@@ -16,6 +16,7 @@
 
 package com.persiantools4j.module.bank.cardnumber;
 
+import com.persiantools4j.BaseTest;
 import com.persiantools4j.collection.bank.Bank;
 import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +35,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Card number service")
-class CardNumberServiceTest {
+class CardNumberServiceTest extends BaseTest<CardNumberService> {
 
     private static CardNumberService cardNumberService;
 
@@ -84,35 +85,9 @@ class CardNumberServiceTest {
         cardNumberService = CardNumberService.getInstance();
     }
 
-    @Nested
-    @DisplayName("Get instance")
-    class GetInstanceTest {
-
-        @Test
-        @DisplayName("Non-thread-safe")
-        void testGetInstance() {
-            CardNumberService firstCardNumberService = CardNumberService.getInstance();
-            assertThat(firstCardNumberService).isNotNull();
-            CardNumberService secondCardNumberService = CardNumberService.getInstance();
-            assertThat(secondCardNumberService).isNotNull();
-            assertThat(firstCardNumberService).isSameAs(secondCardNumberService);
-        }
-
-        @Test
-        @DisplayName("Thread-safe")
-        void testGetInstanceThreadSafe() throws InterruptedException {
-            CardNumberService[] cardNumberServices = new CardNumberService[2];
-            Thread firstThread = new Thread(() -> cardNumberServices[0] = CardNumberService.getInstance());
-            Thread secondThread = new Thread(() -> cardNumberServices[1] = CardNumberService.getInstance());
-            firstThread.start();
-            secondThread.start();
-            firstThread.join();
-            secondThread.join();
-            assertThat(cardNumberServices[0]).isNotNull();
-            assertThat(cardNumberServices[1]).isNotNull();
-            assertThat(cardNumberServices[0]).isSameAs(cardNumberServices[1]);
-        }
-
+    @Override
+    protected CardNumberService getTestInstance() {
+        return CardNumberService.getInstance();
     }
 
     @Nested

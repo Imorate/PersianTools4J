@@ -17,10 +17,10 @@
 package com.persiantools4j.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.persiantools4j.BaseTest;
 import com.persiantools4j.util.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Jackson object mapper wrapper")
-class JacksonObjectMapperWrapperTest {
+class JacksonObjectMapperWrapperTest extends BaseTest<ObjectMapper> {
 
     private static ObjectMapper objectMapper;
 
@@ -52,6 +52,11 @@ class JacksonObjectMapperWrapperTest {
         objectMapper = ObjectMapperWrapper.getInstance();
     }
 
+    @Override
+    protected ObjectMapper getTestInstance() {
+        return ObjectMapperWrapper.getInstance();
+    }
+
     @Test
     @DisplayName("Module existence")
     void testModuleExistence() {
@@ -68,37 +73,6 @@ class JacksonObjectMapperWrapperTest {
         JsonObject deserializedJsonObject = objectMapper.readValue(serializedJsonObject, JsonObject.class);
         assertThat(deserializedJsonObject.getInput())
                 .isEqualTo(expected);
-    }
-
-    @Nested
-    @DisplayName("Get instance")
-    class GetInstanceTest {
-
-        @Test
-        @DisplayName("Non-thread-safe")
-        void testGetInstance() {
-            ObjectMapper firstObjectMapper = ObjectMapperWrapper.getInstance();
-            assertThat(firstObjectMapper).isNotNull();
-            ObjectMapper secondObjectMapper = ObjectMapperWrapper.getInstance();
-            assertThat(secondObjectMapper).isNotNull();
-            assertThat(firstObjectMapper).isSameAs(secondObjectMapper);
-        }
-
-        @Test
-        @DisplayName("Thread-safe")
-        void testGetInstanceThreadSafe() throws InterruptedException {
-            ObjectMapper[] objectMappers = new ObjectMapper[2];
-            Thread firstThread = new Thread(() -> objectMappers[0] = ObjectMapperWrapper.getInstance());
-            Thread secondThread = new Thread(() -> objectMappers[1] = ObjectMapperWrapper.getInstance());
-            firstThread.start();
-            secondThread.start();
-            firstThread.join();
-            secondThread.join();
-            assertThat(objectMappers[0]).isNotNull();
-            assertThat(objectMappers[1]).isNotNull();
-            assertThat(objectMappers[0]).isSameAs(objectMappers[1]);
-        }
-
     }
 
 }
