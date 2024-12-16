@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class BaseTest<T> {
+public abstract class SingletonTest<T> {
 
     protected abstract T getTestInstance();
 

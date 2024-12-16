@@ -17,7 +17,7 @@
 package com.persiantools4j.objectmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.persiantools4j.BaseTest;
+import com.persiantools4j.SingletonTest;
 import com.persiantools4j.util.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Jackson object mapper wrapper")
-class JacksonObjectMapperWrapperTest extends BaseTest<ObjectMapper> {
+class JacksonObjectMapperWrapperTest extends SingletonTest<ObjectMapper> {
 
     private static ObjectMapper objectMapper;
 

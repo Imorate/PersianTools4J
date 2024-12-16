@@ -16,7 +16,7 @@
 
 package com.persiantools4j.module.nationalid;
 
-import com.persiantools4j.BaseTest;
+import com.persiantools4j.SingletonTest;
 import com.persiantools4j.collection.hometown.Hometown;
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.*;
 
 
 @DisplayName("National ID service")
-class NationalIdServiceTest extends BaseTest<NationalIdService> {
+class NationalIdServiceTest extends SingletonTest<NationalIdService> {
 
     private static Hometown testHometown;
     private static Predicate<Hometown> hometownPredicate;

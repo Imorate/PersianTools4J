@@ -16,7 +16,7 @@
 
 package com.persiantools4j.collection;
 
-import com.persiantools4j.BaseTest;
+import com.persiantools4j.SingletonTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public abstract class CollectionTest<T, E> extends BaseTest<T> {
+public abstract class CollectionTest<T, E> extends SingletonTest<T> {
 
     protected abstract Collection<E> getTestCollectionInstance();
 
