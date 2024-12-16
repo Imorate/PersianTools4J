@@ -86,7 +86,7 @@ class CardNumberServiceTest extends SingletonTest<CardNumberService> {
     }
 
     @Override
-    protected CardNumberService getTestInstance() {
+    protected CardNumberService getSingletonInstance() {
         return CardNumberService.getInstance();
     }
 

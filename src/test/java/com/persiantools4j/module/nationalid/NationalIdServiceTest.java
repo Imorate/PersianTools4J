@@ -141,7 +141,7 @@ class NationalIdServiceTest extends SingletonTest<NationalIdService> {
     }
 
     @Override
-    protected NationalIdService getTestInstance() {
+    protected NationalIdService getSingletonInstance() {
         return NationalIdService.getInstance();
     }
 

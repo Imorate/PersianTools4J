@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class SingletonTest<T> {
 
-    protected abstract T getTestInstance();
+    protected abstract T getSingletonInstance();
 
     @Nested
     @DisplayName("Get instance")
@@ -33,9 +33,9 @@ public abstract class SingletonTest<T> {
         @Test
         @DisplayName("Non-thread-safe")
         void testGetInstance() {
-            T firstInstance = getTestInstance();
+            T firstInstance = getSingletonInstance();
             assertThat(firstInstance).isNotNull();
-            T secondInstance = getTestInstance();
+            T secondInstance = getSingletonInstance();
             assertThat(secondInstance).isNotNull();
             assertThat(firstInstance).isSameAs(secondInstance);
         }
@@ -45,8 +45,8 @@ public abstract class SingletonTest<T> {
         @SuppressWarnings("unchecked")
         void testGetInstanceThreadSafe() throws InterruptedException {
             T[] instances = (T[]) new Object[2];
-            Thread firstThread = new Thread(() -> instances[0] = getTestInstance());
-            Thread secondThread = new Thread(() -> instances[1] = getTestInstance());
+            Thread firstThread = new Thread(() -> instances[0] = getSingletonInstance());
+            Thread secondThread = new Thread(() -> instances[1] = getSingletonInstance());
             firstThread.start();
             secondThread.start();
             firstThread.join();

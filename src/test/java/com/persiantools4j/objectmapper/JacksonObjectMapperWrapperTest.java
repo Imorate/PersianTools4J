@@ -53,7 +53,7 @@ class JacksonObjectMapperWrapperTest extends SingletonTest<ObjectMapper> {
     }
 
     @Override
-    protected ObjectMapper getTestInstance() {
+    protected ObjectMapper getSingletonInstance() {
         return ObjectMapperWrapper.getInstance();
     }
 

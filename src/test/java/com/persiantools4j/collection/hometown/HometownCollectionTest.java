@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HometownCollectionTest extends CollectionTest<HometownCollection, Hometown> {
 
     @Override
-    protected HometownCollection getTestInstance() {
+    protected HometownCollection getSingletonInstance() {
         return HometownCollection.getInstance();
     }
 

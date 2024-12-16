@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BankCollectionTest extends CollectionTest<BankCollection, Bank> {
 
     @Override
-    protected BankCollection getTestInstance() {
+    protected BankCollection getSingletonInstance() {
         return BankCollection.getInstance();
     }
 
