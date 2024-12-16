@@ -16,7 +16,6 @@
 
 package com.persiantools4j.module.nationalid;
 
-import com.persiantools4j.SingletonTest;
 import com.persiantools4j.collection.hometown.Hometown;
 import com.persiantools4j.exception.ParseException;
 import com.persiantools4j.exception.ValidationException;
@@ -35,9 +34,8 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
-
 @DisplayName("National ID service")
-class NationalIdServiceTest extends SingletonTest<NationalIdService> {
+class NationalIdServiceTest {
 
     private static Hometown testHometown;
     private static Predicate<Hometown> hometownPredicate;
@@ -134,15 +132,10 @@ class NationalIdServiceTest extends SingletonTest<NationalIdService> {
 
     @BeforeAll
     static void beforeAll() {
-        nationalIdService = NationalIdService.getInstance();
+        nationalIdService = new NationalIdService();
         testHometown = new Hometown("خوی", "آذربایجان غربی", Arrays.asList("279", "280"));
         hometownPredicate = hometown -> !hometown.getProvince().isEmpty() && !hometown.getCity().isEmpty()
                 && !hometown.getCode().isEmpty();
-    }
-
-    @Override
-    protected NationalIdService getSingletonInstance() {
-        return NationalIdService.getInstance();
     }
 
     @Nested

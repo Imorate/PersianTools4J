@@ -16,7 +16,6 @@
 
 package com.persiantools4j.module.bank.cardnumber;
 
-import com.persiantools4j.SingletonTest;
 import com.persiantools4j.collection.bank.Bank;
 import com.persiantools4j.exception.ValidationException;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,7 +34,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Card number service")
-class CardNumberServiceTest extends SingletonTest<CardNumberService> {
+class CardNumberServiceTest {
 
     private static CardNumberService cardNumberService;
 
@@ -82,12 +81,7 @@ class CardNumberServiceTest extends SingletonTest<CardNumberService> {
 
     @BeforeAll
     static void beforeAll() {
-        cardNumberService = CardNumberService.getInstance();
-    }
-
-    @Override
-    protected CardNumberService getSingletonInstance() {
-        return CardNumberService.getInstance();
+        cardNumberService = new CardNumberService();
     }
 
     @Nested

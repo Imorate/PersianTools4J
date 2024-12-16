@@ -34,9 +34,6 @@ import java.util.stream.IntStream;
  * The {@code NationalIdService} class implements the {@link Validatable} and {@link Parsable} interfaces,
  * providing functionality for validating national IDs and parsing them to extract associated {@link Hometown}
  * and other relevant information.
- * <p>
- * This class follows the Singleton design pattern to ensure that only a single instance is used throughout
- * the application.
  *
  * @see Validatable
  * @see Parsable
@@ -51,22 +48,6 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
      * Except for "1111111111", which is considered valid.
      */
     private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
-
-    /**
-     * Private constructor to prevent direct instantiation.
-     */
-    private NationalIdService() {
-
-    }
-
-    /**
-     * Retrieves the singleton instance of {@code NationalIdService}.
-     *
-     * @return the singleton instance of {@code NationalIdService}
-     */
-    public static NationalIdService getInstance() {
-        return InstanceHolder.INSTANCE;
-    }
 
     /**
      * Validates the format of the provided national ID.
@@ -141,13 +122,6 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
         nationalIdObj.setControlDigit(Integer.parseInt(controlDigit));
         nationalIdObj.setHometownList(hometownList);
         return nationalIdObj;
-    }
-
-    /**
-     * Private static helper class to implement the Singleton design pattern.
-     */
-    private static class InstanceHolder {
-        private static final NationalIdService INSTANCE = new NationalIdService();
     }
 
 }

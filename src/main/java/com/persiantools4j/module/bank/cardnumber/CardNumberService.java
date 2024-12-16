@@ -31,9 +31,6 @@ import java.util.stream.IntStream;
 /**
  * The {@code CardNumberService} class implements the {@link Validatable} interface, providing functionality
  * for validating card numbers and determining the associated {@link Bank}.
- * <p>
- * This class follows the Singleton design pattern to ensure that only a single instance is used throughout
- * the application.
  *
  * @see Validatable
  */
@@ -44,28 +41,12 @@ public final class CardNumberService implements Validatable<String> {
     private static final Pattern CARD_NUMBER_REPEATED_DIGITS_PATTERN = Pattern.compile("(\\d)\\1{15}");
 
     /**
-     * Private constructor to prevent direct instantiation.
-     */
-    private CardNumberService() {
-
-    }
-
-    /**
-     * Retrieves the singleton instance of {@code CardNumberService}.
-     *
-     * @return the singleton instance of {@code CardNumberService}
-     */
-    public static CardNumberService getInstance() {
-        return InstanceHolder.INSTANCE;
-    }
-
-    /**
      * Validates the format of the provided card number.
      *
      * @param cardNumber the card number to validate
      * @throws ValidationException if the card number is null or in an invalid format
      */
-    private static void validateFormat(String cardNumber) throws ValidationException {
+    private void validateFormat(String cardNumber) throws ValidationException {
         if (cardNumber == null) {
             throw new ValidationException("Card number is null");
         }
@@ -120,13 +101,6 @@ public final class CardNumberService implements Validatable<String> {
         String firstSixDigits = cardNumber.substring(0, 6);
         return BankCollection.getInstance()
                 .findBy(bank -> bank.getBins().contains(firstSixDigits));
-    }
-
-    /**
-     * Private static helper class to implement the Singleton design pattern.
-     */
-    private static class InstanceHolder {
-        private static final CardNumberService INSTANCE = new CardNumberService();
     }
 
 }
