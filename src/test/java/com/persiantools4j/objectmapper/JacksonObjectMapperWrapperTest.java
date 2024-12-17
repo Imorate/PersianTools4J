@@ -42,6 +42,7 @@ class JacksonObjectMapperWrapperTest extends SingletonTest<ObjectMapper> {
         return Stream.of(
                 Arguments.of(null, null),
                 Arguments.of("", ""),
+                Arguments.of(" ", ""),
                 Arguments.of(testStr, StringUtils.normalizePersian(testStr)),
                 Arguments.of(dontNeedToNormalizeStr, dontNeedToNormalizeStr)
         );
