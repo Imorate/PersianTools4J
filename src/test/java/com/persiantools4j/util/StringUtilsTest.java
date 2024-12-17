@@ -156,7 +156,7 @@ class StringUtilsTest {
         @DisplayName("Empty or null exceptional inputs")
         @ValueSource(strings = " ")
         @NullAndEmptySource
-        void testEmptyOrNullExceptionalGetNumericValue(String input) {
+        void testNullAndEmptyExceptionalGetNumericValue(String input) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, 1))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Input string is null or empty");
