@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 public final class StringUtils {
 
-    public static final String NULL_OR_EMPTY_EXCEPTION_MESSAGE = "Input string is null or empty";
     private static final Pattern ENGLISH_NUMERIC_PATTERN = Pattern.compile("\\d+");
     private static final Pattern PERSIAN_ARABIC_NUMERIC_PATTERN =
             Pattern.compile("[" + RegexCharacterClass.PERSIAN_NUMERIC.getClassStr() +
@@ -66,7 +65,7 @@ public final class StringUtils {
      */
     public static int getNumericValue(String input, int index) {
         if (isBlank(input)) {
-            throw new ValidationException(NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+            throw new ValidationException("Input string is null or empty");
         }
         input = input.trim();
         if (index >= input.length() || !ENGLISH_NUMERIC_PATTERN.matcher(input).matches()) {

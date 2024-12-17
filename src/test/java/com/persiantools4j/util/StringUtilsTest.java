@@ -159,7 +159,7 @@ class StringUtilsTest {
         void testExceptionalEmptyOrNullGetNumericValue(String input) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, 1))
                     .isInstanceOf(ValidationException.class)
-                    .hasMessage(StringUtils.NULL_OR_EMPTY_EXCEPTION_MESSAGE);
+                    .hasMessage("Input string is null or empty");
         }
 
         @ParameterizedTest
