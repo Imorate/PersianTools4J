@@ -53,7 +53,7 @@ class StringUtilsTest {
         );
     }
 
-    private static Stream<Arguments> exceptionalInvalidGetNumericValueCases() {
+    private static Stream<Arguments> invalidGetNumericValueExceptionalCases() {
         return Stream.of(
                 Arguments.of("1", "3"),
                 Arguments.of("6104038932", "10"),
@@ -153,19 +153,19 @@ class StringUtilsTest {
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional empty or null inputs")
+        @DisplayName("Empty or null exceptional inputs")
         @ValueSource(strings = " ")
         @NullAndEmptySource
-        void testExceptionalEmptyOrNullGetNumericValue(String input) {
+        void testEmptyOrNullExceptionalGetNumericValue(String input) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, 1))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Input string is null or empty");
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional invalid inputs")
-        @MethodSource("com.persiantools4j.util.StringUtilsTest#exceptionalInvalidGetNumericValueCases")
-        void testExceptionalInvalidGetNumericValue(String input, int index) {
+        @DisplayName("Invalid exceptional inputs")
+        @MethodSource("com.persiantools4j.util.StringUtilsTest#invalidGetNumericValueExceptionalCases")
+        void testInvalidExceptionalGetNumericValue(String input, int index) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, index))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Invalid number");
