@@ -31,7 +31,7 @@ public abstract class CollectionTest<T, E> extends SingletonTest<T> {
 
     @Test
     @DisplayName("Find all with null predicate")
-    void testFindAllByWithNullPredicate() {
+    void findAllByWithNullPredicateTest() {
         assertThat(getTestCollectionInstance().findAllBy(null))
                 .isNotNull()
                 .isEqualTo(Collections.emptyList());
@@ -39,7 +39,7 @@ public abstract class CollectionTest<T, E> extends SingletonTest<T> {
 
     @Test
     @DisplayName("Find by with null predicate")
-    void testFindByWithNullPredicate() {
+    void findByWithNullPredicateTest() {
         assertThat(getTestCollectionInstance().findBy(null))
                 .isNotNull()
                 .isEqualTo(Optional.empty());

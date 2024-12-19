@@ -60,7 +60,7 @@ class JacksonObjectMapperWrapperTest extends SingletonTest<ObjectMapper> {
 
     @Test
     @DisplayName("Module existence")
-    void testModuleExistence() {
+    void moduleExistenceTest() {
         assertThat(objectMapper.getRegisteredModuleIds())
                 .hasSize(1)
                 .containsOnly("Persian-Module");
@@ -69,7 +69,7 @@ class JacksonObjectMapperWrapperTest extends SingletonTest<ObjectMapper> {
     @ParameterizedTest
     @DisplayName("Deserialize")
     @MethodSource("deserializationCases")
-    void testDeserialize(String input, String expected) throws IOException {
+    void deserializeTest(String input, String expected) throws IOException {
         String serializedJsonObject = objectMapper.writeValueAsString(new JsonObject(input));
         JsonObject deserializedJsonObject = objectMapper.readValue(serializedJsonObject, JsonObject.class);
         assertThat(deserializedJsonObject.getInput())

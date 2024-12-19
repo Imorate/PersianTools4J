@@ -53,7 +53,7 @@ class StringUtilsTest {
         );
     }
 
-    private static Stream<Arguments> invalidGetNumericValueExceptionalCases() {
+    private static Stream<Arguments> exceptionalGetNumericValueCases() {
         return Stream.of(
                 Arguments.of("1", "3"),
                 Arguments.of("6104038932", "10"),
@@ -115,21 +115,21 @@ class StringUtilsTest {
     @ParameterizedTest
     @DisplayName("Is blank")
     @MethodSource("isBlankCases")
-    void testIsBlank(String input, boolean expected) {
+    void isBlankTest(String input, boolean expected) {
         assertThat(StringUtils.isBlank(input)).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @DisplayName("To english digits")
     @MethodSource("toEnglishDigitsCases")
-    void testToEnglishDigits(String input, String expected) {
+    void toEnglishDigitsTest(String input, String expected) {
         assertThat(StringUtils.toEnglishDigits(input)).isEqualTo(expected);
     }
 
     @ParameterizedTest
     @DisplayName("Normalize persian")
     @MethodSource("normalizePersianCases")
-    void testNormalizePersian(String input, String expected) {
+    void normalizePersianTest(String input, String expected) {
         assertThat(StringUtils.isPersian(input)).isFalse();
         assertThat(StringUtils.normalizePersian(input)).isEqualTo(expected);
     }
@@ -137,7 +137,7 @@ class StringUtilsTest {
     @ParameterizedTest
     @DisplayName("Is persian")
     @MethodSource("isPersianStringCases")
-    void testIsPersian(String input, boolean expected) {
+    void isPersianTest(String input, boolean expected) {
         assertThat(StringUtils.isPersian(input)).isEqualTo(expected);
     }
 
@@ -148,24 +148,24 @@ class StringUtilsTest {
         @ParameterizedTest
         @DisplayName("Valid inputs")
         @MethodSource("com.persiantools4j.util.StringUtilsTest#getNumericValueCases")
-        void testGetNumericValue(String input, int index, int expected) {
+        void getNumericValueTest(String input, int index, int expected) {
             assertThat(StringUtils.getNumericValue(input, index)).isEqualTo(expected);
         }
 
         @ParameterizedTest
-        @DisplayName("Empty or null exceptional inputs")
+        @DisplayName("Exceptional empty or null inputs")
         @ValueSource(strings = " ")
         @NullAndEmptySource
-        void testNullAndEmptyExceptionalGetNumericValue(String input) {
+        void exceptionalNullAndEmptyGetNumericValueTest(String input) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, 1))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Input string is null or empty");
         }
 
         @ParameterizedTest
-        @DisplayName("Invalid exceptional inputs")
-        @MethodSource("com.persiantools4j.util.StringUtilsTest#invalidGetNumericValueExceptionalCases")
-        void testInvalidExceptionalGetNumericValue(String input, int index) {
+        @DisplayName("Exceptional inputs")
+        @MethodSource("com.persiantools4j.util.StringUtilsTest#exceptionalGetNumericValueCases")
+        void exceptionalGetNumericValueTest(String input, int index) {
             assertThatThrownBy(() -> StringUtils.getNumericValue(input, index))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("Invalid number");

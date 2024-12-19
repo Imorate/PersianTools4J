@@ -31,8 +31,8 @@ public abstract class SingletonTest<T> {
     class GetInstanceTest {
 
         @Test
-        @DisplayName("Non-thread-safe")
-        void testGetInstance() {
+        @DisplayName("Non thread-safe")
+        void getInstanceTest() {
             T firstInstance = getSingletonInstance();
             assertThat(firstInstance).isNotNull();
             T secondInstance = getSingletonInstance();
@@ -43,7 +43,7 @@ public abstract class SingletonTest<T> {
         @Test
         @DisplayName("Thread-safe")
         @SuppressWarnings("unchecked")
-        void testGetInstanceThreadSafe() throws InterruptedException {
+        void getInstanceThreadSafeTest() throws InterruptedException {
             T[] instances = (T[]) new Object[2];
             Thread firstThread = new Thread(() -> instances[0] = getSingletonInstance());
             Thread secondThread = new Thread(() -> instances[1] = getSingletonInstance());

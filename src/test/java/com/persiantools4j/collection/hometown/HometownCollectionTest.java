@@ -40,8 +40,8 @@ class HometownCollectionTest extends CollectionTest<HometownCollection, Hometown
     }
 
     @Test
-    @DisplayName("Get populated hometown list")
-    void testPopulatedHometownList() {
+    @DisplayName("Get populated collection")
+    void populatedHometownListTest() {
         Hometown testHometown = new Hometown("تهران مرکزی", "تهران",
                 Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
         assertThat(getTestCollectionInstance().findAllBy(hometown -> true))
