@@ -44,12 +44,12 @@ class BankCollectionTest extends CollectionTest<BankCollection, Bank> {
     @Test
     @DisplayName("Get populated collection")
     void populatedBankListTest() {
-        Bank testBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
+        Bank expectedBank = new Bank("mellat", "Mellat Bank", "بانک ملت",
                 Collections.singletonList("012"), Arrays.asList("610433", "991975"));
         assertThat(getTestCollectionInstance().findAllBy(bank -> true))
                 .isNotNull()
                 .isNotEmpty()
-                .contains(testBank)
+                .contains(expectedBank)
                 .allSatisfy(bank -> {
                     assertThat(bank.getCodes())
                             .isNotNull()
