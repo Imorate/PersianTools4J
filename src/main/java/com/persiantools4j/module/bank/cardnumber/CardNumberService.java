@@ -47,8 +47,8 @@ public final class CardNumberService implements Validatable<String> {
      * @throws ValidationException if the card number is null or in an invalid format
      */
     private void validateFormat(String cardNumber) throws ValidationException {
-        if (cardNumber == null) {
-            throw new ValidationException("Card number is null");
+        if (StringUtils.isBlank(cardNumber)) {
+            throw new ValidationException("Card number is null or empty");
         }
         if (!CARD_NUMBER_PATTERN.matcher(cardNumber).matches() ||
                 CARD_NUMBER_REPEATED_DIGITS_PATTERN.matcher(cardNumber).matches()) {
@@ -88,6 +88,12 @@ public final class CardNumberService implements Validatable<String> {
         if (sum % 10 != 0) {
             throw new ValidationException("Invalid card number: " + cardNumber);
         }
+    }
+
+    @Override
+    public String normalize(String input) {
+        input = input.trim();
+        return input;
     }
 
     /**

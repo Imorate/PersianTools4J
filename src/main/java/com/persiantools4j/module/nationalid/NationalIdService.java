@@ -26,13 +26,14 @@ import com.persiantools4j.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 /**
- * The {@code NationalIdService} class implements the {@link Validatable} and {@link Parsable} interfaces,
- * providing functionality for validating national IDs and parsing them to extract associated {@link Hometown}
+ * The {@code NationalIdService} class implements the {@link Validatable} and {@link Parsable} interfaces, providing
+ * functionality for validating national IDs, normalize it and parsing them to extract associated {@link Hometown}
  * and other relevant information.
  *
  * @see Validatable
@@ -41,13 +42,17 @@ import java.util.stream.IntStream;
 public final class NationalIdService implements Validatable<String>, Parsable<String, NationalId> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NationalIdService.class);
-    private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{10}");
+    private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\s*\\d{8,10}\\s*");
+    private static final List<String> BLACKLISTED_NATIONAL_IDS = Arrays.asList(
+            "0123456789",
+            "1234567890"
+    );
 
     /**
      * Regex pattern to detect invalid national IDs made up of the same digit repeated 10 times.
      * Except for "1111111111", which is considered valid.
      */
-    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
+    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("\\s*([02-9])\\1{9}\\s*");
 
     /**
      * Validates the format of the provided national ID.
@@ -56,8 +61,8 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
      * @throws ValidationException if the national ID is null or in an invalid format
      */
     private static void validateFormat(String nationalId) {
-        if (nationalId == null) {
-            throw new ValidationException("National ID is null");
+        if (StringUtils.isBlank(nationalId)) {
+            throw new ValidationException("National ID is null or empty");
         }
         if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
                 NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
@@ -80,20 +85,31 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
     @Override
     public void validate(String nationalId) {
         validateFormat(nationalId);
-        int length = nationalId.length();
+        String finalNationalId = normalize(nationalId);
+        String exceptionMessage = "Invalid national ID: " + finalNationalId;
+        if (BLACKLISTED_NATIONAL_IDS.contains(finalNationalId)) {
+            throw new ValidationException(exceptionMessage);
+        }
+        int length = finalNationalId.length();
         int sum = IntStream.range(0, length - 1)
                 .boxed()
                 .reduce(0, (Integer partialResult, Integer index) -> {
-                    int digit = StringUtils.getNumericValue(nationalId, index);
+                    int digit = StringUtils.getNumericValue(finalNationalId, index);
                     return partialResult + digit * (length - index);
                 }, Integer::sum);
         int remainder = sum % (length + 1);
-        int controlDigit = StringUtils.getNumericValue(nationalId, length - 1);
+        int controlDigit = StringUtils.getNumericValue(finalNationalId, length - 1);
         boolean remainderLessThanTwo = (remainder < 2) && (controlDigit == remainder);
         boolean remainderEqualAndMoreThanTwo = (remainder >= 2) && (remainder + controlDigit == (length + 1));
         if (!remainderLessThanTwo && !remainderEqualAndMoreThanTwo) {
-            throw new ValidationException("Invalid national ID: " + nationalId);
+            throw new ValidationException(exceptionMessage);
         }
+    }
+
+    @Override
+    public String normalize(String input) {
+        input = input.trim();
+        return ("00" + input).substring(input.length() + 2 - 10);
     }
 
     /**
@@ -104,7 +120,8 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
      */
     public List<Hometown> findHometown(String nationalId) {
         validate(nationalId);
-        String firstThreeDigits = nationalId.substring(0, 3);
+        String finalNationalId = normalize(nationalId);
+        String firstThreeDigits = finalNationalId.substring(0, 3);
         return HometownCollection.getInstance()
                 .findAllBy(hometown -> hometown.getCode().contains(firstThreeDigits));
     }
@@ -112,13 +129,14 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
     @Override
     public NationalId parse(String nationalId) {
         List<Hometown> hometownList = findHometown(nationalId);
+        String finalNationalId = normalize(nationalId);
         if (hometownList.isEmpty()) {
-            throw new ParseException("Unable to find hometown associated to the national ID: " + nationalId);
+            throw new ParseException("Unable to find hometown associated to the national ID: " + finalNationalId);
         }
-        String controlDigit = nationalId.substring(9);
-        NationalId nationalIdObj = new NationalId(nationalId);
-        nationalIdObj.setHometownCode(nationalId.substring(0, 3));
-        nationalIdObj.setPersonalCode(nationalId.substring(3, nationalId.length() - 1));
+        String controlDigit = finalNationalId.substring(9);
+        NationalId nationalIdObj = new NationalId(finalNationalId);
+        nationalIdObj.setHometownCode(finalNationalId.substring(0, 3));
+        nationalIdObj.setPersonalCode(finalNationalId.substring(3, finalNationalId.length() - 1));
         nationalIdObj.setControlDigit(Integer.parseInt(controlDigit));
         nationalIdObj.setHometownList(hometownList);
         return nationalIdObj;

@@ -19,9 +19,11 @@ package com.persiantools4j;
 import com.persiantools4j.exception.ValidationException;
 
 /**
- * The {@code Validatable} interface defines a contract for validating objects of type {@code T}.
+ * The {@code Validatable} interface defines a contract for validating, normalizing, and ensuring the conformity
+ * of objects of type {@code T}. Implementations of this interface should provide mechanisms to check the validity
+ * of an object, normalize it to a standard format, and handle any validation exceptions.
  *
- * @param <T> the type of object that this {@code Validatable} can validate
+ * @param <T> the type of object that this {@code Validatable} can validate and normalize
  */
 public interface Validatable<T> {
 
@@ -42,5 +44,13 @@ public interface Validatable<T> {
      * @throws ValidationException if the object is not valid
      */
     void validate(T t) throws ValidationException;
+
+    /**
+     * Normalizes the object to ensure it conforms to a standard format or structure.
+     *
+     * @param t the object to normalize
+     * @return a normalized instance of type {@code T}
+     */
+    T normalize(T t);
 
 }
