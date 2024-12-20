@@ -42,7 +42,7 @@ import java.util.stream.IntStream;
 public final class NationalIdService implements Validatable<String>, Parsable<String, NationalId> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NationalIdService.class);
-    private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\s*\\d{8,10}\\s*");
+    private static final Pattern NATIONAL_ID_PATTERN = Pattern.compile("\\d{8,10}");
     private static final List<String> BLACKLISTED_NATIONAL_IDS = Arrays.asList(
             "0123456789",
             "1234567890"
@@ -52,7 +52,7 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
      * Regex pattern to detect invalid national IDs made up of the same digit repeated 10 times.
      * Except for "1111111111", which is considered valid.
      */
-    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("\\s*([02-9])\\1{9}\\s*");
+    private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
 
     /**
      * Validates the format of the provided national ID.
@@ -60,10 +60,11 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
      * @param nationalId the national ID to validate
      * @throws ValidationException if the national ID is null or in an invalid format
      */
-    private static void validateFormat(String nationalId) {
+    private void validateFormat(String nationalId) {
         if (StringUtils.isBlank(nationalId)) {
             throw new ValidationException("National ID is null or empty");
         }
+        nationalId = normalize(nationalId);
         if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
                 NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
         ) {
@@ -109,7 +110,11 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
     @Override
     public String normalize(String input) {
         input = input.trim();
-        return ("00" + input).substring(input.length() + 2 - 10);
+        try {
+            return ("00" + input).substring(input.length() + 2 - 10);
+        } catch (StringIndexOutOfBoundsException e) {
+            return input;
+        }
     }
 
     /**
