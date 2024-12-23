@@ -54,24 +54,6 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
      */
     private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
 
-    /**
-     * Validates the format of the provided national ID.
-     *
-     * @param nationalId the national ID to validate
-     * @throws ValidationException if the national ID is null or in an invalid format
-     */
-    private void validateFormat(String nationalId) {
-        if (StringUtils.isBlank(nationalId)) {
-            throw new ValidationException("National ID is null or empty");
-        }
-        nationalId = normalize(nationalId);
-        if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
-                NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
-        ) {
-            throw new ValidationException("Invalid national ID format: " + nationalId);
-        }
-    }
-
     @Override
     public boolean isValid(String nationalId) {
         try {
@@ -85,7 +67,6 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
 
     @Override
     public void validate(String nationalId) {
-        validateFormat(nationalId);
         String finalNationalId = normalize(nationalId);
         String exceptionMessage = "Invalid national ID: " + finalNationalId;
         if (BLACKLISTED_NATIONAL_IDS.contains(finalNationalId)) {
@@ -108,13 +89,23 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
     }
 
     @Override
-    public String normalize(String input) {
-        input = input.trim();
-        try {
-            return ("00" + input).substring(input.length() + 2 - 10);
-        } catch (StringIndexOutOfBoundsException e) {
-            return input;
+    public String normalize(String nationalId) {
+        if (StringUtils.isBlank(nationalId)) {
+            throw new ValidationException("National ID is null or empty");
         }
+        nationalId = nationalId.trim();
+        String exceptionMessage = "Invalid national ID format: " + nationalId;
+        try {
+            nationalId = ("00" + nationalId).substring(nationalId.length() + 2 - 10);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new ValidationException(exceptionMessage);
+        }
+        if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
+                NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
+        ) {
+            throw new ValidationException(exceptionMessage);
+        }
+        return nationalId;
     }
 
     /**

@@ -111,6 +111,7 @@ class NationalIdServiceTest {
                 Arguments.of("8888888888"),
                 Arguments.of("9999999999"),
                 Arguments.of("123abc"),
+                Arguments.of("aaaaaaaaaa"),
                 Arguments.of(" 123 "),
                 Arguments.of("12345")
         );
@@ -139,11 +140,43 @@ class NationalIdServiceTest {
                 && !StringUtils.isBlank(hometown.getCity()) && !hometown.getCode().isEmpty();
     }
 
-    @ParameterizedTest
+    @Nested
     @DisplayName("Normalize")
-    @MethodSource("normalizeCases")
-    void normalizeTest(String nationalId, String expected) {
-        assertThat(nationalIdService.normalize(nationalId)).isEqualTo(expected);
+    class Normalize {
+
+        @ParameterizedTest
+        @DisplayName("Normalize with valid national ID")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#normalizeCases")
+        void normalizeWithValidNationalIdTest(String nationalId, String expected) {
+            assertThat(nationalIdService.normalize(nationalId)).isEqualTo(expected);
+        }
+
+        @ParameterizedTest
+        @DisplayName("Normalize with valid national ID should not throw exception")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases")
+        void normalizeWithValidNationalIdTestShouldNotThrowException(String nationalId) {
+            assertThatCode(() -> nationalIdService.normalize(nationalId)).doesNotThrowAnyException();
+        }
+
+        @ParameterizedTest
+        @DisplayName("Normalize with exceptional national ID of null and empty")
+        @ValueSource(strings = " ")
+        @NullAndEmptySource
+        void normalizeWithExceptionalNationalIdOfNullAndEmptyTest(String nationalId) {
+            assertThatThrownBy(() -> nationalIdService.normalize(nationalId))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessage("National ID is null or empty");
+        }
+
+        @ParameterizedTest
+        @DisplayName("Normalize with exceptional national ID")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidFormatCases")
+        void normalizeWithExceptionalNationalIdTest(String nationalId) {
+            assertThatThrownBy(() -> nationalIdService.normalize(nationalId))
+                    .isInstanceOf(ValidationException.class)
+                    .hasMessageContaining("Invalid national ID format");
+        }
+
     }
 
     @Nested
@@ -151,19 +184,19 @@ class NationalIdServiceTest {
     class IsValidTest {
 
         @ParameterizedTest
-        @DisplayName("Valid national ID")
+        @DisplayName("Is valid with valid national ID")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases")
-        void validNationalIdTest(String nationalId) {
+        void isValidWithValidNationalIdTest(String nationalId) {
             assertThat(nationalIdService.isValid(nationalId)).isTrue();
         }
 
         @ParameterizedTest
-        @DisplayName("Invalid national ID")
+        @DisplayName("Is valid with invalid national ID")
         @MethodSource({
                 "com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidFormatCases",
                 "com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidCases"
         })
-        void invalidNationalIdTest(String nationalId) {
+        void isValidWithInvalidNationalIdTest(String nationalId) {
             assertThat(nationalIdService.isValid(nationalId)).isFalse();
         }
 
@@ -174,35 +207,35 @@ class NationalIdServiceTest {
     class ValidateTest {
 
         @ParameterizedTest
-        @DisplayName("Valid national ID")
+        @DisplayName("Validate with valid national ID")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases")
-        void validateNationalIdTest(String nationalId) {
+        void validateWithNationalIdTest(String nationalId) {
             assertThatCode(() -> nationalIdService.validate(nationalId)).doesNotThrowAnyException();
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional national ID with null and empty")
+        @DisplayName("Validate with exceptional national ID of null and empty")
         @ValueSource(strings = " ")
         @NullAndEmptySource
-        void validateExceptionalNationalIdWithNullAndEmptyTest(String nationalId) {
+        void validateWithExceptionalNationalIdOfNullAndEmptyTest(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.validate(nationalId))
                     .isInstanceOf(ValidationException.class)
                     .hasMessage("National ID is null or empty");
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional national ID")
+        @DisplayName("Validate with exceptional national ID")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidCases")
-        void validateExceptionalNationalIdTest(String nationalId) {
+        void validateWithExceptionalNationalIdTest(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.validate(nationalId))
                     .isInstanceOf(ValidationException.class)
                     .hasMessageContaining("Invalid national ID");
         }
 
         @ParameterizedTest
-        @DisplayName("Exceptional national ID format")
+        @DisplayName("Validate with exceptional national ID format")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidFormatCases")
-        void validateExceptionalNationalIdFormatTest(String nationalId) {
+        void validateWithExceptionalNationalIdFormatTest(String nationalId) {
             assertThatThrownBy(() -> nationalIdService.validate(nationalId))
                     .isInstanceOf(ValidationException.class)
                     .hasMessageContaining("Invalid national ID format");
@@ -319,8 +352,8 @@ class NationalIdServiceTest {
         }
 
         @Test
-        @DisplayName("Parse with national ID with missing hometown")
-        void parseWithNationalIdWithMissingHometownTest() {
+        @DisplayName("Parse with national ID of missing hometown")
+        void parseWithNationalIdOfMissingHometownTest() {
             assertThatThrownBy(() -> nationalIdService.parse("8908563210"))
                     .isInstanceOf(ParseException.class)
                     .hasMessageContaining("Unable to find hometown associated to the national ID");
