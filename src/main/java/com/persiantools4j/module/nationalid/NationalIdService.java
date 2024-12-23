@@ -55,6 +55,26 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
     private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
 
     @Override
+    public String normalize(String nationalId) {
+        if (StringUtils.isBlank(nationalId)) {
+            throw new ValidationException("National ID is null or empty");
+        }
+        nationalId = nationalId.trim();
+        String exceptionMessage = "Invalid national ID format: " + nationalId;
+        try {
+            nationalId = ("00" + nationalId).substring(nationalId.length() + 2 - 10);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new ValidationException(exceptionMessage);
+        }
+        if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
+                NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
+        ) {
+            throw new ValidationException(exceptionMessage);
+        }
+        return nationalId;
+    }
+
+    @Override
     public boolean isValid(String nationalId) {
         try {
             validate(nationalId);
@@ -86,26 +106,6 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
         if (!remainderLessThanTwo && !remainderEqualAndMoreThanTwo) {
             throw new ValidationException(exceptionMessage);
         }
-    }
-
-    @Override
-    public String normalize(String nationalId) {
-        if (StringUtils.isBlank(nationalId)) {
-            throw new ValidationException("National ID is null or empty");
-        }
-        nationalId = nationalId.trim();
-        String exceptionMessage = "Invalid national ID format: " + nationalId;
-        try {
-            nationalId = ("00" + nationalId).substring(nationalId.length() + 2 - 10);
-        } catch (StringIndexOutOfBoundsException e) {
-            throw new ValidationException(exceptionMessage);
-        }
-        if (!NATIONAL_ID_PATTERN.matcher(nationalId).matches() ||
-                NATIONAL_ID_REPEATED_DIGITS_PATTERN.matcher(nationalId).matches()
-        ) {
-            throw new ValidationException(exceptionMessage);
-        }
-        return nationalId;
     }
 
     /**
