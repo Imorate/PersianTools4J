@@ -28,6 +28,7 @@ import java.util.Objects;
  * <p>
  * This class is immutable and should be instantiated using the static factory method.
  */
+@Generated
 public final class Hometown {
 
     private final List<String> code;
@@ -92,7 +93,6 @@ public final class Hometown {
      * @param o the object to compare with
      * @return {@code true} if the specified object is equal to this {@code Hometown}, otherwise {@code false}
      */
-    @Generated
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -114,7 +114,6 @@ public final class Hometown {
      *
      * @return a hash code value for this {@code Hometown} instance
      */
-    @Generated
     @Override
     public int hashCode() {
         return Objects.hash(code, province, city);
@@ -127,7 +126,6 @@ public final class Hometown {
      *
      * @return a string representation of the {@code Hometown} object
      */
-    @Generated
     @Override
     public String toString() {
         return "Hometown{" + "code=" + code + ", province='" + province + '\'' + ", city='" + city + '\'' + '}';

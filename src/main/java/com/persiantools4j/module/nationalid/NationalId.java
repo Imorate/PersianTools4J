@@ -26,6 +26,7 @@ import java.util.Objects;
  * Represents a National ID in a result of parsing action with various components such as
  * hometown code, personal code, control digit and a {@link List} of {@link Hometown}(s).
  */
+@Generated
 public final class NationalId {
 
     private final String id;
@@ -132,7 +133,6 @@ public final class NationalId {
      * @param o the object to compare with
      * @return {@code true} if the specified object is equal to this {@code NationalId}, otherwise {@code false}
      */
-    @Generated
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -152,7 +152,6 @@ public final class NationalId {
      *
      * @return a hash code value for this {@code NationalId} instance
      */
-    @Generated
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
@@ -166,7 +165,6 @@ public final class NationalId {
      *
      * @return a string representation of the {@code NationalId} object
      */
-    @Generated
     @Override
     public String toString() {
         return "NationalId{" + "id='" + id + '\'' + ", hometownCode='" + hometownCode + '\'' +

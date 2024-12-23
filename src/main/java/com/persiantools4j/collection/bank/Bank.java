@@ -28,6 +28,7 @@ import java.util.Objects;
  * <p>
  * This class is immutable and should be instantiated using the static factory method.
  */
+@Generated
 public final class Bank {
 
     private final String id;
@@ -116,7 +117,6 @@ public final class Bank {
      * @param o the object to compare with
      * @return {@code true} if the specified object is equal to this {@code Bank}, otherwise {@code false}
      */
-    @Generated
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -140,7 +140,6 @@ public final class Bank {
      *
      * @return a hash code value for this {@code Bank} instance
      */
-    @Generated
     @Override
     public int hashCode() {
         return Objects.hash(id, name, persianName, codes, bins);
@@ -153,7 +152,6 @@ public final class Bank {
      *
      * @return a string representation of the {@code Bank} object
      */
-    @Generated
     @Override
     public String toString() {
         return "Bank{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", persianName='" + persianName + '\'' +
