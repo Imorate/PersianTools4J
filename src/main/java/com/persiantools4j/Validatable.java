@@ -28,12 +28,16 @@ import com.persiantools4j.exception.ValidationException;
 public interface Validatable<T> {
 
     /**
-     * Normalizes the object to ensure it conforms to a standard format or structure.
+     * Normalizes the specified object to ensure it conforms to a standard format or structure required for processing.
+     * <p>
+     * This method may include tasks such as trimming whitespace, converting to a consistent case, or reformatting
+     * identifiers to match a predefined structure.
      *
      * @param t the object to normalize
      * @return a normalized instance of type {@code T}
+     * @throws ValidationException if the object cannot be normalized due to validation issues
      */
-    T normalize(T t);
+    T normalize(T t) throws ValidationException;
 
     /**
      * Checks if the specified object is valid.

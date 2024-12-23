@@ -55,7 +55,7 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
     private static final Pattern NATIONAL_ID_REPEATED_DIGITS_PATTERN = Pattern.compile("([02-9])\\1{9}");
 
     @Override
-    public String normalize(String nationalId) {
+    public String normalize(String nationalId) throws ValidationException {
         if (StringUtils.isBlank(nationalId)) {
             throw new ValidationException("National ID is null or empty");
         }
