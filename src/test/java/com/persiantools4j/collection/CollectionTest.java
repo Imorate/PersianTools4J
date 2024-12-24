@@ -18,6 +18,7 @@ package com.persiantools4j.collection;
 
 import com.persiantools4j.SingletonTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -29,20 +30,26 @@ public abstract class CollectionTest<T, E> extends SingletonTest<T> {
 
     protected abstract Collection<E> getTestCollectionInstance();
 
-    @Test
-    @DisplayName("Find all with null predicate")
-    void findAllByWithNullPredicateTest() {
-        assertThat(getTestCollectionInstance().findAllBy(null))
-                .isNotNull()
-                .isEqualTo(Collections.emptyList());
-    }
+    @Nested
+    @DisplayName("Find collection")
+    class FindCollectionTest {
 
-    @Test
-    @DisplayName("Find by with null predicate")
-    void findByWithNullPredicateTest() {
-        assertThat(getTestCollectionInstance().findBy(null))
-                .isNotNull()
-                .isEqualTo(Optional.empty());
+        @Test
+        @DisplayName("Find all with null predicate")
+        void findAllByWithNullPredicateTest() {
+            assertThat(getTestCollectionInstance().findAllBy(null))
+                    .isNotNull()
+                    .isEqualTo(Collections.emptyList());
+        }
+
+        @Test
+        @DisplayName("Find by with null predicate")
+        void findByWithNullPredicateTest() {
+            assertThat(getTestCollectionInstance().findBy(null))
+                    .isNotNull()
+                    .isEqualTo(Optional.empty());
+        }
+
     }
 
 }
