@@ -209,7 +209,7 @@ class NationalIdServiceTest {
         @ParameterizedTest
         @DisplayName("Validate with valid national ID")
         @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases")
-        void validateWithNationalIdTest(String nationalId) {
+        void validateWithValidNationalIdTest(String nationalId) {
             assertThatCode(() -> nationalIdService.validate(nationalId)).doesNotThrowAnyException();
         }
 
