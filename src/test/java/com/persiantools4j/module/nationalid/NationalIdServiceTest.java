@@ -152,9 +152,12 @@ class NationalIdServiceTest {
         }
 
         @ParameterizedTest
-        @DisplayName("Normalize with valid national ID should not throw exception")
-        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases")
-        void normalizeWithValidNationalIdTestShouldNotThrowException(String nationalId) {
+        @DisplayName("Normalize with valid and invalid national ID should not throw exception")
+        @MethodSource({
+                "com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases",
+                "com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidCases"
+        })
+        void normalizeWithValidAndInvalidNationalIdTestShouldNotThrowException(String nationalId) {
             assertThatCode(() -> nationalIdService.normalize(nationalId)).doesNotThrowAnyException();
         }
 
