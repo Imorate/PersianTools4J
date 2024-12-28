@@ -24,16 +24,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a {@code Hometown}, encapsulating its code(s), province, and city.
+ * Represents a {@code Hometown}, encapsulating its province, city and code(s).
  * <p>
  * This class is immutable and should be instantiated using the static factory method.
  */
 @Generated
 public final class Hometown {
 
-    private final List<String> code;
     private final String province;
     private final String city;
+    private final List<String> codes;
 
     /**
      * Constructs an immutable {@code Hometown} instance.
@@ -41,30 +41,21 @@ public final class Hometown {
      * This constructor is annotated with {@link JsonCreator} to enable Jackson deserialization,
      * mapping the specified JSON properties to the corresponding fields.
      *
-     * @param city     the name of the city, mapped from the {@code "city"} JSON property
      * @param province the name of the province where the city is located,
      *                 mapped from the {@code "province"} JSON property
-     * @param code     a list of code(s) associated with the {@code Hometown},
+     * @param city     the name of the city, mapped from the {@code "city"} JSON property
+     * @param codes    a list of code(s) associated with the {@code Hometown},
      *                 mapped from the {@code "code"} JSON property
      */
     @JsonCreator
     public Hometown(
-            @JsonProperty("city") String city,
             @JsonProperty("province") String province,
-            @JsonProperty("code") List<String> code
+            @JsonProperty("city") String city,
+            @JsonProperty("code") List<String> codes
     ) {
-        this.city = city;
         this.province = province;
-        this.code = code;
-    }
-
-    /**
-     * Returns the list of code(s) associated with this {@code Hometown}.
-     *
-     * @return the list of code(s)
-     */
-    public List<String> getCode() {
-        return code;
+        this.city = city;
+        this.codes = codes;
     }
 
     /**
@@ -86,9 +77,18 @@ public final class Hometown {
     }
 
     /**
+     * Returns the list of code(s) associated with this {@code Hometown}.
+     *
+     * @return the list of code(s)
+     */
+    public List<String> getCodes() {
+        return codes;
+    }
+
+    /**
      * Compares this {@code Hometown} instance with the specified object for equality.
      * <p>
-     * Two {@code Hometown} objects are considered equal if they have the same code(s), province, and city.
+     * Two {@code Hometown} objects are considered equal if they have the same province, city and code(s).
      *
      * @param o the object to compare with
      * @return {@code true} if the specified object is equal to this {@code Hometown}, otherwise {@code false}
@@ -102,33 +102,33 @@ public final class Hometown {
             return false;
         }
         Hometown hometown = (Hometown) o;
-        return Objects.equals(code, hometown.code)
-                && Objects.equals(province, hometown.province)
-                && Objects.equals(city, hometown.city);
+        return Objects.equals(province, hometown.province)
+                && Objects.equals(city, hometown.city)
+                && Objects.equals(codes, hometown.codes);
     }
 
     /**
      * Returns a hash code value for this {@code Hometown} instance.
      * <p>
-     * The hash code is generated based on the code(s), province and city names.
+     * The hash code is generated based on the province, city and code(s).
      *
      * @return a hash code value for this {@code Hometown} instance
      */
     @Override
     public int hashCode() {
-        return Objects.hash(code, province, city);
+        return Objects.hash(province, city, codes);
     }
 
     /**
      * Returns a string representation of this {@code Hometown} instance.
      * <p>
-     * The string representation includes the code(s), province, and city names.
+     * The string representation includes the province, city, and code(s).
      *
      * @return a string representation of the {@code Hometown} object
      */
     @Override
     public String toString() {
-        return "Hometown{" + "code=" + code + ", province='" + province + '\'' + ", city='" + city + '\'' + '}';
+        return "Hometown{" + "province='" + province + '\'' + ", city='" + city + '\'' + ", codes=" + codes + '}';
     }
 
 }

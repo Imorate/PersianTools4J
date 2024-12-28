@@ -30,18 +30,26 @@ import java.util.Objects;
 public final class NationalId {
 
     private final String id;
-    private String hometownCode;
-    private String personalCode;
-    private int controlDigit;
-    private List<Hometown> hometownList;
+    private final String hometownCode;
+    private final String personalCode;
+    private final int controlDigit;
+    private final List<Hometown> hometowns;
 
     /**
-     * Constructs a new {@code NationalId} instance with the specified national ID string.
+     * Constructs a new {@code NationalId} instance with the specified details.
      *
-     * @param nationalId the national ID string
+     * @param id           the national ID string
+     * @param hometownCode the code representing the associated hometown
+     * @param personalCode the personal code extracted from the national ID
+     * @param controlDigit the control digit used for validation
+     * @param hometowns    a list of {@link Hometown} instances associated with the hometown code
      */
-    public NationalId(String nationalId) {
-        this.id = nationalId;
+    NationalId(String id, String hometownCode, String personalCode, int controlDigit, List<Hometown> hometowns) {
+        this.id = id;
+        this.hometownCode = hometownCode;
+        this.personalCode = personalCode;
+        this.controlDigit = controlDigit;
+        this.hometowns = hometowns;
     }
 
     /**
@@ -63,30 +71,12 @@ public final class NationalId {
     }
 
     /**
-     * Sets the hometown code for this national ID.
-     *
-     * @param hometownCode the new hometown code
-     */
-    public void setHometownCode(String hometownCode) {
-        this.hometownCode = hometownCode;
-    }
-
-    /**
      * Gets the personal code segment within the national ID.
      *
      * @return the personal code
      */
     public String getPersonalCode() {
         return personalCode;
-    }
-
-    /**
-     * Sets the personal code for this national ID.
-     *
-     * @param personalCode the new personal code
-     */
-    public void setPersonalCode(String personalCode) {
-        this.personalCode = personalCode;
     }
 
     /**
@@ -99,30 +89,12 @@ public final class NationalId {
     }
 
     /**
-     * Sets the control digit for this national ID.
-     *
-     * @param controlDigit the new control digit
-     */
-    public void setControlDigit(int controlDigit) {
-        this.controlDigit = controlDigit;
-    }
-
-    /**
      * Retrieves the list of hometowns associated with this national ID.
      *
      * @return a {@link List} of {@link Hometown} instances
      */
-    public List<Hometown> getHometownList() {
-        return hometownList;
-    }
-
-    /**
-     * Sets the list of {@link Hometown}s for this national ID.
-     *
-     * @param hometownList the new {@link List} of {@link Hometown}
-     */
-    public void setHometownList(List<Hometown> hometownList) {
-        this.hometownList = hometownList;
+    public List<Hometown> getHometowns() {
+        return hometowns;
     }
 
     /**
@@ -169,7 +141,7 @@ public final class NationalId {
     public String toString() {
         return "NationalId{" + "id='" + id + '\'' + ", hometownCode='" + hometownCode + '\'' +
                 ", personalCode='" + personalCode + '\'' + ", controlDigit=" + controlDigit +
-                ", hometownList=" + hometownList + '}';
+                ", hometowns=" + hometowns + '}';
     }
 
 }

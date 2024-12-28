@@ -42,14 +42,14 @@ class HometownCollectionTest extends CollectionTest<HometownCollection, Hometown
     @Test
     @DisplayName("Get populated collection")
     void populatedHometownListTest() {
-        Hometown expectedHometown = new Hometown("تهران مرکزی", "تهران",
+        Hometown expectedHometown = new Hometown("تهران", "تهران مرکزی",
                 Arrays.asList("001", "002", "003", "004", "005", "006", "007", "008"));
         assertThat(getTestCollectionInstance().findAllBy(hometown -> true))
                 .isNotNull()
                 .isNotEmpty()
                 .contains(expectedHometown)
                 .allSatisfy(hometown -> {
-                    assertThat(hometown.getCode())
+                    assertThat(hometown.getCodes())
                             .isNotNull()
                             .isNotEmpty()
                             .allMatch(code -> code.matches("\\d{3}"));

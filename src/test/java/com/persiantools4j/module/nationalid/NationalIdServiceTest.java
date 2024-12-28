@@ -135,9 +135,9 @@ class NationalIdServiceTest {
     @BeforeAll
     static void beforeAll() {
         nationalIdService = new NationalIdService();
-        expectedHometown = new Hometown("خوی", "آذربایجان غربی", Arrays.asList("279", "280"));
+        expectedHometown = new Hometown("آذربایجان غربی", "خوی", Arrays.asList("279", "280"));
         hometownPredicate = hometown -> !StringUtils.isBlank(hometown.getProvince())
-                && !StringUtils.isBlank(hometown.getCity()) && !hometown.getCode().isEmpty();
+                && !StringUtils.isBlank(hometown.getCity()) && !hometown.getCodes().isEmpty();
     }
 
     @Nested
@@ -315,7 +315,7 @@ class NationalIdServiceTest {
             assertThat(actualNationalId.getPersonalCode())
                     .isNotBlank()
                     .hasSize(6);
-            assertThat(actualNationalId.getHometownList())
+            assertThat(actualNationalId.getHometowns())
                     .isNotNull()
                     .isNotEmpty()
                     .allMatch(hometownPredicate);
@@ -330,7 +330,7 @@ class NationalIdServiceTest {
             assertThat(actualNationalId.getHometownCode()).isEqualTo("279");
             assertThat(actualNationalId.getPersonalCode()).isEqualTo("156789");
             assertThat(actualNationalId.getControlDigit()).isEqualTo(5);
-            assertThat(actualNationalId.getHometownList())
+            assertThat(actualNationalId.getHometowns())
                     .isNotNull()
                     .hasSize(1)
                     .containsOnly(expectedHometown);

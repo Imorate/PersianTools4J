@@ -119,23 +119,20 @@ public final class NationalIdService implements Validatable<String>, Parsable<St
         validate(finalNationalId);
         String firstThreeDigits = finalNationalId.substring(0, 3);
         return HometownCollection.getInstance()
-                .findAllBy(hometown -> hometown.getCode().contains(firstThreeDigits));
+                .findAllBy(hometown -> hometown.getCodes().contains(firstThreeDigits));
     }
 
     @Override
     public NationalId parse(String nationalId) {
         String finalNationalId = normalize(nationalId);
-        List<Hometown> hometownList = findHometown(finalNationalId);
-        if (hometownList.isEmpty()) {
+        List<Hometown> hometowns = findHometown(finalNationalId);
+        if (hometowns.isEmpty()) {
             throw new ParseException("Unable to find hometown associated to the national ID: " + finalNationalId);
         }
-        String controlDigit = finalNationalId.substring(9);
-        NationalId nationalIdObj = new NationalId(finalNationalId);
-        nationalIdObj.setHometownCode(finalNationalId.substring(0, 3));
-        nationalIdObj.setPersonalCode(finalNationalId.substring(3, finalNationalId.length() - 1));
-        nationalIdObj.setControlDigit(Integer.parseInt(controlDigit));
-        nationalIdObj.setHometownList(hometownList);
-        return nationalIdObj;
+        String hometownCode = finalNationalId.substring(0, 3);
+        String personalCode = finalNationalId.substring(3, finalNationalId.length() - 1);
+        int controlDigit = Integer.parseInt(finalNationalId.substring(9));
+        return new NationalId(finalNationalId, hometownCode, personalCode, controlDigit, hometowns);
     }
 
 }
