@@ -43,6 +43,15 @@ class NationalIdServiceTest {
     private static Predicate<Hometown> hometownPredicate;
     private static NationalIdService nationalIdService;
 
+    private static Stream<Arguments> normalizeCases() {
+        return Stream.of(
+                Arguments.of("6104038931", "6104038931"),
+                Arguments.of("68415941", "0068415941"),
+                Arguments.of("067749828", "0067749828"),
+                Arguments.of(" 1583250689 ", "1583250689")
+        );
+    }
+
     private static Stream<Arguments> validCases() {
         return Stream.of(
                 Arguments.of("6104038931"),
@@ -85,15 +94,6 @@ class NationalIdServiceTest {
                 Arguments.of("5934546074"),
                 Arguments.of("6232055667"),
                 Arguments.of("6359963809")
-        );
-    }
-
-    private static Stream<Arguments> normalizeCases() {
-        return Stream.of(
-                Arguments.of("6104038931", "6104038931"),
-                Arguments.of("68415941", "0068415941"),
-                Arguments.of("067749828", "0067749828"),
-                Arguments.of(" 1583250689 ", "1583250689")
         );
     }
 
