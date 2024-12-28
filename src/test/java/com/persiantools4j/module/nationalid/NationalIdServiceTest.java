@@ -39,9 +39,9 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("National ID service")
 class NationalIdServiceTest {
 
+    private static NationalIdService nationalIdService;
     private static Hometown expectedHometown;
     private static Predicate<Hometown> hometownPredicate;
-    private static NationalIdService nationalIdService;
 
     private static Stream<Arguments> normalizeCases() {
         return Stream.of(
