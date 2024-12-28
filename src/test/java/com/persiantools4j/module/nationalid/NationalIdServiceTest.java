@@ -137,7 +137,8 @@ class NationalIdServiceTest {
         nationalIdService = new NationalIdService();
         expectedHometown = new Hometown("آذربایجان غربی", "خوی", Arrays.asList("279", "280"));
         hometownPredicate = hometown -> !StringUtils.isBlank(hometown.getProvince())
-                && !StringUtils.isBlank(hometown.getCity()) && !hometown.getCodes().isEmpty();
+                && !StringUtils.isBlank(hometown.getCity()) && hometown.getCodes() != null
+                && !hometown.getCodes().isEmpty();
     }
 
     @Nested
