@@ -248,58 +248,6 @@ class NationalIdServiceTest {
     }
 
     @Nested
-    @DisplayName("Find hometown")
-    class FindHometownTest {
-
-        @ParameterizedTest
-        @DisplayName("Find hometown with valid national ID")
-        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validCases")
-        void findHometownWithValidNationalIdTest(String nationalId) {
-            assertThat(nationalIdService.findHometown(nationalId))
-                    .isNotNull()
-                    .isNotEmpty()
-                    .allMatch(hometownPredicate);
-        }
-
-        @Test
-        @DisplayName("Find single hometown with valid national ID")
-        void findSingleHometownWithValidNationalIdTest() {
-            assertThat(nationalIdService.findHometown("2791567895"))
-                    .isNotNull()
-                    .hasSize(1)
-                    .containsOnly(expectedHometown);
-        }
-
-        @ParameterizedTest
-        @DisplayName("Find multiple hometowns with valid national ID")
-        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validWithMultipleHometownCases")
-        void findMultipleHometownsWithValidNationalIdTest(String nationalId) {
-            assertThat(nationalIdService.findHometown(nationalId))
-                    .isNotNull()
-                    .hasSizeGreaterThanOrEqualTo(2);
-        }
-
-        @ParameterizedTest
-        @DisplayName("Find hometown with exceptional national ID")
-        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidCases")
-        void findHometownWithExceptionalNationalIdTest(String nationalId) {
-            assertThatThrownBy(() -> nationalIdService.findHometown(nationalId))
-                    .isInstanceOf(ValidationException.class)
-                    .hasMessageContaining("Invalid national ID");
-        }
-
-        @ParameterizedTest
-        @DisplayName("Find hometown with exceptional national ID format")
-        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#invalidFormatCases")
-        void findHometownWithExceptionalNationalIdFormatTest(String nationalId) {
-            assertThatThrownBy(() -> nationalIdService.findHometown(nationalId))
-                    .isInstanceOf(ValidationException.class)
-                    .hasMessageContaining("Invalid national ID format");
-        }
-
-    }
-
-    @Nested
     @DisplayName("Parse")
     class ParseTest {
 
@@ -318,7 +266,26 @@ class NationalIdServiceTest {
                     .hasSize(6);
             assertThat(actualNationalId.getHometowns())
                     .isNotNull()
-                    .isNotEmpty()
+                    .hasSize(1)
+                    .allMatch(hometownPredicate);
+        }
+
+        @ParameterizedTest
+        @DisplayName("Parse multiple hometowns with valid national ID")
+        @MethodSource("com.persiantools4j.module.nationalid.NationalIdServiceTest#validWithMultipleHometownCases")
+        void parseMultipleHometownsWithValidNationalIdTest(String nationalId) {
+            NationalId actualNationalId = nationalIdService.parse(nationalId);
+            assertThat(actualNationalId).isNotNull();
+            assertThat(actualNationalId.getId()).isNotBlank();
+            assertThat(actualNationalId.getHometownCode())
+                    .isNotBlank()
+                    .hasSize(3);
+            assertThat(actualNationalId.getPersonalCode())
+                    .isNotBlank()
+                    .hasSize(6);
+            assertThat(actualNationalId.getHometowns())
+                    .isNotNull()
+                    .hasSizeGreaterThanOrEqualTo(2)
                     .allMatch(hometownPredicate);
         }
 
@@ -334,6 +301,7 @@ class NationalIdServiceTest {
             assertThat(actualNationalId.getHometowns())
                     .isNotNull()
                     .hasSize(1)
+                    .allMatch(hometownPredicate)
                     .containsOnly(expectedHometown);
         }
 
